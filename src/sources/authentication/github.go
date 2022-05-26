@@ -8,13 +8,15 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"sources/common"
+	"sources/users"
 )
 
 
 func GithubLoggedinHandler(w http.ResponseWriter, r *http.Request, githubData string) {
 	if githubData == "" {
 		// Unauthorized users get an unauthorized message
-		fmt.Fprintf(w, "UNAUTHORIZED!")
+		fmt.Println("UNAUTHORIZED!")
 		return
 	}
 
@@ -28,8 +30,21 @@ func GithubLoggedinHandler(w http.ResponseWriter, r *http.Request, githubData st
 		log.Panic("JSON parse error")
 	}
 
+	var jsonMap map[string]interface{}
+	json.Unmarshal([]byte(githubData), &jsonMap)
+
+	email := fmt.Sprintf("%s", jsonMap["email"])
+	name := fmt.Sprintf("%s", jsonMap["name"])
+	location := fmt.Sprintf("%s", jsonMap["location"])
+	imageLink := fmt.Sprintf("%s", jsonMap["avatar_url"])
+	repoUrl := fmt.Sprintf("%s", jsonMap["html_url"])
+
 	// Return the prettified JSON as a string
 	fmt.Fprintf(w, string(prettyJSON.Bytes()))
+	status, msg, _ := users.SaveUser(email, name, location, imageLink, repoUrl, common.CONST_GITHUB)
+	if(!status){
+		fmt.Println(msg)
+	}
 }
 
 func GithubContributorLoginHandler(w http.ResponseWriter, r *http.Request) {

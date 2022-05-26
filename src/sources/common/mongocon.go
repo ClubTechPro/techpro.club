@@ -1,4 +1,4 @@
-package general
+package common
 
 import (
 	"context"
