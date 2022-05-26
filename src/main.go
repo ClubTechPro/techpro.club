@@ -3,8 +3,8 @@ package main
 import (
 	"log"
 	"net/http"
-	"sources/app"
 	"sources/authentication"
+	"sources/templates"
 
 	"github.com/joho/godotenv"
 )
@@ -28,7 +28,7 @@ func main() {
 	http.Handle("/assets/", http.StripPrefix("/assets", fs))
 
 	// Index route
-	http.HandleFunc("/", app.IndexHandler)
+	http.HandleFunc("/", templates.IndexHandler)
 
     // Github Contributor Login route
 	http.HandleFunc("/contributor/login/github/", authentication.GithubContributorLoginHandler)
