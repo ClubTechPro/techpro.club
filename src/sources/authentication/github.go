@@ -38,7 +38,7 @@ func GithubContributorLoginHandler(w http.ResponseWriter, r *http.Request) {
 
 	redirectURL := fmt.Sprintf("https://github.com/login/oauth/authorize?client_id=%s&redirect_uri=%s", githubClientID, githubContributorRedirectUri)
 
-	http.Redirect(w, r, redirectURL, 301)
+	http.Redirect(w, r, redirectURL, http.StatusMovedPermanently)
 }
 
 func GithubProjectLoginHandler(w http.ResponseWriter, r *http.Request) {
@@ -47,7 +47,7 @@ func GithubProjectLoginHandler(w http.ResponseWriter, r *http.Request) {
 
 	redirectURL := fmt.Sprintf("https://github.com/login/oauth/authorize?client_id=%s&redirect_uri=%s", githubClientID, githubProjectRedirectUri)
 
-	http.Redirect(w, r, redirectURL, 301)
+	http.Redirect(w, r, redirectURL, http.StatusMovedPermanently)
 }
 
 func GithubCallbackHandler(w http.ResponseWriter, r *http.Request) {
