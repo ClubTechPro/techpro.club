@@ -3,9 +3,10 @@ package users
 import (
 	"config"
 	"context"
-	"fmt"
 	"sources/common"
 	"time"
+
+	"go.mongodb.org/mongo-driver/bson"
 )
 
 type UserStruct struct {
@@ -25,23 +26,30 @@ func SaveUser(email, name, location, imageLink, repoUrl, source string )(status 
 
 	dbName := common.GetMoDb()
 	saveUserCollection := client.Database(dbName).Collection(common.CONST_MO_USERS)
-	
-	timestamp := time.Now()
-	
+	countUsers, errSearch := saveUserCollection.CountDocuments(context.TODO(), bson.M{"email": email, "source": common.CONST_GITHUB})
 
-	user := UserStruct{email, name, location, imageLink, repoUrl, source, timestamp.Format("2006-01-02 15:04:05")}
-	fmt.Println(user)
-
-	insert, err := saveUserCollection.InsertOne(context.TODO(), user)
-	if err != nil{
+	if( errSearch != nil){
 		status = false
-		msg = err.Error()
+		msg = errSearch.Error()
 		objectID = nil
 	} else {
-		status = true
-		msg = ""
-		objectID = insert.InsertedID
-	}
 
+		if (countUsers == 0){
+			
+			timestamp := time.Now()
+			user := UserStruct{"ded", name, location, imageLink, repoUrl, source, timestamp.Format("2006-01-02 15:04:05")}
+			insert, err := saveUserCollection.InsertOne(context.TODO(), user)
+			if err != nil{
+				status = false
+				msg = err.Error()
+				objectID = nil
+			} else {
+				status = true
+				msg = ""
+				objectID = insert.InsertedID
+			}
+		}
+	}
+	
 	return status, msg, objectID
 }
