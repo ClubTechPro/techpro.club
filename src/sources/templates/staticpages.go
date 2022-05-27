@@ -10,3 +10,8 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	tmpl := template.Must(template.ParseFiles("../templates/home/index.html"))
     tmpl.Execute(w, nil)
 }
+
+func ProjectIndexHandler(w http.ResponseWriter, r *http.Request) {
+	tmpl := template.Must(template.ParseFiles("../templates/home/index.html"))
+    tmpl.Execute(w, nil)
+}
