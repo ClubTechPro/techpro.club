@@ -1,6 +1,6 @@
 <html>
     <body>
-        <form method="post">
+        <form method="post" content-type="x-www-form-urlencoded">
             <h2>Preferred Programming Language(s)</h2>
             <input type="checkbox" id="aspnet" name="language" value="aspnet" />
             <label for="aspnet">ASP.NET</label><br />
@@ -48,7 +48,7 @@
             />
             <label for="eMonthly">Monthly</label><br />
 
-            <!-- <h2>Preferred Project Type</h2>
+            <h2>Preferred Project Type</h2>
 
             <input
                 type="checkbox"
@@ -137,7 +137,7 @@
             <h2>Highest Qualification</h2>
 
             <input
-                type="checkbox"
+                type="radio"
                 id="qMasters"
                 name="qualification"
                 value="Masters Degree"
@@ -145,7 +145,7 @@
             <label for="pQualification">Masters Degree</label><br />
 
             <input
-                type="checkbox"
+                type="radio"
                 id="qGraduate"
                 name="qualification"
                 value="Graduate"
@@ -153,7 +153,7 @@
             <label for="qGraduate">Graduate</label><br />
 
             <input
-                type="checkbox"
+                type="radio"
                 id="qHighSchool"
                 name="qualification"
                 value="High School"
@@ -161,12 +161,12 @@
             <label for="qHighSchool">High School</label><br />
 
             <input
-                type="checkbox"
+                type="radio"
                 id="qOthers"
                 name="qualification"
                 value="Others"
             />
-            <label for="qOthers">Others</label><br /> -->
+            <label for="qOthers">Others</label><br />
 
             <input type="submit" value="submit" />
         </form>
