@@ -5,17 +5,12 @@ import (
 	"net/http"
 	"sources/authentication"
 	"sources/templates"
+	"sources/templates/contributors"
 
 	"github.com/joho/godotenv"
 )
 
-type ContactDetails struct {
-    Email   string
-    Subject string
-    Message string
-}
 
-// init() executes before the main program
 func init() {
 	// loads values from .env into the system
 	if err := godotenv.Load(); err != nil {
@@ -27,25 +22,31 @@ func main() {
     fs := http.FileServer(http.Dir("../assets"))
 	http.Handle("/assets/", http.StripPrefix("/assets", fs))
 
-	// Index route
+	// Templates
 	http.HandleFunc("/", templates.IndexHandler)
+	http.HandleFunc("/project", templates.ProjectIndexHandler)
 
-    // Github Contributor Login route
-	http.HandleFunc("/contributor/login/github/", authentication.GithubContributorLoginHandler)
+	// Templates/Contributors
+	http.HandleFunc("/contributor/preferences", contributors.ContributorPreferences)
+	
 
-	// Github Project Login route
-	http.HandleFunc("/project/login/github/", authentication.GithubProjectLoginHandler)
+	// Users
 
-	// Github Contributor callback
+
+	// Authentication
+	// Github
+	http.HandleFunc("/contributor/github/login/", authentication.GithubContributorLoginHandler)
 	http.HandleFunc("/contributor/github/callback", authentication.GithubCallbackHandler)
 
-	// Github Project callback
+	http.HandleFunc("/project/github/login/", authentication.GithubProjectLoginHandler)
 	http.HandleFunc("/project/github/callback", authentication.GithubCallbackHandler)
 
-	// Route where the authenticated user is redirected to
-	http.HandleFunc("/loggedin", func(w http.ResponseWriter, r *http.Request) {
+	// Func to receive data after login
+	http.HandleFunc("/github/loggedin", func(w http.ResponseWriter, r *http.Request) {
 		authentication.GithubLoggedinHandler(w, r, "")
 	})
+
+	
 
     http.ListenAndServe(":8080", nil)
 }

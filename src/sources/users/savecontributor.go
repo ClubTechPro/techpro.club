@@ -37,7 +37,7 @@ func SaveUser(email, name, location, imageLink, repoUrl, source string )(status 
 		if (countUsers == 0){
 			
 			timestamp := time.Now()
-			user := UserStruct{"ded", name, location, imageLink, repoUrl, source, timestamp.Format("2006-01-02 15:04:05")}
+			user := UserStruct{email, name, location, imageLink, repoUrl, source, timestamp.Format("2006-01-02 15:04:05")}
 			insert, err := saveUserCollection.InsertOne(context.TODO(), user)
 			if err != nil{
 				status = false
