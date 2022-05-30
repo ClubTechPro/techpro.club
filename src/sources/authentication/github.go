@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"os"
 	"sources/common"
+	"sources/templates/contributors"
 	"sources/users"
 )
 
@@ -39,8 +40,9 @@ func GithubLoggedinHandler(w http.ResponseWriter, r *http.Request, githubData st
 	imageLink := fmt.Sprintf("%s", jsonMap["avatar_url"])
 	repoUrl := fmt.Sprintf("%s", jsonMap["html_url"])
 
+	
 	// Return the prettified JSON as a string
-	fmt.Fprintf(w, string(prettyJSON.Bytes()))
+	// fmt.Fprintf(w, string(prettyJSON.Bytes()))
 	status, msg, _ := users.SaveUser(email, name, location, imageLink, repoUrl, common.CONST_GITHUB)
 	if(!status){
 		fmt.Println(msg)
@@ -68,6 +70,7 @@ func GithubProjectLoginHandler(w http.ResponseWriter, r *http.Request) {
 func GithubCallbackHandler(w http.ResponseWriter, r *http.Request) {
 	code := r.URL.Query().Get("code")
 
+	contributors.CallBack(w,r)
 	githubAccessToken := GetGithubAccessToken(code)
 
 	githubData := GetGithubData(githubAccessToken)
