@@ -10,7 +10,7 @@ import (
 )
 
 // Mongoconnect function
-func Mongoconnect() *mongo.Client {
+func Mongoconnect() (client *mongo.Client) {
 	Mohost := GetMoHost()
 	Moport := GetMoPort()
 	
@@ -28,52 +28,52 @@ func Mongoconnect() *mongo.Client {
 
 }
 
-func GetMoHost() string {
+func GetMoHost() (moHost string) {
 
-	MoHost, exists := os.LookupEnv("MO_HOST")
+	moHost, exists := os.LookupEnv("MO_HOST")
 	if !exists {
 		log.Fatal("MO_HOST not defined in .env file")
 	}
 
-	return MoHost
+	return moHost
 }
 
-func GetMoPort() string {
+func GetMoPort() (moPort string) {
 
-	MoPort, exists := os.LookupEnv("MO_PORT")
+	moPort, exists := os.LookupEnv("MO_PORT")
 	if !exists {
 		log.Fatal("MO_PORT not defined in .env file")
 	}
 
-	return MoPort
+	return moPort
 }
 
-func GetMoDb() string {
+func GetMoDb() (moDb string) {
 
-	MoDb, exists := os.LookupEnv("MO_DATABASE")
+	moDb, exists := os.LookupEnv("MO_DATABASE")
 	if !exists {
 		log.Fatal("MO_DATABASE not defined in .env file")
 	}
 
-	return MoDb
+	return moDb
 }
 
-func GetMoUser() string {
+func GetMoUser() (moUser string) {
 
-	MoUser, exists := os.LookupEnv("MO_USER")
+	moUser, exists := os.LookupEnv("MO_USER")
 	if !exists {
 		log.Fatal("MO_USER not defined in .env file")
 	}
 
-	return MoUser
+	return moUser
 }
 
-func GetMoPass() string {
+func GetMoPass() (moPass string) {
 
-	MoPass, exists := os.LookupEnv("MO_PASS")
+	moPass, exists := os.LookupEnv("MO_PASS")
 	if !exists {
 		log.Fatal("MO_PASS not defined in .env file")
 	}
 
-	return MoPass
+	return moPass
 }

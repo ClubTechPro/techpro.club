@@ -27,7 +27,8 @@ func main() {
 	http.HandleFunc("/project", templates.ProjectIndexHandler)
 
 	// Templates/Contributors
-	http.HandleFunc("/contributor/preferences", contributors.ContributorPreferences)
+	http.HandleFunc("/contributor/preferences", contributors.Preferences)
+	http.HandleFunc("/contributor/thankyou", contributors.PreferencesSaved)
 	
 
 	// Users
@@ -45,7 +46,6 @@ func main() {
 	http.HandleFunc("/github/loggedin", func(w http.ResponseWriter, r *http.Request) {
 		authentication.GithubLoggedinHandler(w, r, "")
 	})
-
 	
 
     http.ListenAndServe(":8080", nil)
