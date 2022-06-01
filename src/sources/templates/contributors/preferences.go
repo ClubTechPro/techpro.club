@@ -8,10 +8,12 @@ import (
 	"log"
 	"net/http"
 	"sources/common"
+	"sources/users"
 )
 
 
 type ContributorPreferencesStruct struct{
+	UserID string `json:"userId"`
 	Languages []string `json:"languages"`
 	NotificationFrequency string `json:"notificationFrequency"`
 	ProjectType []string `json:"projectType"`
@@ -21,8 +23,13 @@ type ContributorPreferencesStruct struct{
 	Qualification string `json:"qualification"`
 }
 
-func ContributorPreferences(w http.ResponseWriter, r *http.Request){
+func Preferences(w http.ResponseWriter, r *http.Request){
 	
+	sessionOk, userID := users.ValidateSession(w, r)
+	if(!sessionOk){
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+	}
+
 	if r.Method == "GET"{
 		tmpl := template.Must(template.ParseFiles("../templates/app/contributors/preferences.html"))
 		tmpl.Execute(w, nil) 
@@ -39,9 +46,9 @@ func ContributorPreferences(w http.ResponseWriter, r *http.Request){
 			paidJob :=  r.Form.Get("paidJob")
 			relocation := r.Form.Get("relocation")
 			qualification := r.Form.Get("qualification")
-	
-			result := ContributorPreferencesStruct{languages, notificationFrequency, projectType, contributorCount, paidJob, relocation, qualification}
-	
+
+			result := ContributorPreferencesStruct{userID, languages, notificationFrequency, projectType, contributorCount, paidJob, relocation, qualification}
+
 			client := config.Mongoconnect()
 			defer client.Disconnect(context.TODO())
 	
@@ -53,12 +60,10 @@ func ContributorPreferences(w http.ResponseWriter, r *http.Request){
 			if err != nil {
 				fmt.Println(err)
 			}
+			
+			
+
+			http.Redirect(w, r, "/contributor/thankyou", http.StatusSeeOther)
 		}
-
-		
-
-		tmpl := template.Must(template.ParseFiles("../templates/app/contributors/preferencessave.html"))
-		tmpl.Execute(w, nil) 
-
 	}
 }

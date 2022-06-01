@@ -43,13 +43,15 @@ func GithubLoggedinHandler(w http.ResponseWriter, r *http.Request, githubData st
 	
 	// Return the prettified JSON as a string
 	// fmt.Fprintf(w, string(prettyJSON.Bytes()))
-	status, msg, _ := users.SaveUser(email, name, location, imageLink, repoUrl, common.CONST_GITHUB)
+	status, msg, _ := users.SaveUser(w, r, email, name, location, imageLink, repoUrl, common.CONST_GITHUB)
+	
 	if(!status){
 		fmt.Println(msg)
-	}
+	} 
 }
 
 func GithubContributorLoginHandler(w http.ResponseWriter, r *http.Request) {
+
 	githubClientID := GetGithubClientID()
 	githubContributorRedirectUri := GetGithubContributorRedirectURI()
 
@@ -70,6 +72,12 @@ func GithubProjectLoginHandler(w http.ResponseWriter, r *http.Request) {
 func GithubCallbackHandler(w http.ResponseWriter, r *http.Request) {
 	code := r.URL.Query().Get("code")
 
+	// Set session cookie
+	ok, _ := users.GetSession(w, r)
+	if !ok {
+		users.SetSessionCookie(w,r,code)
+	}
+	
 	contributors.CallBack(w,r)
 	githubAccessToken := GetGithubAccessToken(code)
 
@@ -78,7 +86,7 @@ func GithubCallbackHandler(w http.ResponseWriter, r *http.Request) {
 	GithubLoggedinHandler(w, r, githubData)
 }
 
-func GetGithubData(accessToken string) string {
+func GetGithubData(accessToken string) (responseBody string) {
 	req, reqerr := http.NewRequest("GET", "https://api.github.com/user", nil)
 	if reqerr != nil {
 		log.Panic("API Request creation failed")
@@ -97,7 +105,7 @@ func GetGithubData(accessToken string) string {
 	return string(respbody)
 }
 
-func GetGithubAccessToken(code string) string {
+func GetGithubAccessToken(code string) (accessToken string) {
 
 	clientID := GetGithubClientID()
 	clientSecret := GetGithubClientSecret()
@@ -132,7 +140,7 @@ func GetGithubAccessToken(code string) string {
 	return ghresp.AccessToken
 }
 
-func GetGithubClientID() string {
+func GetGithubClientID() (githubClientID string) {
 
 	githubClientID, exists := os.LookupEnv("GITHUB_CLIENT_ID")
 	if !exists {
@@ -142,7 +150,7 @@ func GetGithubClientID() string {
 	return githubClientID
 }
 
-func GetGithubClientSecret() string {
+func GetGithubClientSecret() (githubClientSecret string) {
 
 	githubClientSecret, exists := os.LookupEnv("GITHUB_CLIENT_SECRET")
 	if !exists {
@@ -152,7 +160,7 @@ func GetGithubClientSecret() string {
 	return githubClientSecret
 }
 
-func GetGithubContributorRedirectURI() string {
+func GetGithubContributorRedirectURI() (githubContributorRedirectURI string) {
 
 	githubContributorRedirectURI, exists := os.LookupEnv("GITHUB_CONTRIBUTOR_REDIRECT_URI")
 	if !exists {
@@ -162,7 +170,7 @@ func GetGithubContributorRedirectURI() string {
 	return githubContributorRedirectURI
 }
 
-func GetGithubProjectRedirectURI() string {
+func GetGithubProjectRedirectURI() ( githubProjectRedirectURI string) {
 
 	githubProjectRedirectURI, exists := os.LookupEnv("GITHUB_PROJECT_REDIRECT_URI")
 	if !exists {

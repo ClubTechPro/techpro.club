@@ -3,10 +3,12 @@ package users
 import (
 	"config"
 	"context"
+	"net/http"
 	"sources/common"
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type UserStruct struct {
@@ -19,8 +21,8 @@ type UserStruct struct {
 	CreatedDate string `json:"createdDate"`
 }
 
-func SaveUser(email, name, location, imageLink, repoUrl, source string )(status bool, msg string, objectID interface{}){
-
+func SaveUser(w http.ResponseWriter, r *http.Request, email, name, location, imageLink, repoUrl, source string )(status bool, msg string, objectID interface{}){
+	
 	client := config.Mongoconnect()
 	defer client.Disconnect(context.TODO())
 
@@ -47,8 +49,14 @@ func SaveUser(email, name, location, imageLink, repoUrl, source string )(status 
 				status = true
 				msg = ""
 				objectID = insert.InsertedID
+					
+				// Code is the session
+				session := r.URL.Query().Get("code")
+				SaveUserSession(objectID.(primitive.ObjectID).Hex(), session)
 			}
 		}
+
+		
 	}
 	
 	return status, msg, objectID
