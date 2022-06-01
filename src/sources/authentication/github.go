@@ -7,7 +7,6 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
-	"os"
 	"sources/common"
 	"sources/templates/contributors"
 	"sources/users"
@@ -52,8 +51,8 @@ func GithubLoggedinHandler(w http.ResponseWriter, r *http.Request, githubData st
 
 func GithubContributorLoginHandler(w http.ResponseWriter, r *http.Request) {
 
-	githubClientID := GetGithubClientID()
-	githubContributorRedirectUri := GetGithubContributorRedirectURI()
+	githubClientID := common.GetGithubClientID()
+	githubContributorRedirectUri := common.GetGithubContributorRedirectURI()
 
 	redirectURL := fmt.Sprintf("https://github.com/login/oauth/authorize?client_id=%s&redirect_uri=%s", githubClientID, githubContributorRedirectUri)
 
@@ -61,8 +60,8 @@ func GithubContributorLoginHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func GithubProjectLoginHandler(w http.ResponseWriter, r *http.Request) {
-	githubClientID := GetGithubClientID()
-	githubProjectRedirectUri := GetGithubProjectRedirectURI()
+	githubClientID := common.GetGithubClientID()
+	githubProjectRedirectUri := common.GetGithubProjectRedirectURI()
 
 	redirectURL := fmt.Sprintf("https://github.com/login/oauth/authorize?client_id=%s&redirect_uri=%s", githubClientID, githubProjectRedirectUri)
 
@@ -107,8 +106,8 @@ func GetGithubData(accessToken string) (responseBody string) {
 
 func GetGithubAccessToken(code string) (accessToken string) {
 
-	clientID := GetGithubClientID()
-	clientSecret := GetGithubClientSecret()
+	clientID := common.GetGithubClientID()
+	clientSecret := common.GetGithubClientSecret()
 
 	requestBodyMap := map[string]string{"client_id": clientID, "client_secret": clientSecret, "code": code}
 	requestJSON, _ := json.Marshal(requestBodyMap)
@@ -138,44 +137,4 @@ func GetGithubAccessToken(code string) (accessToken string) {
 	json.Unmarshal(respbody, &ghresp)
 
 	return ghresp.AccessToken
-}
-
-func GetGithubClientID() (githubClientID string) {
-
-	githubClientID, exists := os.LookupEnv("GITHUB_CLIENT_ID")
-	if !exists {
-		log.Fatal("Github Client ID not defined in .env file")
-	}
-
-	return githubClientID
-}
-
-func GetGithubClientSecret() (githubClientSecret string) {
-
-	githubClientSecret, exists := os.LookupEnv("GITHUB_CLIENT_SECRET")
-	if !exists {
-		log.Fatal("Github Client ID not defined in .env file")
-	}
-
-	return githubClientSecret
-}
-
-func GetGithubContributorRedirectURI() (githubContributorRedirectURI string) {
-
-	githubContributorRedirectURI, exists := os.LookupEnv("GITHUB_CONTRIBUTOR_REDIRECT_URI")
-	if !exists {
-		log.Fatal("Github Contributor Redirect URI not defined in .env file")
-	}
-
-	return githubContributorRedirectURI
-}
-
-func GetGithubProjectRedirectURI() ( githubProjectRedirectURI string) {
-
-	githubProjectRedirectURI, exists := os.LookupEnv("GITHUB_PROJECT_REDIRECT_URI")
-	if !exists {
-		log.Fatal("Github Project Redirect URI not defined in .env file")
-	}
-
-	return githubProjectRedirectURI
 }
