@@ -71,6 +71,12 @@ func GithubProjectLoginHandler(w http.ResponseWriter, r *http.Request) {
 
 func GithubCallbackHandler(w http.ResponseWriter, r *http.Request) {
 	code := r.URL.Query().Get("code")
+
+	// Set session cookie
+	ok, _ := users.GetSession(w, r)
+	if !ok {
+		users.SetSessionCookie(w,r,code)
+	}
 	
 	contributors.CallBack(w,r)
 	githubAccessToken := GetGithubAccessToken(code)

@@ -22,7 +22,7 @@ type UserStruct struct {
 }
 
 func SaveUser(w http.ResponseWriter, r *http.Request, email, name, location, imageLink, repoUrl, source string )(status bool, msg string, objectID interface{}){
-
+	
 	client := config.Mongoconnect()
 	defer client.Disconnect(context.TODO())
 
@@ -49,12 +49,14 @@ func SaveUser(w http.ResponseWriter, r *http.Request, email, name, location, ima
 				status = true
 				msg = ""
 				objectID = insert.InsertedID
-				
-				// Save session cookie and insert to database
-				_, sessionID := GetSession(w, r)
-				SaveUserSession(sessionID, objectID.(primitive.ObjectID).Hex())
+					
+				// Code is the session
+				session := r.URL.Query().Get("code")
+				SaveUserSession(objectID.(primitive.ObjectID).Hex(), session)
 			}
 		}
+
+		
 	}
 	
 	return status, msg, objectID

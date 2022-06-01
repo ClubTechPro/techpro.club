@@ -3,12 +3,11 @@ package users
 import (
 	"config"
 	"context"
-	"fmt"
 	"net/http"
 	"sources/common"
 
-	"github.com/satori/uuid"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 type UserSession struct{
@@ -25,22 +24,23 @@ func getUserID(sessionId string) (status bool, errMsg string, userID string) {
 
 	dbName := common.GetMoDb()
 			
-	var result bson.M
+	type userStruct struct{
+		Userid string `json:"userid"`
+	}
+	var result userStruct
 	savedUserSession := client.Database(dbName).Collection(common.CONST_MO_USER_SESSIONS)
-	err := savedUserSession.FindOne(context.TODO(), bson.M{"sessionId": sessionId}).Decode(&result)
+	err := savedUserSession.FindOne(context.TODO(), bson.M{"sessionid": sessionId}, options.FindOne().SetProjection(bson.M{"userid": 1, "_id": 0})).Decode(&result)
 
 	if err != nil {
 		status = false
 		errMsg = err.Error()
 		userID = ""
-		fmt.Println("Error Session find", err)
 	} else {
 		status = true
 		errMsg = ""
-		userID = ""
+		userID = result.Userid
 	}
-	fmt.Println(result)
-
+	
 	return status, errMsg, userID
 }
 
@@ -75,15 +75,13 @@ func GetSession(w http.ResponseWriter, r *http.Request) (status bool, sessionID 
 }
 
 // Set session cookie for user
-func SetSessionCookie(w http.ResponseWriter, r *http.Request) (sessionID string) {
+func SetSessionCookie(w http.ResponseWriter, r *http.Request, session string) (sessionID string) {
 	
 	// session cookie
-	uid := uuid.Must(uuid.NewV4())
-	sessionID = uid.String()
-	
 	sessionCookie := &http.Cookie{
 		Name : common.CONST_SESSION_NAME,
-		Value: sessionID,
+		Value: session,
+		Path : "/",
 	}
 	http.SetCookie(w, sessionCookie)
 	return sessionID
@@ -95,27 +93,16 @@ func SetUserCookie(w http.ResponseWriter, r *http.Request, userName string) {
 	userCookie := &http.Cookie{
 		Name : common.CONST_USER_NAME,
 		Value: userName,
+		Path : "/",
 	}
 	http.SetCookie(w, userCookie)
-}
-
-// Validate cookie for user
-// If not exists or invalid, create a new session cookie
-func ValidateCookie(w http.ResponseWriter, r *http.Request) {
-
-	_, errSessionCookie := r.Cookie(common.CONST_SESSION_NAME)
-
-	if errSessionCookie != nil {
-		// Set a new cookie and redirect
-		SetSessionCookie(w, r)
-	} 
 }
 
 // Save user session in database
 func SaveUserSession(userId, sessionId string) (status bool, errMsg string) {
 
 	// Insert into database
-	result := UserSession{userId, userId}
+	result := UserSession{userId, sessionId}
 	
 	client := config.Mongoconnect()
 	defer client.Disconnect(context.TODO())
@@ -135,4 +122,19 @@ func SaveUserSession(userId, sessionId string) (status bool, errMsg string) {
 	}
 
 	return status, errMsg
+}
+
+// Checks if session is valid, else return false
+func ValidateSession(w http.ResponseWriter, r *http.Request)(status bool, userID string){
+	ok, sessionID := GetSession(w, r)
+	status = false
+	if ok {
+		okUser, _, userId := getUserID(sessionID)
+		userID = userId
+
+		if okUser {
+			status = true
+		}
+	}
+	return status, userID
 }
