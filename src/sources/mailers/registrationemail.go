@@ -16,23 +16,39 @@ import (
 const (
     // Replace sender@example.com with your "From" address. 
     // This address must be verified with Amazon SES.
-    Sender = "hello@techpro.club"
+    Sender = "Chilarai from Techpro.Club<hello@techpro.club>"
     
     // Replace recipient@example.com with a "To" address. If your account 
     // is still in the sandbox, this address must be verified.
-    Recipient = "hello@gmail.com"
+    Recipient = "hello@techpro.club"
 
     // Specify a configuration set. To use a configuration
     // set, comment the next line and line 92.
     //ConfigurationSet = "ConfigSet"
     
     // The subject line for the email.
-    Subject = "Amazon SES Test (AWS SDK for Go)"
+    Subject = "Welcome to Techpro.Club"
     
     // The HTML body for the email.
-    HtmlBody =  "<h1>Amazon SES Test Email (AWS SDK for Go)</h1><p>This email was sent with " +
-                "<a href='https://aws.amazon.com/ses/'>Amazon SES</a> using the " +
-                "<a href='https://aws.amazon.com/sdk-for-go/'>AWS SDK for Go</a>.</p>"
+    HtmlBody =  "<p>Hello</p>" +
+		"<p>I am Chilarai, co-founder of Techpro.club. Thank you for joining us. We are a community of opensource contributors, which helps you to discover wonderful open source projects and encourages you to participate in the holistic growth of the projects as well as your portfolio.</p>" +
+		
+		"<h3>Where to head next?</h3>" +
+		"<p>We are currently in Beta stage and onboarding more projects and contributors. But in the meanwhile, you can</p>" +
+		"<ul>" +
+		"<li>Fill up the Contributor preferences to get notified when you have matching projects</li>"+ 
+		"<li>If you have an opensource project and looking for contributors, head to <a href='https://techpro.club/projects'>https://techpro.club/projects</a> and post to our community</li>"+ 
+		"<li>Hit a star on our repository or fork it to contribute on <a href='https://github.com/ClubTechPro/techpro.club'>Github</a></li>"+ 
+		"<li>Follow us and give us a shout out on <a href='https://twitter.com/ClubTechpro'>Twitter @ClubTechpro</a></li>"+ 
+		"<li>Read our blogs <a href='https://blogs.techpro.club'>https://blogs.techpro.club</a>.</li>"+ 
+		"<li>Help our community grow by spreading the word with your friends and family.</li>"+ 
+		"<li>Lastly watch out for our emails for more details</li>"+ 
+		"</ul>" + 
+		"<br/><br/>Feel free to write back<br/><br/>" + 
+		"<p>Best</p>" +
+		"<p><b>Chilarai,</b><br/>Co founder, <a href='https://techpro.club'>Techpro.club</a><br/>" + 
+		"<a href='https://github.com/chilarai'>Github</a>, <a href='https://twitter.com/chilly5476'>Twitter</a>";
+
     
     //The email body for recipients with non-HTML email clients.
     TextBody = "This email was sent with Amazon SES using the AWS SDK for Go."
