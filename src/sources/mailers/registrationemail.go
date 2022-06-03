@@ -2,7 +2,6 @@ package mailers
 
 import (
 	"fmt"
-	"net/http"
 	"sources/common"
 
 	//go get -u github.com/aws/aws-sdk-go
@@ -13,24 +12,14 @@ import (
 	"github.com/aws/aws-sdk-go/service/ses"
 )
 
-const (
-    // Replace sender@example.com with your "From" address. 
-    // This address must be verified with Amazon SES.
-    Sender = "Chilarai from Techpro.Club<hello@techpro.club>"
-    
-    // Replace recipient@example.com with a "To" address. If your account 
-    // is still in the sandbox, this address must be verified.
-    Recipient = "hello@techpro.club"
+func RegistrationEmail(emailRecipient, name string) {
 
-    // Specify a configuration set. To use a configuration
-    // set, comment the next line and line 92.
-    //ConfigurationSet = "ConfigSet"
-    
-    // The subject line for the email.
-    Subject = "Welcome to Techpro.Club"
+    Sender := "Chilarai from Techpro.Club<hello@techpro.club>"    
+    Recipient := emailRecipient
+    Subject := "Welcome to Techpro.Club, " + name
     
     // The HTML body for the email.
-    HtmlBody =  "<p>Hello</p>" +
+    HtmlBody :=  "<p>Hello " + name + ",</p>" +
 		"<p>I am Chilarai, co-founder of Techpro.club. Thank you for joining us. We are a community of opensource contributors, which helps you to discover wonderful open source projects and encourages you to participate in the holistic growth of the projects as well as your portfolio.</p>" +
 		
 		"<h3>Where to head next?</h3>" +
@@ -51,20 +40,16 @@ const (
 
     
     //The email body for recipients with non-HTML email clients.
-    TextBody = "This email was sent with Amazon SES using the AWS SDK for Go."
+    TextBody := "Non html not supported for now"
     
     // The character encoding for the email.
-    CharSet = "UTF-8"
-)
-
-func RegistrationEmail(w http.ResponseWriter, r *http.Request) {
-    // Create a new session in the us-west-2 region.
-    // Replace us-west-2 with the AWS Region you're using for Amazon SES.
+    CharSet := "UTF-8"
 
 	sesRegion := common.GetSesRegion()
 	sesAccessID := common.GetSesAccessID()
 	sesSecretKey := common.GetSesSecretKey()
 
+	// Create a new session
     sess, err := session.NewSession(&aws.Config{
         Region:aws.String(sesRegion), 
 		Credentials:credentials.NewStaticCredentials(sesAccessID,sesSecretKey,""),},
@@ -108,7 +93,7 @@ func RegistrationEmail(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// Attempt to send the email.
-		result, err := svc.SendEmail(input)
+		_, err := svc.SendEmail(input)
 
 		// Display error messages if they occur.
 		if err != nil {
@@ -132,7 +117,5 @@ func RegistrationEmail(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		fmt.Println("Email Sent to address: " + Recipient)
-    	fmt.Println(result)
 	}
 }
