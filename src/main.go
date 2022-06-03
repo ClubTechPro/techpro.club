@@ -34,7 +34,7 @@ func main() {
 
 	// Templates/Contributors
 	http.HandleFunc("/projects/create", projects.ProjectCreate)
-	// http.HandleFunc("/projects/list", projects.ProjectList)
+	http.HandleFunc("/projects/list", projects.ProjectList)
 
 
 	// Authentication
