@@ -6,6 +6,7 @@ import (
 	"sources/authentication"
 	"sources/templates"
 	"sources/templates/contributors"
+	"sources/templates/projects"
 
 	"github.com/joho/godotenv"
 )
@@ -31,7 +32,9 @@ func main() {
 	http.HandleFunc("/contributor/thankyou", contributors.PreferencesSaved)
 	
 
-	// Users
+	// Templates/Contributors
+	http.HandleFunc("/projects/create", projects.ProjectCreate)
+	// http.HandleFunc("/projects/list", projects.ProjectList)
 
 
 	// Authentication

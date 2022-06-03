@@ -5,6 +5,7 @@ import (
 	"context"
 	"net/http"
 	"sources/common"
+	"sources/mailers"
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -21,6 +22,7 @@ type UserStruct struct {
 	CreatedDate string `json:"createdDate"`
 }
 
+// Save a user to database and send a welcome email for first time users
 func SaveUser(w http.ResponseWriter, r *http.Request, email, name, location, imageLink, repoUrl, source string )(status bool, msg string, objectID interface{}){
 	
 	client := config.Mongoconnect()
@@ -53,6 +55,8 @@ func SaveUser(w http.ResponseWriter, r *http.Request, email, name, location, ima
 				// Code is the session
 				session := r.URL.Query().Get("code")
 				SaveUserSession(objectID.(primitive.ObjectID).Hex(), session)
+
+				mailers.RegistrationEmail(email, name)
 			}
 		}
 

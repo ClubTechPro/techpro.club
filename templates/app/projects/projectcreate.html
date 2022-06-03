@@ -53,8 +53,39 @@
         </div>
         <div id="centerContent">
             <div class="container">
-                <h3>Contributor Preferences</h3>
+                <h3>Post a project</h3>
                 <form method="post" content-type="x-www-form-urlencoded">
+                    <h5>Project Title <span class="text-danger">*</span></h5>
+                    <input
+                        type="text"
+                        name="projectName"
+                        class="form-control"
+                        placeholder="Name of your project"
+                        required
+                    />
+
+                    <h5>
+                        Project repository link
+                        <span class="text-danger">*</span>
+                    </h5>
+                    <input
+                        type="text"
+                        name="repoLink"
+                        class="form-control"
+                        placeholder="Project link to Github, Bitbucket, Gitlab, Azure, etc"
+                        required
+                    />
+
+                    <h5>
+                        Project description <span class="text-danger">*</span>
+                    </h5>
+                    <textarea
+                        name="projectName"
+                        class="form-control"
+                        placeholder="Describe the objective of your project so that the contributors can understand your idea clearly. Including frameworks, libraries will also help"
+                        required
+                    ></textarea>
+
                     <h5>Preferred programming language(s)</h5>
 
                     <div class="row border border-primary">
@@ -571,9 +602,65 @@
                             />
                             <label for="yaml">Yaml</label><br />
                         </div>
+
+                        <div class="col col-md-3 col-sm-6">
+                            <input
+                                type="text"
+                                id="otherLanguages"
+                                name="otherLanguages"
+                                class="form-control"
+                                placeholder="For others, enter comma separated values"
+                            />
+                        </div>
                     </div>
 
-                    <h5>Preferred project type</h5>
+                    <h5>Allied Service(s)</h5>
+
+                    <div class="row border border-primary">
+                        <div class="col col-md-3 col-sm-6">
+                            <input
+                                type="checkbox"
+                                id="devops"
+                                name="allied"
+                                value="devops"
+                            />
+                            <label for="devops">DevOps</label><br />
+                        </div>
+
+                        <div class="col col-md-3 col-sm-6">
+                            <input
+                                type="checkbox"
+                                id="documentation"
+                                name="allied"
+                                value="documentation"
+                            />
+                            <label for="documentation">Documentation</label
+                            ><br />
+                        </div>
+
+                        <div class="col col-md-3 col-sm-6">
+                            <input
+                                type="checkbox"
+                                id="sanitization"
+                                name="allied"
+                                value="sanitization"
+                            />
+                            <label for="sanitization">Code Sanitization</label
+                            ><br />
+                        </div>
+
+                        <div class="col col-md-3 col-sm-6">
+                            <input
+                                type="checkbox"
+                                id="testcases"
+                                name="allied"
+                                value="testcases"
+                            />
+                            <label for="testcases">Test Cases</label><br />
+                        </div>
+                    </div>
+
+                    <h5>Project type</h5>
 
                     <div class="row border border-primary">
                         <div class="col col-md-3 col-sm-6">
@@ -657,135 +744,104 @@
                         posting.</small
                     >
 
-                    <h5>Highest qualification</h5>
+                    <h5>Documentation Link</h5>
 
                     <input
-                        type="radio"
-                        id="qMasters"
-                        name="qualification"
-                        value="Masters Degree"
-                        class="form-check-input"
+                        type="text"
+                        class="form-control"
+                        name="documentation"
+                        placeholder="Link to documentation, if any"
                     />
-                    <label for="pQualification">Masters Degree</label><br />
+
+                    <h5>Is this a public project?</h5>
 
                     <input
                         type="radio"
-                        id="qGraduate"
-                        name="qualification"
-                        value="Graduate"
-                    />
-                    <label for="qGraduate">Graduate</label><br />
-
-                    <input
-                        type="radio"
-                        id="qHighSchool"
-                        name="qualification"
-                        value="High School"
-                    />
-                    <label for="qHighSchool">High School</label><br />
-
-                    <input
-                        type="radio"
-                        id="qOthers"
-                        name="qualification"
-                        value="Others"
-                    />
-                    <label for="qOthers">Others</label><br />
-
-                    <h5>Are you open for relocation?</h5>
-
-                    <input
-                        type="radio"
-                        id="relocationY"
-                        name="relocation"
+                        id="publicY"
+                        name="public"
                         value="true"
                         checked
                     />
-                    <label for="relocationY">Yes</label><br />
+                    <label for="publicY">Yes</label><br />
 
                     <input
                         type="radio"
-                        id="relocationN"
-                        name="relocation"
+                        id="publicN"
+                        name="public"
                         value="false"
                     />
-                    <label for="relocationN">No</label><br />
+                    <label for="publicN">No</label><br />
 
-                    <h5>
-                        Would you prefer to receive notification/email for a
-                        paid job from us?
-                    </h5>
+                    <h5>Is your project backed by any company?</h5>
 
                     <input
                         type="radio"
-                        id="paidJobY"
-                        name="paidJob"
+                        id="companyY"
+                        name="company"
+                        value="true"
+                    />
+                    <label for="companyY">Yes</label><br />
+
+                    <input
+                        type="radio"
+                        id="companyN"
+                        name="company"
+                        value="false"
+                        checked
+                    />
+                    <label for="companyN">No</label><br />
+
+                    <input
+                        type="text"
+                        id="companyName"
+                        name="companyName"
+                        placeholder="Company Name"
+                        class="form-control"
+                        disabled
+                    />
+
+                    <h5>Is your company/project funded?</h5>
+
+                    <input
+                        type="radio"
+                        id="fundedY"
+                        name="funded"
                         value="true"
                         checked
                     />
-                    <label for="paidJobY">Yes</label><br />
+                    <label for="fundedY">Yes</label><br />
 
                     <input
                         type="radio"
-                        id="paidJobN"
-                        name="paidJob"
+                        id="fundedN"
+                        name="funded"
                         value="false"
                     />
-                    <label for="paidJobN">No</label><br />
+                    <label for="fundedN">No</label><br />
 
-                    <h5>
-                        Preferred email frequency when matching projects found
-                    </h5>
-                    <input
-                        type="radio"
-                        id="eAny"
-                        name="emailFrequency"
-                        checked
-                        value="Any"
-                    />
-                    <label for="eAny">Anytime I have a match</label><br />
-
-                    <input
-                        type="radio"
-                        id="eWeekly"
-                        name="emailFrequency"
-                        value="Weekly"
-                    />
-                    <label for="eWeekly">Weekly</label><br />
-
-                    <input
-                        type="radio"
-                        id="eMonthly"
-                        name="emailFrequency"
-                        value="Monthly"
-                    />
-                    <label for="eMonthly">Monthly</label><br />
-
-                    <input
-                        type="radio"
-                        id="eNever"
-                        name="emailFrequency"
-                        value="Never"
-                    />
-                    <label for="eNever">Never</label><br />
+                    <h5>Note</h5>
+                    <ul>
+                        <li>All our communications will be in English only</li>
+                        <li>
+                            You understand that the quality control of your
+                            project completely rests upon you. We have no say
+                            over the recruitment of a contributor
+                        </li>
+                    </ul>
 
                     <input
                         type="submit"
                         id="preferencesBtn"
-                        value="Save Preferences"
+                        value="Save as draft"
+                        class="btn btn-warning"
+                    />
+                    <input
+                        type="submit"
+                        id="preferencesBtn"
+                        value="Save and publish"
                         class="btn btn-success"
                     />
                 </form>
-
-                <h5>Note</h5>
-                <ul>
-                    <li>All our communication will be in English only</li>
-                    <li>
-                        If opted "yes" for a paid job, there might be other
-                        Employer conditions before you can start contributing on
-                        the project
-                    </li>
-                </ul>
             </div>
         </div>
 
