@@ -31,7 +31,7 @@ func Preferences(w http.ResponseWriter, r *http.Request){
 	}
 
 	if r.Method == "GET"{
-		tmpl := template.Must(template.ParseFiles("../templates/app/contributors/preferences.html"))
+		tmpl := template.Must(template.ParseFiles("templates/app/contributors/preferences.html"))
 		tmpl.Execute(w, nil) 
 	} else {
 	
