@@ -1,10 +1,10 @@
 package users
 
 import (
-	"config"
 	"context"
 	"net/http"
-	"sources/common"
+
+	"techpro.club/sources/common"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -19,7 +19,7 @@ type UserSession struct{
 func getUserID(sessionId string) (status bool, errMsg string, userID string) {
 
 	// Fetch userId from database
-	client := config.Mongoconnect()
+	client := common.Mongoconnect()
 	defer client.Disconnect(context.TODO())
 
 	dbName := common.GetMoDb()
@@ -104,7 +104,7 @@ func SaveUserSession(userId, sessionId string) (status bool, errMsg string) {
 	// Insert into database
 	result := UserSession{userId, sessionId}
 	
-	client := config.Mongoconnect()
+	client := common.Mongoconnect()
 	defer client.Disconnect(context.TODO())
 
 	dbName := common.GetMoDb()

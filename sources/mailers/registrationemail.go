@@ -2,7 +2,8 @@ package mailers
 
 import (
 	"fmt"
-	"sources/common"
+
+	"techpro.club/sources/common"
 
 	//go get -u github.com/aws/aws-sdk-go
 	"github.com/aws/aws-sdk-go/aws"
