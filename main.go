@@ -3,10 +3,11 @@ package main
 import (
 	"log"
 	"net/http"
-	"sources/authentication"
-	"sources/templates"
-	"sources/templates/contributors"
-	"sources/templates/projects"
+
+	"techpro.club/sources/authentication"
+	"techpro.club/sources/templates"
+	"techpro.club/sources/templates/contributors"
+	"techpro.club/sources/templates/projects"
 
 	"github.com/joho/godotenv"
 )
@@ -20,7 +21,7 @@ func init() {
 }
 
 func main() {
-    fs := http.FileServer(http.Dir("../assets"))
+    fs := http.FileServer(http.Dir("assets"))
 	http.Handle("/assets/", http.StripPrefix("/assets", fs))
 
 	// Templates
@@ -34,7 +35,7 @@ func main() {
 
 	// Templates/Contributors
 	http.HandleFunc("/projects/create", projects.ProjectCreate)
-	// http.HandleFunc("/projects/list", projects.ProjectList)
+	http.HandleFunc("/projects/list", projects.ProjectList)
 
 
 	// Authentication

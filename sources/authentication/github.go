@@ -7,9 +7,10 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
-	"sources/common"
-	"sources/templates/contributors"
-	"sources/users"
+
+	"techpro.club/sources/common"
+	"techpro.club/sources/templates/contributors"
+	"techpro.club/sources/users"
 )
 
 

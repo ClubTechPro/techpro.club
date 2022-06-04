@@ -1,14 +1,14 @@
 package contributors
 
 import (
-	"config"
 	"context"
 	"fmt"
 	"html/template"
 	"log"
 	"net/http"
-	"sources/common"
-	"sources/users"
+
+	"techpro.club/sources/common"
+	"techpro.club/sources/users"
 )
 
 
@@ -49,7 +49,7 @@ func Preferences(w http.ResponseWriter, r *http.Request){
 
 			result := ContributorPreferencesStruct{userID, languages, notificationFrequency, projectType, contributorCount, paidJob, relocation, qualification}
 
-			client := config.Mongoconnect()
+			client := common.Mongoconnect()
 			defer client.Disconnect(context.TODO())
 	
 			dbName := common.GetMoDb()
