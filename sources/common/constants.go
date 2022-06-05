@@ -1,6 +1,9 @@
 package common
 
 const(
+	CONST_APP_PORT = ":8080"
+
+	
 	CONST_GITHUB string = "github"
 
 	// Session

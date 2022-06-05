@@ -137,3 +137,14 @@ func GetSesSecretKey() ( sesSecretKey string) {
 
 	return sesSecretKey
 }
+
+// Get AWS SES SecretKey from environment variable
+func GetSesSender() ( sesSender string) {
+
+	sesSender, exists := os.LookupEnv("SES_SENDER")
+	if !exists {
+		log.Fatal("AWS SES Sender  not defined in .env file")
+	}
+
+	return sesSender
+}

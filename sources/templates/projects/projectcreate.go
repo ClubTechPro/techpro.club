@@ -80,7 +80,7 @@ func ProjectCreate(w http.ResponseWriter, r *http.Request){
 
 
 func saveProject(w http.ResponseWriter, r *http.Request, newProjectStruct NewProjectStruct){
-	client := common.Mongoconnect()
+	client, _ := common.Mongoconnect()
 	defer client.Disconnect(context.TODO())
 
 	dbName := common.GetMoDb()

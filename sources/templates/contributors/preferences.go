@@ -49,7 +49,7 @@ func Preferences(w http.ResponseWriter, r *http.Request){
 
 			result := ContributorPreferencesStruct{userID, languages, notificationFrequency, projectType, contributorCount, paidJob, relocation, qualification}
 
-			client := common.Mongoconnect()
+			client, _ := common.Mongoconnect()
 			defer client.Disconnect(context.TODO())
 	
 			dbName := common.GetMoDb()

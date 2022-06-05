@@ -9,9 +9,10 @@ import (
 )
 
 // Mongoconnect function
-func Mongoconnect() (client *mongo.Client) {
+func Mongoconnect() (client *mongo.Client, status bool) {
 	Mohost := GetMoHost()
 	Moport := GetMoPort()
+	status = true
 	
 	// Set client options
 	clientOptions := options.Client().ApplyURI(Mohost + Moport)
@@ -20,9 +21,10 @@ func Mongoconnect() (client *mongo.Client) {
 	client, err := mongo.Connect(context.TODO(), clientOptions)
 
 	if err != nil {
+		status = false
 		log.Fatal(err.Error())
 	}
 
-	return client
+	return client, status
 
 }

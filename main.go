@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"techpro.club/sources/authentication"
+	"techpro.club/sources/common"
 	"techpro.club/sources/templates"
 	"techpro.club/sources/templates/contributors"
 	"techpro.club/sources/templates/projects"
@@ -51,8 +52,6 @@ func main() {
 	http.HandleFunc("/github/loggedin", func(w http.ResponseWriter, r *http.Request) {
 		authentication.GithubLoggedinHandler(w, r, "")
 	})
-	
 
-    http.ListenAndServe(":8080", nil)
+    http.ListenAndServe(common.CONST_APP_PORT, nil)
 }
-

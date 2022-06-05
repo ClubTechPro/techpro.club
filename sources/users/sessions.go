@@ -19,7 +19,7 @@ type UserSession struct{
 func getUserID(sessionId string) (status bool, errMsg string, userID string) {
 
 	// Fetch userId from database
-	client := common.Mongoconnect()
+	client, _ := common.Mongoconnect()
 	defer client.Disconnect(context.TODO())
 
 	dbName := common.GetMoDb()
@@ -104,7 +104,7 @@ func SaveUserSession(userId, sessionId string) (status bool, errMsg string) {
 	// Insert into database
 	result := UserSession{userId, sessionId}
 	
-	client := common.Mongoconnect()
+	client, _ := common.Mongoconnect()
 	defer client.Disconnect(context.TODO())
 
 	dbName := common.GetMoDb()
