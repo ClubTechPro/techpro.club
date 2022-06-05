@@ -7,7 +7,7 @@ import (
 func TestGetGithubClientID(t *testing.T){
 	got := GetGithubClientID()
 
-    if got != "" {
+    if got == "" {
 		t.Errorf("Github client missing")
 
 	} 
@@ -16,7 +16,7 @@ func TestGetGithubClientID(t *testing.T){
 func TestGetGithubClientSecret(t *testing.T){
 	got := GetGithubClientSecret()
 
-    if got != "" {
+    if got == "" {
 		t.Errorf("Github secret missing")
 
 	} 
@@ -25,7 +25,7 @@ func TestGetGithubClientSecret(t *testing.T){
 func TestGetGithubContributorRedirectURI(t *testing.T){
 	got := GetGithubContributorRedirectURI()
 
-    if got != "" {
+    if got == "" {
 		t.Errorf("Contributor Redirect URI missing")
 
 	} 
@@ -34,7 +34,7 @@ func TestGetGithubContributorRedirectURI(t *testing.T){
 func TestGetGithubProjectRedirectURI(t *testing.T){
 	got := GetGithubProjectRedirectURI()
 
-    if got != "" {
+    if got == "" {
 		t.Errorf("Project Redirect URI missing")
 
 	} 
@@ -45,7 +45,7 @@ func TestGetSesRegion(t *testing.T) {
 
 	got := GetSesRegion()
 
-    if got != "" {
+    if got == "" {
 		t.Errorf("SES region missing")
 
 	} 
@@ -56,7 +56,7 @@ func TestGetSesAccessID(t *testing.T)  {
 
 	got := GetSesAccessID()
 
-    if got != "" {
+    if got == "" {
 		t.Errorf("SES Access ID missing")
 
 	} 
@@ -67,7 +67,7 @@ func TestGetSesSecretKey(t *testing.T){
 
 	got := GetSesSecretKey()
 
-    if got != "" {
+    if got == "" {
 		t.Errorf("SES secret key missing")
 
 	} 
@@ -78,7 +78,7 @@ func TestGetSesSender(t *testing.T){
 
 	got := GetSesSender()
 
-    if got != "" {
+    if got == "" {
 		t.Errorf("SES sender missing")
 
 	} 
