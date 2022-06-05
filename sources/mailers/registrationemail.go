@@ -13,9 +13,9 @@ import (
 	"github.com/aws/aws-sdk-go/service/ses"
 )
 
-func RegistrationEmail(emailRecipient, name string) {
+func RegistrationEmail(emailRecipient, name string) (status bool) {
 
-    Sender := "Chilarai from Techpro.Club<hello@techpro.club>"    
+    Sender := common.GetSesSender()   
     Recipient := emailRecipient
     Subject := "Welcome to Techpro.Club, " + name
     
@@ -59,6 +59,7 @@ func RegistrationEmail(emailRecipient, name string) {
 
 	if err != nil {
 		fmt.Println(err.Error())
+		status = false
 	} else {
 		// Create an SES session.
 		svc := ses.New(sess)
@@ -98,6 +99,7 @@ func RegistrationEmail(emailRecipient, name string) {
 
 		// Display error messages if they occur.
 		if err != nil {
+			status = false
 			if aerr, ok := err.(awserr.Error); ok {
 				switch aerr.Code() {
 				case ses.ErrCodeMessageRejected:
@@ -115,8 +117,11 @@ func RegistrationEmail(emailRecipient, name string) {
 				fmt.Println(err.Error())
 			}
 
-			return
+		} else {
+			status = true
 		}
 
 	}
+
+	return status
 }

@@ -8,6 +8,7 @@ import (
 	"net/http"
 
 	"techpro.club/sources/common"
+	"techpro.club/sources/templates"
 	"techpro.club/sources/users"
 )
 
@@ -25,13 +26,18 @@ type ContributorPreferencesStruct struct{
 
 func Preferences(w http.ResponseWriter, r *http.Request){
 	
+	if r.URL.Path != "/contributor/preferences" {
+        templates.ErrorHandler(w, r, http.StatusNotFound)
+        return
+    }
+
 	sessionOk, userID := users.ValidateSession(w, r)
 	if(!sessionOk){
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 	}
 
 	if r.Method == "GET"{
-		tmpl := template.Must(template.ParseFiles("../templates/app/contributors/preferences.html"))
+		tmpl := template.Must(template.ParseFiles("templates/app/contributors/preferences.html"))
 		tmpl.Execute(w, nil) 
 	} else {
 	
@@ -49,7 +55,7 @@ func Preferences(w http.ResponseWriter, r *http.Request){
 
 			result := ContributorPreferencesStruct{userID, languages, notificationFrequency, projectType, contributorCount, paidJob, relocation, qualification}
 
-			client := common.Mongoconnect()
+			client, _ := common.Mongoconnect()
 			defer client.Disconnect(context.TODO())
 	
 			dbName := common.GetMoDb()
