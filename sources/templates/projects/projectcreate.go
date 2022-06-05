@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"techpro.club/sources/common"
+	"techpro.club/sources/templates"
 	"techpro.club/sources/users"
 )
 
@@ -34,6 +35,11 @@ type NewProjectStruct struct{
 
 func ProjectCreate(w http.ResponseWriter, r *http.Request){
 
+	if r.URL.Path != "/projects/create" {
+        templates.ErrorHandler(w, r, http.StatusNotFound)
+        return
+    }
+	
 	sessionOk, userID := users.ValidateSession(w, r)
 	if(!sessionOk){
 		fmt.Println(sessionOk, userID)

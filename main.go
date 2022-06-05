@@ -27,7 +27,7 @@ func main() {
 
 	// Templates
 	http.HandleFunc("/", templates.IndexHandler)
-	http.HandleFunc("/project", templates.ProjectIndexHandler)
+	http.HandleFunc("/projects", templates.ProjectIndexHandler)
 
 	// Templates/Contributors
 	http.HandleFunc("/contributor/preferences", contributors.Preferences)

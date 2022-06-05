@@ -8,6 +8,7 @@ import (
 	"net/http"
 
 	"techpro.club/sources/common"
+	"techpro.club/sources/templates"
 	"techpro.club/sources/users"
 )
 
@@ -25,6 +26,11 @@ type ContributorPreferencesStruct struct{
 
 func Preferences(w http.ResponseWriter, r *http.Request){
 	
+	if r.URL.Path != "/contributor/preferences" {
+        templates.ErrorHandler(w, r, http.StatusNotFound)
+        return
+    }
+
 	sessionOk, userID := users.ValidateSession(w, r)
 	if(!sessionOk){
 		http.Redirect(w, r, "/", http.StatusSeeOther)

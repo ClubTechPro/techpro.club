@@ -20,7 +20,7 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 
 // Handles landing page of Projects
 func ProjectIndexHandler(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path != "/project" {
+	if r.URL.Path != "/projects" {
         ErrorHandler(w, r, http.StatusNotFound)
         return
     }
