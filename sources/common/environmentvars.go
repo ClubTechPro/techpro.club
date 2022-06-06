@@ -1,6 +1,7 @@
 package common
 
 import (
+	"fmt"
 	"log"
 	"os"
 )
@@ -63,7 +64,7 @@ func GetMoPass() (moPass string) {
 // Get Github client id from environment variable
 func GetGithubClientID() (githubClientID string) {
 
-	githubClientID, exists := os.LookupEnv("GITHUB_CLIENT_ID")
+	githubClientID, exists := os.LookupEnv("GB_CLIENT_ID")
 	if !exists {
 		log.Fatal("Github Client ID not defined in .env file")
 	}
@@ -74,7 +75,7 @@ func GetGithubClientID() (githubClientID string) {
 // Get Github client secret from environment variable
 func GetGithubClientSecret() (githubClientSecret string) {
 
-	githubClientSecret, exists := os.LookupEnv("GITHUB_CLIENT_SECRET")
+	githubClientSecret, exists := os.LookupEnv("GB_CLIENT_SECRET")
 	if !exists {
 		log.Fatal("Github Client ID not defined in .env file")
 	}
@@ -85,7 +86,7 @@ func GetGithubClientSecret() (githubClientSecret string) {
 // Get Github contributor redirect uri from environment variable
 func GetGithubContributorRedirectURI() (githubContributorRedirectURI string) {
 
-	githubContributorRedirectURI, exists := os.LookupEnv("GITHUB_CONTRIBUTOR_REDIRECT_URI")
+	githubContributorRedirectURI, exists := os.LookupEnv("GB_CONTRIBUTOR_REDIRECT_URI")
 	if !exists {
 		log.Fatal("Github Contributor Redirect URI not defined in .env file")
 	}
@@ -96,7 +97,7 @@ func GetGithubContributorRedirectURI() (githubContributorRedirectURI string) {
 // Get Github project redirect uri from environment variable
 func GetGithubProjectRedirectURI() ( githubProjectRedirectURI string) {
 
-	githubProjectRedirectURI, exists := os.LookupEnv("GITHUB_PROJECT_REDIRECT_URI")
+	githubProjectRedirectURI, exists := os.LookupEnv("GB_PROJECT_REDIRECT_URI")
 	if !exists {
 		log.Fatal("Github Project Redirect URI not defined in .env file")
 	}
@@ -141,7 +142,8 @@ func GetSesSecretKey() ( sesSecretKey string) {
 // Get AWS SES SecretKey from environment variable
 func GetSesSender() ( sesSender string) {
 
-	sesSender, exists := os.LookupEnv("SES_SENDER")
+	sesSender, exists := os.LookupEnv("SES_SENDER1")
+	fmt.Println(sesSender, exists, "SESSS")
 	if !exists {
 		log.Fatal("AWS SES Sender  not defined in .env file")
 	}
