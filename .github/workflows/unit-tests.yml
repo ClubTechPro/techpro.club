@@ -1,8 +1,6 @@
 name: Unit Tests
 
 on:
-    push:
-        branches: ["master"]
     pull_request:
         branches: ["master"]
 
@@ -15,6 +13,11 @@ env:
     SES_ACCESS_SECRET: ${{secrets.SES_ACCESS_SECRET}}
     SES_REGION: ${{secrets.SES_REGION}}
     SES_SENDER: ${{secrets.SES_SENDER}}
+    MO_DATABASE: ${{secrets.MO_DATABASE}}
+    MO_PORT: ${{secrets.MO_PORT}}
+    MO_HOST: ${{secrets.MO_HOST}}
+    MO_USER: ${{secrets.MO_USER}}
+    MO_PASS: ${{secrets.MO_PASS}}
 
 jobs:
     build:
@@ -26,6 +29,9 @@ jobs:
               uses: actions/setup-go@v3
               with:
                   go-version: 1.18
+
+            - name: Setup mongodb
+              uses: supercharge/mongodb-github-action@1.7.0
 
             - name: Build
               run: go build -v ./...
