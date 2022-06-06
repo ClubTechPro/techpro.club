@@ -14,6 +14,7 @@ env:
     SES_ACCESS_ID: ${{secrets.SES_ACCESS_ID}}
     SES_ACCESS_SECRET: ${{secrets.SES_ACCESS_SECRET}}
     SES_REGION: ${{secrets.SES_REGION}}
+    SES_SENDER: ${{secrets.SES_SENDER}}
 
 jobs:
     build:
