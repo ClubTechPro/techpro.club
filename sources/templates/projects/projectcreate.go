@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
+	"strings"
 	"time"
 
 	"techpro.club/sources/common"
@@ -42,7 +43,6 @@ func ProjectCreate(w http.ResponseWriter, r *http.Request){
 	
 	sessionOk, userID := users.ValidateSession(w, r)
 	if(!sessionOk){
-		fmt.Println(sessionOk, userID)
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 	}
 	
@@ -58,7 +58,7 @@ func ProjectCreate(w http.ResponseWriter, r *http.Request){
 			repoLink := r.Form.Get("repoLink")
 			projectDescription := r.Form.Get("projectDescription")
 			language := r.Form["language"]
-			otherLanguages := r.Form["otherLanguages"]
+			otherLanguages := r.Form.Get("otherLanguages")
 			allied := r.Form["allied"]
 			projectType :=  r.Form["pType"]
 			contributorCount := r.Form.Get("contributorCount")
@@ -69,14 +69,17 @@ func ProjectCreate(w http.ResponseWriter, r *http.Request){
 			funded := r.Form.Get("funded")
 			submit := r.Form.Get("submit")
 
-			time := time.Now()
+			otherLanguagesSplit := strings.Split(otherLanguages, ",")
+
+			timeNow := time.Now()
+			dt := timeNow.Format(time.UnixDate)
 			var result NewProjectStruct
 
 			if submit == "Save as draft" {
-				result = NewProjectStruct{userID, projectName, repoLink, projectDescription, language, otherLanguages, allied, projectType, contributorCount, documentation, public, company, companyName ,funded, time.String(), "", "", false}
+				result = NewProjectStruct{userID, projectName, projectDescription, repoLink, language, otherLanguagesSplit, allied, projectType, contributorCount, documentation, public, company, companyName ,funded, dt, "", "", false}
 				saveProject(w, r, result)
 			} else {
-				result = NewProjectStruct{userID, projectName, repoLink, projectDescription, language, otherLanguages, allied, projectType, contributorCount, documentation, public, company, companyName ,funded, time.String(), time.String(), "", true}
+				result = NewProjectStruct{userID, projectName, projectDescription, repoLink, language, otherLanguagesSplit, allied, projectType, contributorCount, documentation, public, company, companyName ,funded, dt, dt, "", true}
 				saveProject(w, r, result)
 			}	
 		}
