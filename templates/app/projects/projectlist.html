@@ -69,7 +69,7 @@
                         </h4>
                         <small class="text-muted">
                             {{if (.IsActive)}} Active {{else}} InActive {{end}},
-                            {{.CreatedDate}}
+                            {{.CreatedDate.Format "2006-"}}
 
                             <a href="{{.RepoLink}}" target="_blank"
                                 ><span class="ti-link"> </span>{{.RepoLink}}</a

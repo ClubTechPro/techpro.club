@@ -73,7 +73,6 @@ func ProjectList(w http.ResponseWriter, r *http.Request){
 	}
 	
 
-	fmt.Println(results)
 	tmpl := template.Must(template.ParseFiles("templates/app/projects/projectlist.html"))
 	tmpl.Execute(w, results) 
 }

@@ -71,14 +71,15 @@ func ProjectCreate(w http.ResponseWriter, r *http.Request){
 
 			otherLanguagesSplit := strings.Split(otherLanguages, ",")
 
-			time := time.Now()
+			timeNow := time.Now()
+			dt := timeNow.Format(time.UnixDate)
 			var result NewProjectStruct
 
 			if submit == "Save as draft" {
-				result = NewProjectStruct{userID, projectName, projectDescription, repoLink, language, otherLanguagesSplit, allied, projectType, contributorCount, documentation, public, company, companyName ,funded, time.String(), "", "", false}
+				result = NewProjectStruct{userID, projectName, projectDescription, repoLink, language, otherLanguagesSplit, allied, projectType, contributorCount, documentation, public, company, companyName ,funded, dt, "", "", false}
 				saveProject(w, r, result)
 			} else {
-				result = NewProjectStruct{userID, projectName, projectDescription, repoLink, language, otherLanguagesSplit, allied, projectType, contributorCount, documentation, public, company, companyName ,funded, time.String(), time.String(), "", true}
+				result = NewProjectStruct{userID, projectName, projectDescription, repoLink, language, otherLanguagesSplit, allied, projectType, contributorCount, documentation, public, company, companyName ,funded, dt, dt, "", true}
 				saveProject(w, r, result)
 			}	
 		}
