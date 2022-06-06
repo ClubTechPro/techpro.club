@@ -53,5 +53,6 @@ func main() {
 		authentication.GithubLoggedinHandler(w, r, "")
 	})
 
+	// Start the web server
     http.ListenAndServe(common.CONST_APP_PORT, nil)
 }
