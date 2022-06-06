@@ -779,6 +779,7 @@
                         id="companyY"
                         name="company"
                         value="true"
+                        onclick="showCompanyName(true)"
                     />
                     <label for="companyY">Yes</label><br />
 
@@ -787,6 +788,7 @@
                         id="companyN"
                         name="company"
                         value="false"
+                        onclick="showCompanyName(false)"
                         checked
                     />
                     <label for="companyN">No</label><br />
@@ -872,5 +874,15 @@
         <script src="../assets/home/js/jquery.min.js"></script>
         <!-- Include all compiled plugins (below), or include individual files as needed -->
         <script src="../assets/home/js/bootstrap.min.js"></script>
+
+        <script>
+            function showCompanyName(status) {
+                if (status) {
+                    $("#companyName").attr("disabled", false);
+                } else {
+                    $("#companyName").attr("disabled", true);
+                }
+            }
+        </script>
     </body>
 </html>

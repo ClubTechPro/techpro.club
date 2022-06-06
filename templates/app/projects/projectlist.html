@@ -56,52 +56,45 @@
                 <h3>Your project listings</h3>
                 <br />
                 <hr />
+                {{range .}}
                 <div class="row">
                     <div class="col col-md-12 col-sm-6">
                         <h4>
-                            Hello project <small><a href="">Edit</a></small>
+                            {{.ProjectName}}
+                            <small
+                                ><a href="/projects/edit/{{.Id.Hex}}"
+                                    >Edit</a
+                                ></small
+                            >
                         </h4>
                         <small class="text-muted">
-                            Active, 20th March 2022
+                            {{if (.IsActive)}} Active {{else}} InActive {{end}},
+                            {{.CreatedDate}}
 
-                            <a href="#" target="_blank"
-                                ><span class="ti-link"> </span
-                                >http://google.com</a
+                            <a href="{{.RepoLink}}" target="_blank"
+                                ><span class="ti-link"> </span>{{.RepoLink}}</a
                             ></small
                         >
+                        <p>{{.ProjectDescription}}</p>
                         <p>
-                            Description of the project appears here with the
-                            info on the project's objective and list of
-                            frameworks and programming languages used. Limited
-                            to some characters
+                            {{range .Languages}}<span
+                                class="badge badge-warning"
+                                >{{.}}</span
+                            >
+                            {{end}} {{range .Allied}}<span
+                                class="badge badge-warning"
+                                >{{.}}</span
+                            >
+                            {{end}} {{range .OtherLanguages}}<span
+                                class="badge badge-warning"
+                                >{{.}}</span
+                            >
+                            {{end}}
                         </p>
-                        <p><span class="badge badge-warning">New</span></p>
                     </div>
                 </div>
                 <hr />
-                <div class="row">
-                    <div class="col col-md-12 col-sm-6">
-                        <h4>
-                            Hello project <small><a href="">Edit</a></small>
-                        </h4>
-                        <small class="text-muted">
-                            Active, 20th March 2022
-
-                            <a href="#" target="_blank"
-                                ><span class="ti-link"> </span
-                                >http://google.com</a
-                            ></small
-                        >
-                        <p>
-                            Description of the project appears here with the
-                            info on the project's objective and list of
-                            frameworks and programming languages used. Limited
-                            to some characters
-                        </p>
-                        <p><span class="badge badge-warning">New</span></p>
-                    </div>
-                </div>
-                <hr />
+                {{end}}
             </div>
         </div>
 
