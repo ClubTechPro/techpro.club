@@ -1,7 +1,6 @@
 package common
 
 import (
-	"fmt"
 	"log"
 	"os"
 )
@@ -142,8 +141,7 @@ func GetSesSecretKey() ( sesSecretKey string) {
 // Get AWS SES SecretKey from environment variable
 func GetSesSender() ( sesSender string) {
 
-	sesSender, exists := os.LookupEnv("SES_SENDER1")
-	fmt.Println(sesSender, exists, "SESSS")
+	sesSender, exists := os.LookupEnv("SES_SENDER")
 	if !exists {
 		log.Fatal("AWS SES Sender  not defined in .env file")
 	}
