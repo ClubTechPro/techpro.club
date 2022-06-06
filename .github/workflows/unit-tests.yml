@@ -1,25 +1,33 @@
 name: Unit Tests
 
 on:
-  push:
-    branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
+    push:
+        branches: ["master"]
+    pull_request:
+        branches: ["master"]
+
+env:
+    GB_CLIENT_ID: ${{secrets.GB_CLIENT_ID}}
+    GB_CLIENT_SECRET: ${{secrets.GB_CLIENT_SECRET}}
+    GB_CONTRIBUTOR_REDIRECT_URI: ${{secrets.GB_CONTRIBUTOR_REDIRECT_URI}}
+    GB_PROJECT_REDIRECT_URI: ${{secrets.GB_PROJECT_REDIRECT_URI}}
+    SES_ACCESS_ID: ${{secrets.SES_ACCESS_ID}}
+    SES_ACCESS_SECRET: ${{secrets.SES_ACCESS_SECRET}}
+    SES_REGION: ${{secrets.SES_REGION}}
 
 jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v3
 
-  build:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v3
+            - name: Set up Go
+              uses: actions/setup-go@v3
+              with:
+                  go-version: 1.18
 
-    - name: Set up Go
-      uses: actions/setup-go@v3
-      with:
-        go-version: 1.18
+            - name: Build
+              run: go build -v ./...
 
-    - name: Build
-      run: go build -v ./...
-
-    - name: Check Environment Variables
-      run: env
+            - name: Test
+              run: go test -v ./...
