@@ -30,6 +30,7 @@ func main() {
 	http.HandleFunc("/projects", templates.ProjectIndexHandler)
 
 	// Templates/Contributors
+	http.HandleFunc("/contributor/feeds", contributors.Feeds)
 	http.HandleFunc("/contributor/preferences", contributors.Preferences)
 	http.HandleFunc("/contributor/thankyou", contributors.PreferencesSaved)
 	
