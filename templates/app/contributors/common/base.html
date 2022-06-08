@@ -1,0 +1,108 @@
+{{define "contributorbase"}}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Support the open source community" />
+    <link rel="icon" type="image/x-icon" href="../../assets/logos/favicon.png" />
+    <meta name="author" content="Techpro Club" />
+    <title>Techpro Club</title>
+    <!-- Font Awesome Icons -->
+    <script
+      src="https://kit.fontawesome.com/6255250c8f.js"
+      crossorigin="anonymous"
+    ></script>
+    <!-- Bootstrap -->
+    <link href="../../assets/app/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../../assets/app/css/style.css" rel="stylesheet" />
+    <link href="../../assets/app/css/themify-icons.css" rel="stylesheet" />
+    <link
+      href="../../assets/home/css/dosis-font.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+  </head>
+  <body>
+    <div class="wrapper">
+      <!-- Header -->
+      <header class="header">
+        <div class="container-fluid">
+          <div class="header-content">
+            <a href="#" class="logo">
+              <img src="../../assets/logos/techpro-club-logo.png" alt="" />
+            </a>
+            <div class="header-menu">
+              <span
+                ><a href="#" target="_blank"
+                  ><button class="btn btn-yellow">Blogs</button></a
+                ></span
+              >
+              <span
+                ><a href="#" target="_blank"
+                  ><button class="btn btn-yellow">Github</button></a
+                ></span
+              >
+            </div>
+            <i id="menu-bar" class="fas fa-bars"></i>
+          </div>
+        </div>
+      </header>
+
+      <!-- Sidebar-Menu -->
+      <div class="sidebar-menu">
+        <i id="sidemenu-close" class="fas fa-times"></i>
+        <div class="header-menu">
+          <a href="#" target="_blank"
+            ><button class="btn btn-yellow">Blogs</button></a
+          >
+          <a href="#" target="_blank"
+            ><button class="btn btn-yellow">Github</button></a
+          >
+        </div>
+      </div>
+
+      <!-- Main -->
+      <main class="main">
+        <div class="container">{{template "content" .}}</main>
+        </div>
+    
+        <!-- Start: Footer -->
+        <footer class="footer">
+          <div class="container-fluid">
+            <div class="footer-content">
+              <div class="footer-item">
+                <a href="https://techpro.club"
+                  ><img
+                    src="../../assets/logos/techpro-club-mini-logo.png"
+                    alt="techpro club mini logo"
+                /></a>
+              </div>
+              <div class="footer-item">
+                <ul class="footer-menu">
+                  <li>
+                    <a href="mailto:hello@techpro.club">Email</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/ClubTechPro/techpro.club" target="_blank">Github</a>
+                  </li>
+                  <li>
+                    <a href="https://twitter.com/ClubTechpro" target="_blank">Twitter</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </footer>
+    
+        <!-- End: Footer -->
+    
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script src="../../assets/home/js/jquery.min.js"></script>
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="../../assets/home/js/bootstrap.min.js"></script>
+        <script src="../../assets/app/js/menu.js"></script>
+      </body>
+    </html>
+{{end}}

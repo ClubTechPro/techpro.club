@@ -1,6 +1,7 @@
 package projects
 
 import (
+	"fmt"
 	"html/template"
 	"net/http"
 
@@ -15,7 +16,11 @@ func ProjectSaved(w http.ResponseWriter, r *http.Request){
         return
     }
 	
-	tmpl := template.Must(template.ParseFiles("templates/app/projects/projectsaved.html"))
-	tmpl.Execute(w, nil) 
+	tmpl, err := template.New("").ParseFiles("templates/app/projects/projectsaved.html", "templates/app/projects/common/base.html")
+		if err != nil {
+			fmt.Println(err.Error())
+		}else {
+			tmpl.ExecuteTemplate(w, "projectbase", nil) 
+		}
 	
 }

@@ -5,10 +5,14 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="description" content="Support the open source community" />
-        <link rel="icon" type="image/x-icon" href="/assets/logos/favicon.png">
+        <link rel="icon" type="image/x-icon" href="assets/logos/favicon.png" />
         <meta name="author" content="Techpro Club" />
         <title>Techpro Club</title>
-
+        <!-- Font Awesome Icons -->
+        <script
+            src="https://kit.fontawesome.com/6255250c8f.js"
+            crossorigin="anonymous"
+        ></script>
         <!-- Bootstrap -->
         <link href="assets/home/css/bootstrap.min.css" rel="stylesheet" />
         <link href="assets/home/css/style.css" rel="stylesheet" />
@@ -57,40 +61,84 @@
                 </li>
             </ul>
         </nav>
-        <div class="container-fluid">
+
+        <div class="container-fluid home">
             <div class="header-menu">
-                <span><a href="https://blogs.techpro.club/" target="_blank"><button class="btn btn-yellow">Blogs</button></a></span>
-                <span><a href="https://github.com/ClubTechPro/techpro.club" target="_blank"><button class="btn btn-yellow">Github</button></a></span>
-                
+                <span
+                    ><a href="https://blogs.techpro.club/" target="_blank"
+                        ><button class="btn btn-yellow">Blogs</button></a
+                    ></span
+                >
+                <span
+                    ><a
+                        href="https://github.com/ClubTechPro/techpro.club"
+                        target="_blank"
+                        ><button class="btn btn-yellow">Github</button></a
+                    ></span
+                >
             </div>
+            <i id="menu-bar" class="hamburger-icon fas fa-bars"></i>
             <!-- Start: Header -->
             <div class="row hero-header" id="home">
-                <div class="col-md-7">
+                <div class="col-md-7 hero-header-item">
                     <span>
                         <!-- <img src="/assets/logos/techpro-club-logo.png" class="logo"  alt="techpro club logo"/>  -->
                         <picture>
-                            <source media="(min-width:465px)" srcset="/assets/logos/techpro-club-logo.png">
-                            <img src="/assets/logos/techpro-club-logo-white.png" class="logo"  alt="techpro club logo" style="width:auto;">
-                          </picture>
+                            <source
+                                media="(min-width:465px)"
+                                srcset="assets/logos/techpro-club-logo.png"
+                            />
+                            <img
+                                src="assets/logos/techpro-club-logo-white.png"
+                                class="logo"
+                                alt="techpro club logo"
+                            />
+                        </picture>
                         Beta
-                    
                     </span>
                     <h1>Let's contribute to the open source projects</h1>
-                    <a href="/contributor/github/login" class="btn btn-lg btn-black"
-                        ><span class="github-icon-spacing"><img src="../../assets/logos/thirdparty/GitHub-Mark-Light-32px.png" height="25"  alt="github logo mark"/></span>Sign in with GitHub</span
-                    ></a>
-                    <div><a href="#"><button class="btn btn-trasnparent">Looking for project contributors? Click here</button></a></div>
-                       
+                    <a
+                        href="/contributor/github/login"
+                        class="btn btn-lg btn-black"
+                        ><span class="github-icon-spacing"
+                            ><img
+                                src="assets/logos/thirdparty/GitHub-Mark-Light-32px.png"
+                                height="25"
+                                alt="github logo mark" /></span
+                        >Sign in with GitHub</a
+                    >
+                    <div>
+                        <a href="#"
+                            ><button class="btn btn-trasnparent">
+                                Looking for project contributors? Click here
+                            </button></a
+                        >
+                    </div>
                 </div>
                 <div class="col-md-5 hidden-xs">
                     <img
-                        src="../../assets/home/img/rocket.png"
+                        src="assets/home/img/rocket.png"
                         class="rocket animated bounce"
                         alt="hero banner rocket image"
                     />
                 </div>
             </div>
             <!-- End: Header -->
+        </div>
+
+        <!-- Sidebar-Menu -->
+        <div class="sidebar-menu">
+            <i id="sidemenu-close" class="fas fa-times"></i>
+            <div class="header-menu">
+                <a href="https://blogs.techpro.club/" target="_blank"
+                    ><button class="btn btn-yellow">Blogs</button></a
+                >
+                <a
+                    href="https://github.com/ClubTechPro/techpro.club"
+                    target="_blank"
+                    ><button class="btn btn-yellow">Github</button></a
+                >
+            </div>
         </div>
         <div class="container">
             <!-- Start: Desc -->
@@ -100,21 +148,24 @@
                     <span class="ti-ticket"></span>
                     <h3>Projects</h3>
                     <p>
-                        Innumerable projects to work on based upon your matching skills and many more to learn about.
+                        Innumerable projects to work on based upon your matching
+                        skills and many more to learn about.
                     </p>
                 </div>
                 <div class="col-md-4 feature">
                     <span class="ti-microphone"></span>
                     <h3>Notifications</h3>
                     <p>
-                        Get notified by email when a project is looking for contributors matching your skillset.
+                        Get notified by email when a project is looking for
+                        contributors matching your skillset.
                     </p>
                 </div>
                 <div class="col-md-4 feature">
                     <span class="ti-world"></span>
                     <h3>People around the globe!</h3>
                     <p>
-                        Meet project founders and developers around the globe and discuss new ideas.
+                        Meet project founders and developers around the globe
+                        and discuss new ideas.
                     </p>
                 </div>
             </div>
@@ -127,86 +178,135 @@
                 <h2 class="row-title">About</h2>
 
                 <div class="col-md-4 col-sm-6 col-md-offset-1">
-                    <img src="../../assets/home/img/work-from-home.png" alt="work from home"/>
+                    <img
+                        src="assets/home/img/work-from-home.png"
+                        alt="work from home"
+                    />
                 </div>
                 <div class="col-md-5 col-sm-6 text-justify">
-                    <p>There are thousands of opensource projects and libraries which have become the backbone for various other projects. Without a community of active contributors, these projects are very hard to maintain and cannot adapt to the latest changes.</p>
-                    <p><b><a href="https://techpro.club">Techpro club</a></b> is an exclusive community of open source contributors, which helps you to discover such wonderful projects and encourages you to participate.</p>
-                    <p>With all our efforts as the community grows, you, as an individual, enhance your skillsets and portfolio.</p>
-                    <p>Our core services to the open source projects will be free forever, and if you wish to contribute to us or report a bug, please visit our <a href="https://github.com/ClubTechPro/techpro.club" target="_blank">Github repository here</a></p>
+                    <p>
+                        There are thousands of opensource projects and libraries
+                        which have become the backbone for various other
+                        projects. Without a community of active contributors,
+                        these projects are very hard to maintain and cannot
+                        adapt to the latest changes.
+                    </p>
+                    <p>
+                        <b><a href="https://techpro.club">Techpro club</a></b
+                        > is an exclusive community of open source contributors,
+                        which helps you to discover such wonderful projects and
+                        encourages you to participate.
+                    </p>
+                    <p>
+                        With all our efforts as the community grows, you, as an
+                        individual, enhance your skillsets and portfolio.
+                    </p>
+                    <p>
+                        Our core services to the open source projects will be
+                        free forever, and if you wish to contribute to us or
+                        report a bug, please visit our
+                        <a
+                            href="https://github.com/ClubTechPro/techpro.club"
+                            target="_blank"
+                            >Github repository here</a
+                        >
+                    </p>
                 </div>
-
             </div>
         </div>
         <!-- End: About -->
 
         <!-- Start: Blogs -->
-        <div class="container">  
+        <div class="container">
             <div class="row me-row content-ct speaker" id="blogs">
                 <h2 class="row-title">Blogs</h2>
                 <!-- <div class="row"> -->
 
-                    <div class="col-md-6 col-sm-6 text-justify feature">
-                        <img src="../../assets/home/img/work-from-home.png" alt="work from home"/>
-                        <h3>This is our first blog and more content to check the div accomodation</h3>
-                        <p>
-                            "The quick brown fox jumps over the lazy dog" is an English-language pangram—a sentence that contains all the letters of the alphabet. The phrase is commonly used for touch-typing practice...
-                        </p>
-                        <a href="#">Read more..</a>
-                    </div>
+                <div class="col-md-6 col-sm-6 text-justify feature">
+                    <img
+                        src="assets/home/img/work-from-home.png"
+                        alt="work from home"
+                    />
+                    <h3>
+                        This is our first blog and more content to check the div
+                        accomodation
+                    </h3>
+                    <p>
+                        "The quick brown fox jumps over the lazy dog" is an
+                        English-language pangram—a sentence that contains all
+                        the letters of the alphabet. The phrase is commonly used
+                        for touch-typing practice...
+                    </p>
+                    <a href="#">Read more..</a>
+                </div>
 
-
-                    <div class="col-md-6 col-sm-6 text-justify feature">
-                        <img src="../../assets/home/img/work-from-home.png" alt="work from home"/>
-                        <h3>This is our first blog and more content to check the div accomodation</h3>
-                        <p>
-                            "The quick brown fox jumps over the lazy dog" is an English-language pangram—a sentence that contains all the letters of the alphabet. The phrase is commonly used for touch-typing practice...
-                        </p>
-                        <a href="#">Read more..</a>
-                    </div>
+                <div class="col-md-6 col-sm-6 text-justify feature">
+                    <img
+                        src="assets/home/img/work-from-home.png"
+                        alt="work from home"
+                    />
+                    <h3>
+                        This is our first blog and more content to check the div
+                        accomodation
+                    </h3>
+                    <p>
+                        "The quick brown fox jumps over the lazy dog" is an
+                        English-language pangram—a sentence that contains all
+                        the letters of the alphabet. The phrase is commonly used
+                        for touch-typing practice...
+                    </p>
+                    <a href="#">Read more..</a>
+                </div>
                 <!-- </div> -->
-
             </div>
         </div>
         <!-- End: Blogs -->
 
         <!-- Start: Footer -->
-        <div class="container-fluid footer">
-            <div class="row footer-credit">
-                <div class="col-md-6 col-sm-6">
-                    <p>
-                        <a href="https://techpro.club"><img src="../../assets/logos/techpro-club-mini-logo.png" alt="techpro club mini logo"/></a>
-                    </p>
-                </div>
-                <div class="col-md-6 col-sm-6">
-                    <ul class="footer-menu">
-                        <li>
-                            <a href="mailto:hello@techpro.club"
-                                >Email</a
-                            >
-                        </li>
-                        <li>
-                            <a href="https://github.com/ClubTechPro/techpro.club" target="_blank"
-                                >Github</a
-                            >
-                        </li>
-                        <li>
-                            <a href="https://twitter.com/ClubTechpro" target="_blank"
-                                >Twitter</a
-                            >
-                        </li>
-                    </ul>
+        <footer class="footer">
+            <div class="container-fluid">
+                <div class="footer-content">
+                    <div class="footer-item">
+                        <a href="https://techpro.club"
+                            ><img
+                                src="assets/logos/techpro-club-mini-logo.png"
+                                alt="techpro club mini logo"
+                        /></a>
+                    </div>
+                    <div class="footer-item">
+                        <ul class="footer-menu">
+                            <li>
+                                <a href="mailto:hello@techpro.club">Email</a>
+                            </li>
+                            <li>
+                                <a
+                                    href="https://github.com/ClubTechPro/techpro.club"
+                                    target="_blank"
+                                    >Github</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://twitter.com/ClubTechpro"
+                                    target="_blank"
+                                    >Twitter</a
+                                >
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </div>
+        </footer>
+
         <!-- End: Footer -->
 
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-        <script src="../../assets/home/js/jquery.min.js"></script>
+        <script src="assets/home/js/jquery.min.js"></script>
         <!-- Include all compiled plugins (below), or include individual files as needed -->
-        <script src="../../assets/home/js/bootstrap.min.js"></script>
-        <script src="../../assets/home/js/jquery.easing.min.js"></script>
-        <script src="../../assets/home/js/scrolling-nav.js"></script>
-        <script src="../../assets/home/js/validator.js"></script>
+        <script src="assets/home/js/bootstrap.min.js"></script>
+        <script src="assets/home/js/jquery.easing.min.js"></script>
+        <script src="assets/home/js/scrolling-nav.js"></script>
+        <script src="assets/home/js/validator.js"></script>
+        <script src="assets/home/js/menu.js"></script>
     </body>
 </html>

@@ -47,8 +47,12 @@ func ProjectCreate(w http.ResponseWriter, r *http.Request){
 	}
 	
 	if r.Method == "GET"{
-		tmpl := template.Must(template.ParseFiles("templates/app/projects/projectcreate.html"))
-		tmpl.Execute(w, nil) 
+		tmpl, err := template.New("").ParseFiles("templates/app/projects/projectcreate.html", "templates/app/projects/common/base.html")
+		if err != nil {
+			fmt.Println(err.Error())
+		}else {
+			tmpl.ExecuteTemplate(w, "projectbase", nil) 
+		}
 	} else {
 		errParse := r.ParseForm()
 		if errParse != nil {
