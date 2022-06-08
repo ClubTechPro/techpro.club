@@ -24,7 +24,7 @@ func ProjectIndexHandler(w http.ResponseWriter, r *http.Request) {
         ErrorHandler(w, r, http.StatusNotFound)
         return
     }
-	tmpl := template.Must(template.ParseFiles("templates/home/index.html"))
+	tmpl := template.Must(template.ParseFiles("templates/home/project_index.html"))
     tmpl.Execute(w, nil)
 }
 
