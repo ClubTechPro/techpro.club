@@ -9,7 +9,7 @@ import (
 )
 
 func Feeds(w http.ResponseWriter, r *http.Request){
-	if r.URL.Path != "/contributor/feeds" {
+	if r.URL.Path != "/contributors/feeds" {
         templates.ErrorHandler(w, r, http.StatusNotFound)
         return
     }
