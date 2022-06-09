@@ -41,9 +41,15 @@ func ProjectCreate(w http.ResponseWriter, r *http.Request){
         return
     }
 	
+	// Session check
 	sessionOk, userID := users.ValidateDbSession(w, r)
 	if(!sessionOk){
-		http.Redirect(w, r, "/", http.StatusSeeOther)
+		
+		// Delete cookies
+		users.DeleteSessionCookie(w, r)
+		users.DeleteUserCookie(w, r)
+
+		http.Redirect(w, r, "/projects", http.StatusSeeOther)
 	}
 	
 	if r.Method == "GET"{
