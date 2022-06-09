@@ -22,6 +22,10 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 		sessionOk, _ := users.ValidateDbSession(w, r)
 		if(sessionOk){
 			http.Redirect(w, r, "/contributors/feeds", http.StatusSeeOther)
+		} else {
+			// Delete cookies
+			users.DeleteSessionCookie(w, r)
+			users.DeleteUserCookie(w, r)
 		}
 	}
 
@@ -44,6 +48,10 @@ func ProjectIndexHandler(w http.ResponseWriter, r *http.Request) {
 		sessionOk, _ := users.ValidateDbSession(w, r)
 		if(sessionOk){
 			http.Redirect(w, r, "/projects/list", http.StatusSeeOther)
+		} else {
+			// Delete cookies
+			users.DeleteSessionCookie(w, r)
+			users.DeleteUserCookie(w, r)
 		}
 	}
 		
