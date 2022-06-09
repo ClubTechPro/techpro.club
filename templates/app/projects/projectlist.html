@@ -1,39 +1,48 @@
 {{define "content"}}
-<h3>
-    Your project listings
-    
-</h3><a href="/projects/create"
-><button class="btn btn-warning">Create Listing</button></a
+<h3>Your project listings</h3>
+<a href="/projects/create"
+    ><button class="btn btn-warning">Create Listing</button></a
 >
 <br />
+{{if not .}}
+<br />
 <hr />
-{{range .}}
-<div class="row">
-    <div class="col col-md-12 col-sm-6">
-        <h4>
-            {{.ProjectName}}
-            <small><a href="/projects/edit/{{.Id.Hex}}">Edit</a></small>
-        </h4>
-        <small class="text-muted">
-            {{if (.IsActive)}} Active {{else}} InActive {{end}},
-            {{.CreatedDate.Format "2006-"}}
+<p>
+    You don't have any projects listing yet. Create your free project listing
+    <a href="/projects/create">here</a>.
+</p>
+{{else}}{{range .}}
+<div class="panel panel-default">
+    <div class="row">
+        <div class="col col-md-12 col-sm-6">
+            <h4>
+                {{.ProjectName}}
+                <small><a href="/projects/edit/{{.Id.Hex}}">Edit</a></small>
+            </h4>
+            <small class="text-muted">
+                {{if (.IsActive)}} Active {{else}} InActive {{end}},
+                {{.CreatedDate}}
 
-            <a href="{{.RepoLink}}" target="_blank"
-                ><span class="ti-link"> </span>{{.RepoLink}}</a
-            ></small
-        >
-        <p>{{.ProjectDescription}}</p>
-        <p>
-            {{range .Languages}}<span class="badge badge-warning">{{.}}</span>
-            {{end}} {{range .Allied}}<span class="badge badge-warning"
-                >{{.}}</span
+                <a href="{{.RepoLink}}" target="_blank"
+                    ><span class="ti-link"> </span>{{.RepoLink}}</a
+                ></small
             >
-            {{end}} {{range .OtherLanguages}}<span class="badge badge-warning"
-                >{{.}}</span
-            >
-            {{end}}
-        </p>
+            <p>{{.ProjectDescription}}</p>
+            <p>
+                {{range .Languages}}<span class="label label-pill label-primary"
+                    >{{.}}</span
+                >
+                {{end}} {{range .Allied}}<span
+                    class="label label-pill label-primary"
+                    >{{.}}</span
+                >
+                {{end}} {{range .OtherLanguages}}<span
+                    class="label label-pill label-primary"
+                    >{{.}}</span
+                >
+                {{end}}
+            </p>
+        </div>
     </div>
 </div>
-<hr />
-{{end}} {{end}}
+{{end}}{{end}} {{end}}

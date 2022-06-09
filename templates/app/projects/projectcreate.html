@@ -1,550 +1,658 @@
 {{define "content"}}
-<h3>Post a project</h3>
-<form method="post" content-type="x-www-form-urlencoded">
-    <h5>Project Title <span class="text-danger">*</span></h5>
-    <input
-        type="text"
-        name="projectName"
-        class="form-control"
-        placeholder="Name of your project"
-        required
-    />
+<h3>Create project</h3>
+<div class="panel panel-default">
+    <form method="post" content-type="x-www-form-urlencoded">
+        <h5>Project Title <span class="text-danger">*</span></h5>
+        <input
+            type="text"
+            name="projectName"
+            class="form-control"
+            placeholder="Name of your project"
+            required
+        />
 
-    <h5>
-        Project repository link
-        <span class="text-danger">*</span>
-    </h5>
-    <input
-        type="text"
-        name="repoLink"
-        class="form-control"
-        placeholder="Project link to Github, Bitbucket, Gitlab, Azure, etc"
-        required
-    />
+        <h5>
+            Project repository link
+            <span class="text-danger">*</span>
+        </h5>
+        <input
+            type="text"
+            name="repoLink"
+            class="form-control"
+            placeholder="Project link to Github, Bitbucket, Gitlab, Azure, etc"
+            required
+        />
 
-    <h5>Project description <span class="text-danger">*</span></h5>
-    <textarea
-        name="projectDescription"
-        class="form-control"
-        placeholder="Describe the objective of your project so that the contributors can understand your idea clearly. Including frameworks, libraries will also help"
-        required
-    ></textarea>
+        <h5>Project description <span class="text-danger">*</span></h5>
+        <textarea
+            name="projectDescription"
+            class="form-control"
+            placeholder="Describe the objective of your project so that the contributors can understand your idea clearly. Including frameworks, libraries will also help"
+            required
+        ></textarea>
 
-    <h5>Project programming language(s)</h5>
+        <h5>Project programming language(s)</h5>
 
-    <div class="row border border-primary">
-        <div class="col col-md-3 col-sm-6">
-            <input type="checkbox" id="c" name="language" value="c" />
-            <label for="c">C</label><br />
+        <div class="row border border-primary">
+            <div class="col col-md-3 col-sm-6">
+                <input type="checkbox" id="c" name="language" value="c" />
+                <label for="c">C</label><br />
+            </div>
+
+            <div class="col col-md-3 col-sm-6">
+                <input type="checkbox" id="cpp" name="language" value="cpp" />
+                <label for="cpp">C++</label><br />
+            </div>
+
+            <div class="col col-md-3 col-sm-6">
+                <input
+                    type="checkbox"
+                    id="csharp"
+                    name="language"
+                    value="csharp"
+                />
+                <label for="csharp">C#</label><br />
+            </div>
+
+            <div class="col col-md-3 col-sm-6">
+                <input
+                    type="checkbox"
+                    id="clojure"
+                    name="language"
+                    value="clojure"
+                />
+                <label for="clojure">Clojure</label><br />
+            </div>
         </div>
 
-        <div class="col col-md-3 col-sm-6">
-            <input type="checkbox" id="cpp" name="language" value="cpp" />
-            <label for="cpp">C++</label><br />
+        <div class="row border border-primary">
+            <div class="col col-md-3 col-sm-6">
+                <input
+                    type="checkbox"
+                    id="codeql"
+                    name="language"
+                    value="codeql"
+                />
+                <label for="codeql">CodeQL</label><br />
+            </div>
+
+            <div class="col col-md-3 col-sm-6">
+                <input
+                    type="checkbox"
+                    id="coffeeScript"
+                    name="language"
+                    value="coffeeScript"
+                />
+                <label for="coffeeScript">CoffeeScript</label><br />
+            </div>
+
+            <div class="col col-md-3 col-sm-6">
+                <input type="checkbox" id="dm" name="language" value="dm" />
+                <label for="dm">DM</label><br />
+            </div>
+
+            <div class="col col-md-3 col-sm-6">
+                <input type="checkbox" id="dart" name="language" value="dart" />
+                <label for="dart">Dart</label><br />
+            </div>
         </div>
 
-        <div class="col col-md-3 col-sm-6">
-            <input type="checkbox" id="csharp" name="language" value="csharp" />
-            <label for="csharp">C#</label><br />
+        <div class="row border border-primary">
+            <div class="col col-md-3 col-sm-6">
+                <input
+                    type="checkbox"
+                    id="elixir"
+                    name="language"
+                    value="elixir"
+                />
+                <label for="elixir">Elixir</label><br />
+            </div>
+
+            <div class="col col-md-3 col-sm-6">
+                <input type="checkbox" id="elm" name="language" value="elm" />
+                <label for="elm">Elm</label><br />
+            </div>
+
+            <div class="col col-md-3 col-sm-6">
+                <input
+                    type="checkbox"
+                    id="elisp"
+                    name="language"
+                    value="elisp"
+                />
+                <label for="elisp">Emacs Lisp</label><br />
+            </div>
+
+            <div class="col col-md-3 col-sm-6">
+                <input
+                    type="checkbox"
+                    id="erlang"
+                    name="language"
+                    value="erlang"
+                />
+                <label for="erlang">Erlang</label><br />
+            </div>
         </div>
 
-        <div class="col col-md-3 col-sm-6">
-            <input
-                type="checkbox"
-                id="clojure"
-                name="language"
-                value="clojure"
-            />
-            <label for="clojure">Clojure</label><br />
-        </div>
-    </div>
+        <div class="row border border-primary">
+            <div class="col col-md-3 col-sm-6">
+                <input
+                    type="checkbox"
+                    id="fsharp"
+                    name="language"
+                    value="fsharp"
+                />
+                <label for="fsharp">F#</label><br />
+            </div>
 
-    <div class="row border border-primary">
-        <div class="col col-md-3 col-sm-6">
-            <input type="checkbox" id="codeql" name="language" value="codeql" />
-            <label for="codeql">CodeQL</label><br />
-        </div>
+            <div class="col col-md-3 col-sm-6">
+                <input
+                    type="checkbox"
+                    id="fortran"
+                    name="language"
+                    value="fortran"
+                />
+                <label for="fortran">Fortran</label><br />
+            </div>
 
-        <div class="col col-md-3 col-sm-6">
-            <input
-                type="checkbox"
-                id="coffeeScript"
-                name="language"
-                value="coffeeScript"
-            />
-            <label for="coffeeScript">CoffeeScript</label><br />
-        </div>
+            <div class="col col-md-3 col-sm-6">
+                <input type="checkbox" id="go" name="language" value="go" />
+                <label for="go">Golang</label><br />
+            </div>
 
-        <div class="col col-md-3 col-sm-6">
-            <input type="checkbox" id="dm" name="language" value="dm" />
-            <label for="dm">DM</label><br />
-        </div>
-
-        <div class="col col-md-3 col-sm-6">
-            <input type="checkbox" id="dart" name="language" value="dart" />
-            <label for="dart">Dart</label><br />
-        </div>
-    </div>
-
-    <div class="row border border-primary">
-        <div class="col col-md-3 col-sm-6">
-            <input type="checkbox" id="elixir" name="language" value="elixir" />
-            <label for="elixir">Elixir</label><br />
+            <div class="col col-md-3 col-sm-6">
+                <input
+                    type="checkbox"
+                    id="groovy"
+                    name="language"
+                    value="groovy"
+                />
+                <label for="groovy">Groovy</label><br />
+            </div>
         </div>
 
-        <div class="col col-md-3 col-sm-6">
-            <input type="checkbox" id="elm" name="language" value="elm" />
-            <label for="elm">Elm</label><br />
+        <div class="row border border-primary">
+            <div class="col col-md-3 col-sm-6">
+                <input type="checkbox" id="java" name="language" value="java" />
+                <label for="java">Java</label><br />
+            </div>
+
+            <div class="col col-md-3 col-sm-6">
+                <input type="checkbox" id="js" name="language" value="js" />
+                <label for="js">Javascript</label><br />
+            </div>
+
+            <div class="col col-md-3 col-sm-6">
+                <input
+                    type="checkbox"
+                    id="jinja"
+                    name="language"
+                    value="jinja"
+                />
+                <label for="jinja">Jinja</label><br />
+            </div>
+
+            <div class="col col-md-3 col-sm-6">
+                <input
+                    type="checkbox"
+                    id="jsonnet"
+                    name="language"
+                    value="jsonnet"
+                />
+                <label for="jsonnet">Jsonnet</label><br />
+            </div>
         </div>
 
-        <div class="col col-md-3 col-sm-6">
-            <input type="checkbox" id="elisp" name="language" value="elisp" />
-            <label for="elisp">Emacs Lisp</label><br />
+        <div class="row border border-primary">
+            <div class="col col-md-3 col-sm-6">
+                <input
+                    type="checkbox"
+                    id="julia"
+                    name="language"
+                    value="julia"
+                />
+                <label for="julia">Julia</label><br />
+            </div>
+
+            <div class="col col-md-3 col-sm-6">
+                <input
+                    type="checkbox"
+                    id="kotlin"
+                    name="language"
+                    value="kotlin"
+                />
+                <label for="kotlin">Kotlin</label><br />
+            </div>
+
+            <div class="col col-md-3 col-sm-6">
+                <input type="checkbox" id="lean" name="language" value="lean" />
+                <label for="lean">Lean</label><br />
+            </div>
+
+            <div class="col col-md-3 col-sm-6">
+                <input type="checkbox" id="lua" name="language" value="lua" />
+                <label for="lua">Lua</label><br />
+            </div>
         </div>
 
-        <div class="col col-md-3 col-sm-6">
-            <input type="checkbox" id="erlang" name="language" value="erlang" />
-            <label for="erlang">Erlang</label><br />
-        </div>
-    </div>
+        <div class="row border border-primary">
+            <div class="col col-md-3 col-sm-6">
+                <input
+                    type="checkbox"
+                    id="matlab"
+                    name="language"
+                    value="matlab"
+                />
+                <label for="matlab">Matlab</label><br />
+            </div>
 
-    <div class="row border border-primary">
-        <div class="col col-md-3 col-sm-6">
-            <input type="checkbox" id="fsharp" name="language" value="fsharp" />
-            <label for="fsharp">F#</label><br />
-        </div>
+            <div class="col col-md-3 col-sm-6">
+                <input type="checkbox" id="nix" name="language" value="nix" />
+                <label for="nix">Nix</label><br />
+            </div>
 
-        <div class="col col-md-3 col-sm-6">
-            <input
-                type="checkbox"
-                id="fortran"
-                name="language"
-                value="fortran"
-            />
-            <label for="fortran">Fortran</label><br />
-        </div>
+            <div class="col col-md-3 col-sm-6">
+                <input
+                    type="checkbox"
+                    id="objectivec"
+                    name="language"
+                    value="objectivec"
+                />
+                <label for="objectivec">Objective-C</label><br />
+            </div>
 
-        <div class="col col-md-3 col-sm-6">
-            <input type="checkbox" id="go" name="language" value="go" />
-            <label for="go">Golang</label><br />
-        </div>
-
-        <div class="col col-md-3 col-sm-6">
-            <input type="checkbox" id="groovy" name="language" value="groovy" />
-            <label for="groovy">Groovy</label><br />
-        </div>
-    </div>
-
-    <div class="row border border-primary">
-        <div class="col col-md-3 col-sm-6">
-            <input type="checkbox" id="java" name="language" value="java" />
-            <label for="java">Java</label><br />
+            <div class="col col-md-3 col-sm-6">
+                <input
+                    type="checkbox"
+                    id="ocaml"
+                    name="language"
+                    value="ocaml"
+                />
+                <label for="ocaml">OCaml</label><br />
+            </div>
         </div>
 
-        <div class="col col-md-3 col-sm-6">
-            <input type="checkbox" id="js" name="language" value="js" />
-            <label for="js">Javascript</label><br />
+        <div class="row border border-primary">
+            <div class="col col-md-3 col-sm-6">
+                <input type="checkbox" id="perl" name="language" value="perl" />
+                <label for="perl">Perl</label><br />
+            </div>
+
+            <div class="col col-md-3 col-sm-6">
+                <input type="checkbox" id="php" name="language" value="php" />
+                <label for="php">PHP</label><br />
+            </div>
+
+            <div class="col col-md-3 col-sm-6">
+                <input
+                    type="checkbox"
+                    id="powershell"
+                    name="language"
+                    value="powershell"
+                />
+                <label for="powershell">Powershell</label><br />
+            </div>
+
+            <div class="col col-md-3 col-sm-6">
+                <input
+                    type="checkbox"
+                    id="puppet"
+                    name="language"
+                    value="puppet"
+                />
+                <label for="puppet">Puppet</label><br />
+            </div>
         </div>
 
-        <div class="col col-md-3 col-sm-6">
-            <input type="checkbox" id="jinja" name="language" value="jinja" />
-            <label for="jinja">Jinja</label><br />
+        <div class="row border border-primary">
+            <div class="col col-md-3 col-sm-6">
+                <input
+                    type="checkbox"
+                    id="python"
+                    name="language"
+                    value="python"
+                />
+                <label for="python">Python</label><br />
+            </div>
+
+            <div class="col col-md-3 col-sm-6">
+                <input type="checkbox" id="r" name="language" value="r" />
+                <label for="r">R</label><br />
+            </div>
+
+            <div class="col col-md-3 col-sm-6">
+                <input type="checkbox" id="roff" name="language" value="roff" />
+                <label for="roff">Roff</label><br />
+            </div>
+
+            <div class="col col-md-3 col-sm-6">
+                <input type="checkbox" id="ruby" name="language" value="ruby" />
+                <label for="ruby">Ruby</label><br />
+            </div>
         </div>
 
-        <div class="col col-md-3 col-sm-6">
-            <input
-                type="checkbox"
-                id="jsonnet"
-                name="language"
-                value="jsonnet"
-            />
-            <label for="jsonnet">Jsonnet</label><br />
-        </div>
-    </div>
+        <div class="row border border-primary">
+            <div class="col col-md-3 col-sm-6">
+                <input type="checkbox" id="rust" name="language" value="rust" />
+                <label for="rust">Rust</label><br />
+            </div>
 
-    <div class="row border border-primary">
-        <div class="col col-md-3 col-sm-6">
-            <input type="checkbox" id="julia" name="language" value="julia" />
-            <label for="julia">Julia</label><br />
-        </div>
+            <div class="col col-md-3 col-sm-6">
+                <input
+                    type="checkbox"
+                    id="scala"
+                    name="language"
+                    value="scala"
+                />
+                <label for="scala">Scala</label><br />
+            </div>
 
-        <div class="col col-md-3 col-sm-6">
-            <input type="checkbox" id="kotlin" name="language" value="kotlin" />
-            <label for="kotlin">Kotlin</label><br />
-        </div>
+            <div class="col col-md-3 col-sm-6">
+                <input type="checkbox" id="scss" name="language" value="scss" />
+                <label for="scss">SCSS</label><br />
+            </div>
 
-        <div class="col col-md-3 col-sm-6">
-            <input type="checkbox" id="lean" name="language" value="lean" />
-            <label for="lean">Lean</label><br />
-        </div>
-
-        <div class="col col-md-3 col-sm-6">
-            <input type="checkbox" id="lua" name="language" value="lua" />
-            <label for="lua">Lua</label><br />
-        </div>
-    </div>
-
-    <div class="row border border-primary">
-        <div class="col col-md-3 col-sm-6">
-            <input type="checkbox" id="matlab" name="language" value="matlab" />
-            <label for="matlab">Matlab</label><br />
+            <div class="col col-md-3 col-sm-6">
+                <input
+                    type="checkbox"
+                    id="shell"
+                    name="language"
+                    value="shell"
+                />
+                <label for="shell">Shell</label><br />
+            </div>
         </div>
 
-        <div class="col col-md-3 col-sm-6">
-            <input type="checkbox" id="nix" name="language" value="nix" />
-            <label for="nix">Nix</label><br />
+        <div class="row border border-primary">
+            <div class="col col-md-3 col-sm-6">
+                <input
+                    type="checkbox"
+                    id="swift"
+                    name="language"
+                    value="swift"
+                />
+                <label for="swift">Swift</label><br />
+            </div>
+
+            <div class="col col-md-3 col-sm-6">
+                <input
+                    type="checkbox"
+                    id="sverilog"
+                    name="language"
+                    value="sverilog"
+                />
+                <label for="sverilog">System Verilog</label><br />
+            </div>
+
+            <div class="col col-md-3 col-sm-6">
+                <input
+                    type="checkbox"
+                    id="typescript"
+                    name="language"
+                    value="typescript"
+                />
+                <label for="typescript">Typescript</label><br />
+            </div>
+
+            <div class="col col-md-3 col-sm-6">
+                <input type="checkbox" id="vala" name="language" value="vala" />
+                <label for="vala">Vala</label><br />
+            </div>
         </div>
 
-        <div class="col col-md-3 col-sm-6">
-            <input
-                type="checkbox"
-                id="objectivec"
-                name="language"
-                value="objectivec"
-            />
-            <label for="objectivec">Objective-C</label><br />
+        <div class="row border border-primary">
+            <div class="col col-md-3 col-sm-6">
+                <input
+                    type="checkbox"
+                    id="verilog"
+                    name="language"
+                    value="verilog"
+                />
+                <label for="verilog">Verilog</label><br />
+            </div>
+
+            <div class="col col-md-3 col-sm-6">
+                <input type="checkbox" id="vim" name="language" value="vim" />
+                <label for="vim">Vim script</label><br />
+            </div>
+
+            <div class="col col-md-3 col-sm-6">
+                <input type="checkbox" id="vb" name="language" value="vb" />
+                <label for="vb">Visual Basic .NET</label><br />
+            </div>
+
+            <div class="col col-md-3 col-sm-6">
+                <input
+                    type="checkbox"
+                    id="webassembly"
+                    name="language"
+                    value="webassembly"
+                />
+                <label for="webassembly">WebAssembly</label><br />
+            </div>
         </div>
 
-        <div class="col col-md-3 col-sm-6">
-            <input type="checkbox" id="ocaml" name="language" value="ocaml" />
-            <label for="ocaml">OCaml</label><br />
-        </div>
-    </div>
+        <div class="row border border-primary">
+            <div class="col col-md-3 col-sm-6">
+                <input type="checkbox" id="yaml" name="language" value="yaml" />
+                <label for="yaml">Yaml</label><br />
+            </div>
 
-    <div class="row border border-primary">
-        <div class="col col-md-3 col-sm-6">
-            <input type="checkbox" id="perl" name="language" value="perl" />
-            <label for="perl">Perl</label><br />
-        </div>
-
-        <div class="col col-md-3 col-sm-6">
-            <input type="checkbox" id="php" name="language" value="php" />
-            <label for="php">PHP</label><br />
-        </div>
-
-        <div class="col col-md-3 col-sm-6">
-            <input
-                type="checkbox"
-                id="powershell"
-                name="language"
-                value="powershell"
-            />
-            <label for="powershell">Powershell</label><br />
+            <div class="col col-md-3 col-sm-6">
+                <input
+                    type="text"
+                    id="otherLanguages"
+                    name="otherLanguages"
+                    class="form-control"
+                    placeholder="For others, enter CSV"
+                />
+            </div>
         </div>
 
-        <div class="col col-md-3 col-sm-6">
-            <input type="checkbox" id="puppet" name="language" value="puppet" />
-            <label for="puppet">Puppet</label><br />
-        </div>
-    </div>
+        <h5>Allied Service(s)</h5>
 
-    <div class="row border border-primary">
-        <div class="col col-md-3 col-sm-6">
-            <input type="checkbox" id="python" name="language" value="python" />
-            <label for="python">Python</label><br />
-        </div>
+        <div class="row border border-primary">
+            <div class="col col-md-3 col-sm-6">
+                <input
+                    type="checkbox"
+                    id="devops"
+                    name="allied"
+                    value="devops"
+                />
+                <label for="devops">DevOps</label><br />
+            </div>
 
-        <div class="col col-md-3 col-sm-6">
-            <input type="checkbox" id="r" name="language" value="r" />
-            <label for="r">R</label><br />
-        </div>
+            <div class="col col-md-3 col-sm-6">
+                <input
+                    type="checkbox"
+                    id="documentation"
+                    name="allied"
+                    value="documentation"
+                />
+                <label for="documentation">Documentation</label><br />
+            </div>
 
-        <div class="col col-md-3 col-sm-6">
-            <input type="checkbox" id="roff" name="language" value="roff" />
-            <label for="roff">Roff</label><br />
-        </div>
+            <div class="col col-md-3 col-sm-6">
+                <input
+                    type="checkbox"
+                    id="sanitization"
+                    name="allied"
+                    value="sanitization"
+                />
+                <label for="sanitization">Code Sanitization</label><br />
+            </div>
 
-        <div class="col col-md-3 col-sm-6">
-            <input type="checkbox" id="ruby" name="language" value="ruby" />
-            <label for="ruby">Ruby</label><br />
-        </div>
-    </div>
-
-    <div class="row border border-primary">
-        <div class="col col-md-3 col-sm-6">
-            <input type="checkbox" id="rust" name="language" value="rust" />
-            <label for="rust">Rust</label><br />
-        </div>
-
-        <div class="col col-md-3 col-sm-6">
-            <input type="checkbox" id="scala" name="language" value="scala" />
-            <label for="scala">Scala</label><br />
-        </div>
-
-        <div class="col col-md-3 col-sm-6">
-            <input type="checkbox" id="scss" name="language" value="scss" />
-            <label for="scss">SCSS</label><br />
-        </div>
-
-        <div class="col col-md-3 col-sm-6">
-            <input type="checkbox" id="shell" name="language" value="shell" />
-            <label for="shell">Shell</label><br />
-        </div>
-    </div>
-
-    <div class="row border border-primary">
-        <div class="col col-md-3 col-sm-6">
-            <input type="checkbox" id="swift" name="language" value="swift" />
-            <label for="swift">Swift</label><br />
+            <div class="col col-md-3 col-sm-6">
+                <input
+                    type="checkbox"
+                    id="testcases"
+                    name="allied"
+                    value="testcases"
+                />
+                <label for="testcases">Test Cases</label><br />
+            </div>
         </div>
 
-        <div class="col col-md-3 col-sm-6">
-            <input
-                type="checkbox"
-                id="sverilog"
-                name="language"
-                value="sverilog"
-            />
-            <label for="sverilog">System Verilog</label><br />
+        <h5>Project type</h5>
+
+        <div class="row border border-primary">
+            <div class="col col-md-3 col-sm-6">
+                <input
+                    type="checkbox"
+                    id="pPluginLibrary"
+                    name="pType"
+                    value="pluginLibrary"
+                />
+                <label for="pPluginLibrary">Library/Plugin</label><br />
+            </div>
+
+            <div class="col col-md-3 col-sm-6">
+                <input
+                    type="checkbox"
+                    id="pDatabase"
+                    name="pType"
+                    value="database"
+                />
+                <label for="pDatabase">Database</label><br />
+            </div>
+
+            <div class="col col-md-3 col-sm-6">
+                <input
+                    type="checkbox"
+                    id="pWebapp"
+                    name="pType"
+                    value="webapp"
+                />
+                <label for="pWebapp">Web Application</label><br />
+            </div>
+
+            <div class="col col-md-3 col-sm-6">
+                <input
+                    type="checkbox"
+                    id="pMobileapp"
+                    name="pType"
+                    value="mobileapp"
+                />
+                <label for="pMobileapp">Mobile Application</label><br />
+            </div>
         </div>
 
-        <div class="col col-md-3 col-sm-6">
-            <input
-                type="checkbox"
-                id="typescript"
-                name="language"
-                value="typescript"
-            />
-            <label for="typescript">Typescript</label><br />
+        <div class="row border border-primary">
+            <div class="col col-md-3 col-sm-6">
+                <input
+                    type="checkbox"
+                    id="pDesktopapp"
+                    name="pType"
+                    value="desktopapp"
+                />
+                <label for="pDesktopapp">Desktop Application</label><br />
+            </div>
+            <div class="col col-md-3 col-sm-6">
+                <input
+                    type="checkbox"
+                    id="pOthers"
+                    name="pType"
+                    value="Others"
+                />
+                <label for="pOthers">Others</label><br />
+            </div>
         </div>
 
-        <div class="col col-md-3 col-sm-6">
-            <input type="checkbox" id="vala" name="language" value="vala" />
-            <label for="vala">Vala</label><br />
-        </div>
-    </div>
+        <h5>Current project contributors</h5>
 
-    <div class="row border border-primary">
-        <div class="col col-md-3 col-sm-6">
-            <input
-                type="checkbox"
-                id="verilog"
-                name="language"
-                value="verilog"
-            />
-            <label for="verilog">Verilog</label><br />
-        </div>
+        <select
+            name="contributorCount"
+            id="contributorCount"
+            class="form-control"
+        >
+            <option value="1">Project founder only</option>
+            <option value="less_than_10">Less than 10</option>
+            <option value="more_than_10">More than 10</option>
+        </select>
+        <small id="contributorstHelp" class="form-text text-muted"
+            >Number of contributors on the project at the time of
+            posting.</small
+        >
 
-        <div class="col col-md-3 col-sm-6">
-            <input type="checkbox" id="vim" name="language" value="vim" />
-            <label for="vim">Vim script</label><br />
-        </div>
+        <h5>Documentation Link</h5>
 
-        <div class="col col-md-3 col-sm-6">
-            <input type="checkbox" id="vb" name="language" value="vb" />
-            <label for="vb">Visual Basic .NET</label><br />
-        </div>
+        <input
+            type="text"
+            class="form-control"
+            name="documentation"
+            placeholder="Link to documentation, if any"
+        />
 
-        <div class="col col-md-3 col-sm-6">
-            <input
-                type="checkbox"
-                id="webassembly"
-                name="language"
-                value="webassembly"
-            />
-            <label for="webassembly">WebAssembly</label><br />
-        </div>
-    </div>
+        <h5>Is this a public project?</h5>
 
-    <div class="row border border-primary">
-        <div class="col col-md-3 col-sm-6">
-            <input type="checkbox" id="yaml" name="language" value="yaml" />
-            <label for="yaml">Yaml</label><br />
-        </div>
+        <input type="radio" id="publicY" name="public" value="true" checked />
+        <label for="publicY">Yes</label><br />
 
-        <div class="col col-md-3 col-sm-6">
-            <input
-                type="text"
-                id="otherLanguages"
-                name="otherLanguages"
-                class="form-control"
-                placeholder="For others, enter CSV"
-            />
-        </div>
-    </div>
+        <input type="radio" id="publicN" name="public" value="false" />
+        <label for="publicN">No</label><br />
 
-    <h5>Allied Service(s)</h5>
+        <h5>Is your project backed by any company?</h5>
 
-    <div class="row border border-primary">
-        <div class="col col-md-3 col-sm-6">
-            <input type="checkbox" id="devops" name="allied" value="devops" />
-            <label for="devops">DevOps</label><br />
-        </div>
+        <input
+            type="radio"
+            id="companyY"
+            name="company"
+            value="true"
+            onclick="showCompanyName(true)"
+        />
+        <label for="companyY">Yes</label><br />
 
-        <div class="col col-md-3 col-sm-6">
-            <input
-                type="checkbox"
-                id="documentation"
-                name="allied"
-                value="documentation"
-            />
-            <label for="documentation">Documentation</label><br />
-        </div>
+        <input
+            type="radio"
+            id="companyN"
+            name="company"
+            value="false"
+            onclick="showCompanyName(false)"
+            checked
+        />
+        <label for="companyN">No</label><br />
 
-        <div class="col col-md-3 col-sm-6">
-            <input
-                type="checkbox"
-                id="sanitization"
-                name="allied"
-                value="sanitization"
-            />
-            <label for="sanitization">Code Sanitization</label><br />
-        </div>
+        <input
+            type="text"
+            id="companyName"
+            name="companyName"
+            placeholder="Company Name"
+            class="form-control"
+            disabled
+        />
 
-        <div class="col col-md-3 col-sm-6">
-            <input
-                type="checkbox"
-                id="testcases"
-                name="allied"
-                value="testcases"
-            />
-            <label for="testcases">Test Cases</label><br />
-        </div>
-    </div>
+        <h5>Is your company/project funded?</h5>
 
-    <h5>Project type</h5>
+        <input type="radio" id="fundedY" name="funded" value="true" checked />
+        <label for="fundedY">Yes</label><br />
 
-    <div class="row border border-primary">
-        <div class="col col-md-3 col-sm-6">
-            <input
-                type="checkbox"
-                id="pPluginLibrary"
-                name="pType"
-                value="pluginLibrary"
-            />
-            <label for="pPluginLibrary">Library/Plugin</label><br />
-        </div>
+        <input type="radio" id="fundedN" name="funded" value="false" />
+        <label for="fundedN">No</label><br />
 
-        <div class="col col-md-3 col-sm-6">
-            <input
-                type="checkbox"
-                id="pDatabase"
-                name="pType"
-                value="database"
-            />
-            <label for="pDatabase">Database</label><br />
-        </div>
+        <h5>Note</h5>
+        <ul>
+            <li>All our communications will be in English only</li>
+            <li>
+                You understand that the quality control of your project
+                completely rests upon you. We have no say over the recruitment
+                of a contributor
+            </li>
+        </ul>
 
-        <div class="col col-md-3 col-sm-6">
-            <input type="checkbox" id="pWebapp" name="pType" value="webapp" />
-            <label for="pWebapp">Web Application</label><br />
-        </div>
-
-        <div class="col col-md-3 col-sm-6">
-            <input
-                type="checkbox"
-                id="pMobileapp"
-                name="pType"
-                value="mobileapp"
-            />
-            <label for="pMobileapp">Mobile Application</label><br />
-        </div>
-    </div>
-
-    <div class="row border border-primary">
-        <div class="col col-md-3 col-sm-6">
-            <input
-                type="checkbox"
-                id="pDesktopapp"
-                name="pType"
-                value="desktopapp"
-            />
-            <label for="pDesktopapp">Desktop Application</label><br />
-        </div>
-        <div class="col col-md-3 col-sm-6">
-            <input type="checkbox" id="pOthers" name="pType" value="Others" />
-            <label for="pOthers">Others</label><br />
-        </div>
-    </div>
-
-    <h5>Current project contributors</h5>
-
-    <select name="contributorCount" id="contributorCount" class="form-control">
-        <option value="1">Project founder only</option>
-        <option value="less_than_10">Less than 10</option>
-        <option value="more_than_10">More than 10</option>
-    </select>
-    <small id="contributorstHelp" class="form-text text-muted"
-        >Number of contributors on the project at the time of posting.</small
-    >
-
-    <h5>Documentation Link</h5>
-
-    <input
-        type="text"
-        class="form-control"
-        name="documentation"
-        placeholder="Link to documentation, if any"
-    />
-
-    <h5>Is this a public project?</h5>
-
-    <input type="radio" id="publicY" name="public" value="true" checked />
-    <label for="publicY">Yes</label><br />
-
-    <input type="radio" id="publicN" name="public" value="false" />
-    <label for="publicN">No</label><br />
-
-    <h5>Is your project backed by any company?</h5>
-
-    <input
-        type="radio"
-        id="companyY"
-        name="company"
-        value="true"
-        onclick="showCompanyName(true)"
-    />
-    <label for="companyY">Yes</label><br />
-
-    <input
-        type="radio"
-        id="companyN"
-        name="company"
-        value="false"
-        onclick="showCompanyName(false)"
-        checked
-    />
-    <label for="companyN">No</label><br />
-
-    <input
-        type="text"
-        id="companyName"
-        name="companyName"
-        placeholder="Company Name"
-        class="form-control"
-        disabled
-    />
-
-    <h5>Is your company/project funded?</h5>
-
-    <input type="radio" id="fundedY" name="funded" value="true" checked />
-    <label for="fundedY">Yes</label><br />
-
-    <input type="radio" id="fundedN" name="funded" value="false" />
-    <label for="fundedN">No</label><br />
-
-    <h5>Note</h5>
-    <ul>
-        <li>All our communications will be in English only</li>
-        <li>
-            You understand that the quality control of your project completely
-            rests upon you. We have no say over the recruitment of a contributor
-        </li>
-    </ul>
-
-    <input
-        type="submit"
-        id="preferencesBtn"
-        name="submit"
-        value="Save as draft"
-        class="btn btn-warning"
-    />
-    <input
-        type="submit"
-        id="preferencesBtn"
-        name="submit"
-        value="Save and publish"
-        class="btn btn-success"
-    />
-</form>
+        <input
+            type="submit"
+            id="preferencesBtn"
+            name="submit"
+            value="Save as draft"
+            class="btn btn-warning"
+        />
+        <input
+            type="submit"
+            id="preferencesBtn"
+            name="submit"
+            value="Save and publish"
+            class="btn btn-success"
+        />
+    </form>
+</div>
 {{end}}

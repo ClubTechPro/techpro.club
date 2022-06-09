@@ -1,6 +1,7 @@
 package contributors
 
 import (
+	"fmt"
 	"html/template"
 	"net/http"
 
@@ -14,8 +15,13 @@ func PreferencesSaved(w http.ResponseWriter, r *http.Request){
         templates.ErrorHandler(w, r, http.StatusNotFound)
         return
     }
-	
-	tmpl := template.Must(template.ParseFiles("templates/app/contributors/preferencessaved.html"))
-	tmpl.Execute(w, nil) 
+
+
+	tmpl, err := template.New("").ParseFiles("templates/app/contributors/preferencessaved.html", "templates/app/contributors/common/base.html")
+	if err != nil {
+		fmt.Println(err.Error())
+	}else {
+		tmpl.ExecuteTemplate(w, "contributorbase", nil) 
+	}
 	
 }
