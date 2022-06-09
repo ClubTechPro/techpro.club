@@ -30,9 +30,9 @@ func main() {
 	http.HandleFunc("/projects", templates.ProjectIndexHandler)
 
 	// Templates/Contributors
-	http.HandleFunc("/contributor/feeds", contributors.Feeds)
-	http.HandleFunc("/contributor/preferences", contributors.Preferences)
-	http.HandleFunc("/contributor/thankyou", contributors.PreferencesSaved)
+	http.HandleFunc("/contributors/feeds", contributors.Feeds)
+	http.HandleFunc("/contributors/preferences", contributors.Preferences)
+	http.HandleFunc("/contributors/thankyou", contributors.PreferencesSaved)
 	
 
 	// Templates/Contributors
@@ -43,16 +43,18 @@ func main() {
 
 	// Authentication
 	// Github
-	http.HandleFunc("/contributor/github/login/", authentication.GithubContributorLoginHandler)
-	http.HandleFunc("/contributor/github/callback", authentication.GithubCallbackHandler)
+	http.HandleFunc("/contributors/github/login/", authentication.GithubContributorLoginHandler)
+	http.HandleFunc("/contributors/github/callback", authentication.GithubContributorCallbackHandler)
 
-	http.HandleFunc("/project/github/login/", authentication.GithubProjectLoginHandler)
-	http.HandleFunc("/project/github/callback", authentication.GithubCallbackHandler)
+	http.HandleFunc("/projects/github/login/", authentication.GithubProjectLoginHandler)
+	http.HandleFunc("/projects/github/callback", authentication.GithubProjectCallbackHandler)
 
 	// Func to receive data after login
 	http.HandleFunc("/github/loggedin", func(w http.ResponseWriter, r *http.Request) {
 		authentication.GithubLoggedinHandler(w, r, "")
 	})
+
+	http.HandleFunc("/logout", templates.Logout)
 
 	// Start the web server
     http.ListenAndServe(common.CONST_APP_PORT, nil)

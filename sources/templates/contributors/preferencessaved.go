@@ -10,7 +10,7 @@ import (
 
 func PreferencesSaved(w http.ResponseWriter, r *http.Request){
 	
-	if r.URL.Path != "/contributor/thankyou" {
+	if r.URL.Path != "/contributors/thankyou" {
         templates.ErrorHandler(w, r, http.StatusNotFound)
         return
     }

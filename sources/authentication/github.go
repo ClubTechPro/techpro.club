@@ -10,6 +10,7 @@ import (
 
 	"techpro.club/sources/common"
 	"techpro.club/sources/templates/contributors"
+	"techpro.club/sources/templates/projects"
 	"techpro.club/sources/users"
 )
 
@@ -69,7 +70,7 @@ func GithubProjectLoginHandler(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, redirectURL, http.StatusMovedPermanently)
 }
 
-func GithubCallbackHandler(w http.ResponseWriter, r *http.Request) {
+func GithubContributorCallbackHandler(w http.ResponseWriter, r *http.Request) {
 	code := r.URL.Query().Get("code")
 
 	// Set session cookie
@@ -79,6 +80,23 @@ func GithubCallbackHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	
 	contributors.CallBack(w,r)
+	githubAccessToken := GetGithubAccessToken(code)
+
+	githubData := GetGithubData(githubAccessToken)
+
+	GithubLoggedinHandler(w, r, githubData)
+}
+
+func GithubProjectCallbackHandler(w http.ResponseWriter, r *http.Request) {
+	code := r.URL.Query().Get("code")
+
+	// Set session cookie
+	ok, _ := users.GetSession(w, r)
+	if !ok {
+		users.SetSessionCookie(w,r,code)
+	}
+	
+	projects.CallBack(w,r)
 	githubAccessToken := GetGithubAccessToken(code)
 
 	githubData := GetGithubData(githubAccessToken)

@@ -26,7 +26,7 @@ type ContributorPreferencesStruct struct{
 
 func Preferences(w http.ResponseWriter, r *http.Request){
 	
-	if r.URL.Path != "/contributor/preferences" {
+	if r.URL.Path != "/contributors/preferences" {
         templates.ErrorHandler(w, r, http.StatusNotFound)
         return
     }
@@ -73,7 +73,7 @@ func Preferences(w http.ResponseWriter, r *http.Request){
 			
 			
 
-			http.Redirect(w, r, "/contributor/thankyou", http.StatusSeeOther)
+			http.Redirect(w, r, "/contributors/thankyou", http.StatusSeeOther)
 		}
 	}
 }

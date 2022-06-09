@@ -9,13 +9,13 @@ import (
 func TestPreferences(t *testing.T){
 
 	// Check for get request
-	_, errGet := http.NewRequest(http.MethodGet, "/contributor/preferences", nil) 
+	_, errGet := http.NewRequest(http.MethodGet, "/contributors/preferences", nil) 
 	if errGet != nil {
         t.Errorf(errGet.Error())
     }
 
 	// Check for post request
-	req, errPost := http.NewRequest(http.MethodPost, "/contributor/preferences",
+	req, errPost := http.NewRequest(http.MethodPost, "/contributors/preferences",
 		strings.NewReader("notificationFrequency=a&contributorCount=b"))
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded; param=value")
 

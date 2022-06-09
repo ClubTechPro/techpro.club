@@ -8,7 +8,7 @@
     <meta name="description" content="Support the open source community" />
     <link rel="icon" type="image/x-icon" href="../../assets/logos/favicon.png" />
     <meta name="author" content="Techpro Club" />
-    <title>Techpro Club</title>
+    <title>Techpro Club for projects</title>
     <!-- Font Awesome Icons -->
     <script
       src="https://kit.fontawesome.com/6255250c8f.js"
@@ -25,25 +25,19 @@
     />
   </head>
   <body>
+
     <div class="wrapper">
       <!-- Header -->
-      <header class="header">
+      <header class="header-projects">
         <div class="container-fluid">
           <div class="header-content">
-            <a href="#" class="logo">
-              <img src="../../assets/logos/techpro-club-logo.png" alt="" />
-            </a>
+            <span class="logo"><a href="#" >
+              <img src="../../assets/logos/techpro-club-logo.png" alt="Techpro club logo" width="250"/>
+            </a> Beta</span>
             <div class="header-menu">
-              <span
-                ><a href="#" target="_blank"
-                  ><button class="btn btn-yellow">Blogs</button></a
-                ></span
-              >
-              <span
-                ><a href="#" target="_blank"
-                  ><button class="btn btn-yellow">Github</button></a
-                ></span
-              >
+              <a href="/contributors/feeds" class="links"><span class="label label-pill label-success">Contributor Profile</span></a>
+              <a href="/projects/list" class="links">Projects</a>
+              <a href="/logout" class="links">Logout</a>
             </div>
             <i id="menu-bar" class="fas fa-bars"></i>
           </div>
@@ -54,12 +48,9 @@
       <div class="sidebar-menu">
         <i id="sidemenu-close" class="fas fa-times"></i>
         <div class="header-menu">
-          <a href="#" target="_blank"
-            ><button class="btn btn-yellow">Blogs</button></a
-          >
-          <a href="#" target="_blank"
-            ><button class="btn btn-yellow">Github</button></a
-          >
+          <a href="/contributors/feeds" class="links"><span class="label label-pill label-success">Contributor Profile</span></a>
+          <a href="/projects/list" class="links">Projects</a>
+          <a href="/logout" class="links">Logout</a>
         </div>
       </div>
 
@@ -83,6 +74,9 @@
                 <ul class="footer-menu">
                   <li>
                     <a href="mailto:hello@techpro.club">Email</a>
+                  </li>
+                  <li>
+                    <a href="https://blogs.techpro.club" target="_blank">Blogs</a>
                   </li>
                   <li>
                     <a href="https://github.com/ClubTechPro/techpro.club" target="_blank">Github</a>

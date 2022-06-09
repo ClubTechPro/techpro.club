@@ -1,4 +1,4 @@
-package contributors
+package projects
 
 import (
 	"fmt"
@@ -11,17 +11,17 @@ import (
 
 func CallBack(w http.ResponseWriter, r *http.Request){
 	
-	if r.URL.Path != "/contributors/github/callback" {
+	if r.URL.Path != "/projects/github/callback" {
         templates.ErrorHandler(w, r, http.StatusNotFound)
         return
     }
 	
-	tmpl, err := template.New("").ParseFiles("templates/app/contributors/callback.html", "templates/app/contributors/common/base.html")
+	tmpl, err := template.New("").ParseFiles("templates/app/projects/callback.html", "templates/app/projects/common/base.html")
 
 	if err != nil {
 		fmt.Println(err.Error())
 	}else {
-		tmpl.ExecuteTemplate(w, "contributorbase", nil) 
+		tmpl.ExecuteTemplate(w, "projectbase", nil) 
 	}
 	
 	
