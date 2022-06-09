@@ -41,7 +41,7 @@ func ProjectCreate(w http.ResponseWriter, r *http.Request){
         return
     }
 	
-	sessionOk, userID := users.ValidateSession(w, r)
+	sessionOk, userID := users.ValidateDbSession(w, r)
 	if(!sessionOk){
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 	}

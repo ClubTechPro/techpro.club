@@ -106,7 +106,7 @@ func DeleteSessionCookie(w http.ResponseWriter, r *http.Request) {
 	ok, sessionID := GetSession(w, r)
 
 	if ok {
-		status, errMsg := deleteSession(w, r, sessionID)
+		status, errMsg := deleteDbSession(w, r, sessionID)
 
 		if !status {
 			fmt.Println(errMsg)
@@ -135,7 +135,7 @@ func DeleteUserCookie(w http.ResponseWriter, r *http.Request) {
 }
 
 // Save user session in database
-func SaveUserSession(userId, sessionId string) (status bool, errMsg string) {
+func SaveUserDbSession(userId, sessionId string) (status bool, errMsg string) {
 
 	// Insert into database
 	result := UserSession{userId, sessionId}
@@ -161,7 +161,7 @@ func SaveUserSession(userId, sessionId string) (status bool, errMsg string) {
 }
 
 // Checks if session is valid, else return false
-func ValidateSession(w http.ResponseWriter, r *http.Request)(status bool, userID string){
+func ValidateDbSession(w http.ResponseWriter, r *http.Request)(status bool, userID string){
 	ok, sessionID := GetSession(w, r)
 	status = false
 	if ok {
@@ -176,5 +176,23 @@ func ValidateSession(w http.ResponseWriter, r *http.Request)(status bool, userID
 }
 
 // Delete the session from the databse
-func deleteSession(w http.ResponseWriter, r *http.Request, sessionID string)(status bool, errMsg string) {
+func deleteDbSession(w http.ResponseWriter, r *http.Request, sessionID string)(status bool, errMsg string) {
+
+	client, _ := common.Mongoconnect()
+	defer client.Disconnect(context.TODO())
+
+	dbName := common.GetMoDb()
+	saveUserSession := client.Database(dbName).Collection(common.CONST_MO_USER_SESSIONS)
+
+	_, err := saveUserSession.DeleteOne(context.TODO(), bson.M{"sessionid": sessionID})
+
+	if err != nil {
+		status = false
+		errMsg = err.Error()
+	} else {
+		status = true
+		errMsg = ""
+	}
+	
+	return status, errMsg
 }
