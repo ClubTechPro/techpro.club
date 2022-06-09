@@ -2,6 +2,7 @@ package users
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 
 	"techpro.club/sources/common"
@@ -98,6 +99,41 @@ func SetUserCookie(w http.ResponseWriter, r *http.Request, userName string) {
 	http.SetCookie(w, userCookie)
 }
 
+// Delete session cookie for user
+func DeleteSessionCookie(w http.ResponseWriter, r *http.Request) {
+	
+	// Get current session
+	ok, sessionID := GetSession(w, r)
+
+	if ok {
+		status, errMsg := deleteSession(w, r, sessionID)
+
+		if !status {
+			fmt.Println(errMsg)
+		}
+	}
+	// delete session cookie
+	sessionCookie := &http.Cookie{
+		Name : common.CONST_SESSION_NAME,
+		Value: "",
+		Path : "/",
+		MaxAge:-1,
+	}
+	http.SetCookie(w, sessionCookie)
+}
+
+// Delete user name cookie
+func DeleteUserCookie(w http.ResponseWriter, r *http.Request) {
+	// user cookie
+	userCookie := &http.Cookie{
+		Name : common.CONST_USER_NAME,
+		Value: "",
+		Path : "/",
+		MaxAge:-1,
+	}
+	http.SetCookie(w, userCookie)
+}
+
 // Save user session in database
 func SaveUserSession(userId, sessionId string) (status bool, errMsg string) {
 
@@ -137,4 +173,8 @@ func ValidateSession(w http.ResponseWriter, r *http.Request)(status bool, userID
 		}
 	}
 	return status, userID
+}
+
+// Delete the session from the databse
+func deleteSession(w http.ResponseWriter, r *http.Request, sessionID string)(status bool, errMsg string) {
 }
