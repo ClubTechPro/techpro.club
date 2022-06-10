@@ -13,7 +13,7 @@ import (
 	"techpro.club/sources/users"
 )
 
-type ViewProjectStruct struct{
+type ProjectStruct struct{
 	Id primitive.ObjectID `json:"id" bson:"_id,omitempty"`
 	UserID string `json:"userId"`
 	ProjectName string `json:"projectName"`
@@ -32,7 +32,7 @@ type ViewProjectStruct struct{
 	CreatedDate string `json:"createdDate"`
 	PublishedDate string `json:"publishedDate"`
 	ClosedDate string `json:"closedDate"`
-	IsActive bool `json:"isActive"`
+	IsActive int `json:"isActive"`
 }
 
 func ProjectList(w http.ResponseWriter, r *http.Request){
@@ -42,9 +42,15 @@ func ProjectList(w http.ResponseWriter, r *http.Request){
         return
     }
 
-	sessionOk, userID := users.ValidateSession(w, r)
+	// Session check
+	sessionOk, userID := users.ValidateDbSession(w, r)
 	if(!sessionOk){
-		http.Redirect(w, r, "/", http.StatusSeeOther)
+		
+		// Delete cookies
+		users.DeleteSessionCookie(w, r)
+		users.DeleteUserCookie(w, r)
+
+		http.Redirect(w, r, "/projects", http.StatusSeeOther)
 	}
 
 
@@ -55,13 +61,13 @@ func ProjectList(w http.ResponseWriter, r *http.Request){
 	fetchProject := client.Database(dbName).Collection(common.CONST_PR_PROJECTS)
 	projectsList, err := fetchProject.Find(context.TODO(),  bson.M{"userid": userID})
 
-	var results []ViewProjectStruct
+	var results []ProjectStruct
 
 	if err != nil {
 		fmt.Println(err)
 	} else {
 		for projectsList.Next(context.TODO()){
-			var elem ViewProjectStruct
+			var elem ProjectStruct
 			errDecode := projectsList.Decode(&elem)
 
 			if errDecode != nil {
@@ -73,10 +79,10 @@ func ProjectList(w http.ResponseWriter, r *http.Request){
 	}
 	
 
-	tmpl, err := template.New("").ParseFiles("templates/app/projects/projectlist.html", "templates/app/projects/common/base.html")
+	tmpl, err := template.New("").ParseFiles("templates/app/projects/projectlist.gohtml", "templates/app/projects/common/base.html")
 		if err != nil {
 			fmt.Println(err.Error())
 		}else {
-			tmpl.ExecuteTemplate(w, "projectbase", nil) 
+			tmpl.ExecuteTemplate(w, "projectbase", results) 
 		}
 }

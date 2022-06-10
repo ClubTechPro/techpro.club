@@ -2,6 +2,7 @@ package users
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"time"
 
@@ -10,6 +11,7 @@ import (
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 type UserStruct struct {
@@ -23,45 +25,59 @@ type UserStruct struct {
 }
 
 // Save a user to database and send a welcome email for first time users
-func SaveUser(w http.ResponseWriter, r *http.Request, email, name, location, imageLink, repoUrl, source string )(status bool, msg string, objectID interface{}){
+func SaveUser(w http.ResponseWriter, r *http.Request, email, name, location, imageLink, repoUrl, source string )(status bool, msg string, userIdObject interface{}){
 	
 	client, _ := common.Mongoconnect()
 	defer client.Disconnect(context.TODO())
 
 	dbName := common.GetMoDb()
-	saveUserCollection := client.Database(dbName).Collection(common.CONST_MO_USERS)
-	countUsers, errSearch := saveUserCollection.CountDocuments(context.TODO(), bson.M{"email": email, "source": common.CONST_GITHUB})
+	userCollection := client.Database(dbName).Collection(common.CONST_MO_USERS)
+	countUsers, errSearch := userCollection.CountDocuments(context.TODO(), bson.M{"email": email, "source": common.CONST_GITHUB})
 
 	if( errSearch != nil){
 		status = false
 		msg = errSearch.Error()
-		objectID = nil
+		userIdObject = nil
 	} else {
 
 		if (countUsers == 0){
 			
 			timestamp := time.Now()
 			user := UserStruct{email, name, location, imageLink, repoUrl, source, timestamp.Format("2006-01-02 15:04:05")}
-			insert, err := saveUserCollection.InsertOne(context.TODO(), user)
+			insert, err := userCollection.InsertOne(context.TODO(), user)
 			if err != nil{
 				status = false
 				msg = err.Error()
-				objectID = nil
+				userIdObject = nil
 			} else {
 				status = true
 				msg = ""
-				objectID = insert.InsertedID
+				userIdObject = insert.InsertedID
 					
 				// Code is the session
 				session := r.URL.Query().Get("code")
-				SaveUserSession(objectID.(primitive.ObjectID).Hex(), session)
+				SaveUserDbSession(userIdObject.(primitive.ObjectID).Hex(), session)
 
 				mailers.RegistrationEmail(email, name)
 			}
-		}
+		} else {
 
+			type useIdStruct struct {
+				ID	primitive.ObjectID `json:"id" bson:"_id,omitempty"`
+			}
+			var result useIdStruct
+			err := userCollection.FindOne(context.TODO(), bson.M{"email": email, "source": common.CONST_GITHUB}, options.FindOne()).Decode(&result)
+
+			if err != nil {
+				fmt.Println(err.Error())
+			} else {
+				session := r.URL.Query().Get("code")
+				SaveUserDbSession(result.ID.Hex(), session)
+			}
+
+		}
 		
 	}
 	
-	return status, msg, objectID
+	return status, msg, userIdObject
 }

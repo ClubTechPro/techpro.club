@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
+
+	"techpro.club/sources/users"
 )
 
 // Handles landing page of Contributors
@@ -13,6 +15,21 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
         ErrorHandler(w, r, http.StatusNotFound)
         return
     }
+
+	// Session check
+	status, _ := users.GetSession(w,r)
+	if status {
+		sessionOk, _ := users.ValidateDbSession(w, r)
+		if(sessionOk){
+			http.Redirect(w, r, "/contributors/feeds", http.StatusSeeOther)
+		} else {
+			// Delete cookies
+			users.DeleteSessionCookie(w, r)
+			users.DeleteUserCookie(w, r)
+		}
+	}
+
+	
 	tmpl := template.Must(template.ParseFiles("templates/home/index.html"))
     tmpl.Execute(w, nil)
 }
@@ -24,6 +41,21 @@ func ProjectIndexHandler(w http.ResponseWriter, r *http.Request) {
         ErrorHandler(w, r, http.StatusNotFound)
         return
     }
+
+	// Session check
+	status, _ := users.GetSession(w,r)
+	if status {
+		sessionOk, _ := users.ValidateDbSession(w, r)
+		if(sessionOk){
+			http.Redirect(w, r, "/projects/list", http.StatusSeeOther)
+		} else {
+			// Delete cookies
+			users.DeleteSessionCookie(w, r)
+			users.DeleteUserCookie(w, r)
+		}
+	}
+		
+		
 	tmpl := template.Must(template.ParseFiles("templates/home/project_index.html"))
     tmpl.Execute(w, nil)
 }

@@ -1,0 +1,53 @@
+{{define "content"}}
+<h3>Your project listings</h3>
+<a href="/projects/create"
+    ><button class="btn btn-warning">Create Listing</button></a
+>
+<br />
+{{if not .}}
+<br />
+<hr />
+<p>
+    You don't have any projects listing yet. Create your free project listing
+    <a href="/projects/create">here</a>.
+</p>
+{{else}}{{range .}}
+<div class="panel panel-default">
+    <div class="row">
+        <div class="col col-md-12 col-sm-6">
+            <h4>
+                {{.ProjectName}}
+                <small>
+                    <a href="/projects/view?projectid={{.Id.Hex}}">View</a>
+                </small>
+            </h4>
+            <small class="text-muted">
+                {{if eq .IsActive 1}}
+                Active
+                {{else if eq .IsActive 0}}
+                InActive
+                {{else}}
+                Under Moderation
+                {{ end }},
+                {{.CreatedDate}}
+
+                <a href="{{.RepoLink}}" target="_blank"
+                    ><span class="ti-link"> </span>{{.RepoLink}}</a
+                ></small
+            >
+            <p>{{.ProjectDescription}}</p>
+            <p>
+                {{ range.Languages }}
+                <span class="label label-pill label-primary">{{.}}</span>
+                {{ end }}
+                {{ range.Allied }}
+                <span class="label label-pill label-primary">{{.}}</span>
+                {{ end }}
+                {{ range.OtherLanguages }}
+                <span class="label label-pill label-primary">{{.}}</span>
+                {{ end }}
+            </p>
+        </div>
+    </div>
+</div>
+{{ end }}{{ end }} {{ end }}

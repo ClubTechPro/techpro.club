@@ -185,3 +185,12 @@ ul.footer-menu li a:hover {
         width: 100%;
     }
 }
+
+.rowspacing {
+    margin-top: 20px;
+}
+
+.panel {
+    max-width: 800px;
+    margin: auto;
+}

@@ -8,44 +8,23 @@ import (
 	"strings"
 	"time"
 
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"techpro.club/sources/common"
 	"techpro.club/sources/templates"
 	"techpro.club/sources/users"
 )
 
-type FinalOutStruct struct{
+type FinalProjectOutStruct struct{
 	ProgrammingLanguages map[string]string `json:"programmingLanguages"`
 	AlliedServices map[string]string `json:"alliedServices"`
 	ProjectType map[string]string `json:"projectType"`
 	Contributors map[string]string `json:"contributors"`
+	ProjectStruct ProjectStruct `json:"projectStruct"`
 }
 
-type NewProjectStruct struct{
-	UserID string `json:"userId"`
-	ProjectName string `json:"projectName"`
-	ProjectDescription string `json:"projectDescription"`
-	RepoLink string `json:"repoLink"`
-	Languages []string `json:"languages"`
-	OtherLanguages []string `json:"otherLanguages"`
-	Allied []string `json:"allied"`
-	ProjectType []string `json:"projectType"`
-	ContributorCount string `json:"contributorCount"`
-	Documentation string `json:"documentation"`
-	Public string `json:"public"`
-	Company string `json:"company"`
-	CompanyName string `json:"companyName"`
-	Funded string `json:"funded"`
-	CreatedDate string `json:"createdDate"`
-	PublishedDate string `json:"publishedDate"`
-	ClosedDate string `json:"closedDate"`
-	IsActive int `json:"isActive"`
-}
-
-
-
-func ProjectCreate(w http.ResponseWriter, r *http.Request){
-
-	if r.URL.Path != "/projects/create" {
+func ProjectEdit(w http.ResponseWriter, r *http.Request){
+	if r.URL.Path != "/projects/edit" {
         templates.ErrorHandler(w, r, http.StatusNotFound)
         return
     }
@@ -59,9 +38,12 @@ func ProjectCreate(w http.ResponseWriter, r *http.Request){
 		users.DeleteUserCookie(w, r)
 
 		http.Redirect(w, r, "/projects", http.StatusSeeOther)
-	} 
+	}
 
-
+	var functions = template.FuncMap{
+		"contains" : contains,
+		"sliceToCsv" : sliceToCsv,
+	}
 
 	ProgrammingLanguages := map[string]string{
 		"c" : "C",
@@ -129,6 +111,7 @@ func ProjectCreate(w http.ResponseWriter, r *http.Request){
 		"mobileapp" : "Mobile Application", 
 		"desktopapp" : "Desktop Application",
 		"others" : "Others",
+	
 	}
 
 	Contributors := map[string]string{
@@ -136,24 +119,31 @@ func ProjectCreate(w http.ResponseWriter, r *http.Request){
 		"less_than_10" : "Less than 10",
 		"more_than_10" : "More than 10",
 	}
-	
+
 	if r.Method == "GET"{
 
-		constantLists := FinalOutStruct{
+		projectID := r.URL.Query().Get("projectid")
+
+		result := FetchProjectDetails(projectID, userID)
+
+		constantLists := FinalProjectOutStruct{
 			ProgrammingLanguages,
 			AlliedServices,
 			ProjectType,
 			Contributors,
+			result,
 		}
+		
 
-		tmpl, err := template.New("").ParseFiles("templates/app/projects/projectcreate.gohtml", "templates/app/projects/common/base.html")
+		tmpl, err := template.New("").Funcs(functions).ParseFiles("templates/app/projects/projectedit.gohtml", "templates/app/projects/common/base.html")
 		if err != nil {
 			fmt.Println(err.Error())
 		}else {
 			tmpl.ExecuteTemplate(w, "projectbase", constantLists) 
 		}
-
 	} else {
+		projectID := r.URL.Query().Get("projectid")
+
 		errParse := r.ParseForm()
 		if errParse != nil {
 			fmt.Println(errParse.Error())
@@ -181,28 +171,68 @@ func ProjectCreate(w http.ResponseWriter, r *http.Request){
 
 			if submit == "Save as draft" {
 				result = NewProjectStruct{userID, projectName, projectDescription, repoLink, language, otherLanguagesSplit, allied, projectType, contributorCount, documentation, public, company, companyName ,funded, dt, "", "", common.CONST_INACTIVE}
-				saveProject(w, r, result)
+				updateProject(w, r, projectID, result)
 			} else {
 				result = NewProjectStruct{userID, projectName, projectDescription, repoLink, language, otherLanguagesSplit, allied, projectType, contributorCount, documentation, public, company, companyName ,funded, dt, dt, "", common.CONST_UNDER_MODERATION}
-				saveProject(w, r, result)
+				updateProject(w, r, projectID, result)
 			}	
 		}
 	}
 }
 
+func FetchProjectDetails(projectID, userID string) (projectDetails ProjectStruct){
+	if(projectID != ""){
 
-func saveProject(w http.ResponseWriter, r *http.Request, newProjectStruct NewProjectStruct){
+		projectIdHex, err := primitive.ObjectIDFromHex(projectID)
+
+		if err != nil {
+			fmt.Println(err.Error())
+		} else {
+			client, _ := common.Mongoconnect()
+			defer client.Disconnect(context.TODO())
+
+			dbName := common.GetMoDb()
+			fetchProject := client.Database(dbName).Collection(common.CONST_PR_PROJECTS)
+			err := fetchProject.FindOne(context.TODO(),  bson.M{"userid": userID, "_id": projectIdHex}).Decode(&projectDetails)
+
+			if err != nil {
+				fmt.Println(err)
+			} 
+		}
+	}
+
+	return projectDetails
+}
+
+func updateProject(w http.ResponseWriter, r *http.Request, projectID string, newProjectStruct NewProjectStruct){
 	client, _ := common.Mongoconnect()
 	defer client.Disconnect(context.TODO())
 
 	dbName := common.GetMoDb()
 	saveProject := client.Database(dbName).Collection(common.CONST_PR_PROJECTS)
 
-	_, err := saveProject.InsertOne(context.TODO(), newProjectStruct)
+	projectIdHex, _ := primitive.ObjectIDFromHex(projectID)
+	_, err := saveProject.UpdateOne(context.TODO(), bson.M{"_id": projectIdHex}, bson.M{"$set": newProjectStruct})
 
 	if err != nil {
 		fmt.Println(err)
 	}
 
 	http.Redirect(w, r, "/projects/thankyou", http.StatusSeeOther)
+}
+
+// Check if a string exists in a slice.
+func contains(s []string, e string) (status bool) {
+    for _, a := range s {
+        if a == e {
+            return true
+        }
+    }
+    return false
+}
+
+// Convert slice of strings to csv string
+func sliceToCsv(s []string) (csv string){
+	csv = strings.Join(s, ",")
+	return csv
 }

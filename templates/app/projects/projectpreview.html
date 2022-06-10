@@ -1,0 +1,81 @@
+{{define "content"}}
+<h3>Project details</h3>
+<div class="panel panel-default">
+    <div class="row rowspacing">
+        <div class="col col-md-12 col-sm-6"><b>Name</b></div>
+        <div class="col col-md-12 col-sm-6">{{.ProjectName}}</div>
+    </div>
+
+    <div class="row rowspacing">
+        <div class="col col-md-12 col-sm-6"><b>Description</b></div>
+        <div class="col col-md-12 col-sm-6">{{.ProjectDescription}}</div>
+    </div>
+
+    <div class="row rowspacing">
+        <div class="col col-md-12 col-sm-6"><b>Languages</b></div>
+        <div class="col col-md-12 col-sm-6">
+            {{range .Languages}}<span>{{.}},</span>{{end}}
+        </div>
+    </div>
+
+    <div class="row rowspacing">
+        <div class="col col-md-12 col-sm-6"><b>Other Languages</b></div>
+        <div class="col col-md-12 col-sm-6">
+            {{range .OtherLanguages}}<span>{{.}},</span>{{end}}
+        </div>
+    </div>
+
+    <div class="row rowspacing">
+        <div class="col col-md-12 col-sm-6"><b>Allied Services</b></div>
+        <div class="col col-md-12 col-sm-6">
+            {{range .Allied}}<span>{{.}},</span>{{end}}
+        </div>
+    </div>
+
+    <div class="row rowspacing">
+        <div class="col col-md-12 col-sm-6"><b>Project Type</b></div>
+        <div class="col col-md-12 col-sm-6">
+            {{range .ProjectType}}<span>{{.}},</span>{{end}}
+        </div>
+    </div>
+
+    <div class="row rowspacing">
+        <div class="col col-md-12 col-sm-6">
+            <b>Current Project Contributors</b>
+        </div>
+        <div class="col col-md-12 col-sm-6">{{.ContributorCount}}</div>
+    </div>
+
+    <div class="row rowspacing">
+        <div class="col col-md-12 col-sm-6">
+            <b>Documentation Link</b>
+        </div>
+        <div class="col col-md-12 col-sm-6">
+            <a href="{{.Documentation}}">{{.Documentation}}</a>
+        </div>
+    </div>
+
+    <div class="row rowspacing">
+        <div class="col col-md-12 col-sm-6">
+            <b>Other Details</b>
+        </div>
+    </div>
+
+    <div class="row rowspacing">
+        <div class="col col-md-4 col-sm-6">
+            <h6>Repository type</h6>
+            {{if .Public}}Public Repository{{else}} Private Repository {{end}}
+        </div>
+        <div class="col col-md-4 col-sm-6">
+            <h6>Company</h6>
+            {{if .Company}}{{.CompanyName}}{{end}}
+        </div>
+
+        <div class="col col-md-4 col-sm-6">
+            <h6>Funded</h6>
+            {{if .Funded}}Yes {{else}} No{{end}}
+        </div>
+    </div>
+</div>
+<br />
+{{end}}
