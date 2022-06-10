@@ -9,6 +9,11 @@ const(
 	CONST_SESSION_NAME = "session"
 	CONST_USER_NAME = "name"
 
+	// DB Flags
+	CONST_ACTIVE = 1
+	CONST_INACTIVE = 0
+	CONST_UNDER_MODERATION = 11
+
 	// MongoDb Table names
 	CONST_MO_USERS = "users"
 	CONST_MO_USER_DETAILS = "user_details"

@@ -17,10 +17,18 @@
         <div class="col col-md-12 col-sm-6">
             <h4>
                 {{.ProjectName}}
-                <small><a href="/projects/edit/{{.Id.Hex}}">Edit</a></small>
+                <small>
+                    <a href="/projects/view?projectid={{.Id.Hex}}">View</a>
+                </small>
             </h4>
             <small class="text-muted">
-                {{if (.IsActive)}} Active {{else}} InActive {{end}},
+                {{if eq .IsActive 1}}
+                Active
+                {{else if eq .IsActive 0}}
+                InActive
+                {{else}}
+                Under Moderation
+                {{ end }},
                 {{.CreatedDate}}
 
                 <a href="{{.RepoLink}}" target="_blank"
@@ -29,20 +37,17 @@
             >
             <p>{{.ProjectDescription}}</p>
             <p>
-                {{range .Languages}}<span class="label label-pill label-primary"
-                    >{{.}}</span
-                >
-                {{end}} {{range .Allied}}<span
-                    class="label label-pill label-primary"
-                    >{{.}}</span
-                >
-                {{end}} {{range .OtherLanguages}}<span
-                    class="label label-pill label-primary"
-                    >{{.}}</span
-                >
-                {{end}}
+                {{ range.Languages }}
+                <span class="label label-pill label-primary">{{.}}</span>
+                {{ end }}
+                {{ range.Allied }}
+                <span class="label label-pill label-primary">{{.}}</span>
+                {{ end }}
+                {{ range.OtherLanguages }}
+                <span class="label label-pill label-primary">{{.}}</span>
+                {{ end }}
             </p>
         </div>
     </div>
 </div>
-{{end}}{{end}} {{end}}
+{{ end }}{{ end }} {{ end }}

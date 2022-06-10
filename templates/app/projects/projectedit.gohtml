@@ -1,0 +1,249 @@
+{{define "content"}}
+<h3>Edit project</h3>
+{{if not .}} No such project exists {{else}}
+<div class="panel panel-default">
+    <form method="post" content-type="x-www-form-urlencoded">
+        <h5>Project Title <span class="text-danger">*</span></h5>
+        <input
+            type="text"
+            name="projectName"
+            class="form-control"
+            placeholder="Name of your project"
+            required
+            value="{{.ProjectStruct.ProjectName}}"
+        />
+
+        <h5>
+            Project repository link
+            <span class="text-danger">*</span>
+        </h5>
+        <input
+            type="text"
+            name="repoLink"
+            class="form-control"
+            placeholder="Project link to Github, Bitbucket, Gitlab, Azure, etc"
+            required
+            value="{{.ProjectStruct.RepoLink}}"
+        />
+
+        <h5>Project description <span class="text-danger">*</span></h5>
+        <textarea
+            name="projectDescription"
+            class="form-control"
+            placeholder="Describe the objective of your project so that the contributors can understand your idea clearly. Including frameworks, libraries will also help"
+            required
+        >{{.ProjectStruct.ProjectDescription}}</textarea>
+
+        <h5>Project programming language(s)</h5>
+
+        <div class="row border border-primary">
+            {{$Languages := .ProjectStruct.Languages}}
+            {{range $key, $value := .ProgrammingLanguages}}
+                {{if contains $Languages $key}}
+                
+                    <div class="col col-md-3 col-sm-6">
+                        <input
+                            type="checkbox"
+                            id="{{ $key }}"
+                            name="language"
+                            value="{{ $key }}"
+                            checked
+                        />
+                        <label for="{{ $key }}">{{ $value }}</label><br />
+                    </div>
+                {{else}}
+                    <div class="col col-md-3 col-sm-6">
+                        <input
+                            type="checkbox"
+                            id="{{ $key }}"
+                            name="language"
+                            value="{{ $key }}"
+                        />
+                        <label for="{{ $key }}">{{ $value }}</label><br />
+                    </div>
+                {{ end }}
+            {{ end }}
+
+
+            <div class="col col-md-3 col-sm-6">
+                <input
+                    type="text"
+                    id="otherLanguages"
+                    name="otherLanguages"
+                    class="form-control"
+                    placeholder="For others, enter CSV"
+                    value="{{sliceToCsv .ProjectStruct.OtherLanguages}}"
+                />
+            </div>
+        </div>
+
+        <h5>Allied Service(s)</h5>
+
+        <div class="row border border-primary">
+        {{$Allied := .ProjectStruct.Allied}}
+        {{range $key, $value := .AlliedServices}}
+            {{if contains $Allied $key}}
+                <div class="col col-md-3 col-sm-6">
+                    <input
+                        type="checkbox"
+                        id="{{$key}}"
+                        name="allied"
+                        value="{{$key}}"
+                        checked
+                    />
+                    <label for="{{$key}}">{{$value}}</label><br />
+                </div>
+                {{else}}
+
+                <div class="col col-md-3 col-sm-6">
+                    <input
+                        type="checkbox"
+                        id="{{$key}}"
+                        name="allied"
+                        value="{{$key}}"
+                    />
+                    <label for="{{$key}}">{{$value}}</label><br />
+                </div>
+            {{end}}
+        {{end}}
+        </div>
+
+        <h5>Project type</h5>
+
+        <div class="row border border-primary">
+        {{$ProjectTypeSlice := .ProjectStruct.ProjectType}}
+        {{range $key, $value := .ProjectType}}
+            {{if contains $ProjectTypeSlice $key}}
+                <div class="col col-md-3 col-sm-6">
+                    <input
+                        type="checkbox"
+                        id="{{$key}}"
+                        name="pType"
+                        value="{{$key}}"
+                        checked
+                    />
+                    <label for="{{$key}}">{{$value}}</label><br />
+                </div>
+            {{else}}
+                <div class="col col-md-3 col-sm-6">
+                    <input
+                        type="checkbox"
+                        id="{{$key}}"
+                        name="pType"
+                        value="{{$key}}"
+                    />
+                    <label for="{{$key}}">{{$value}}</label><br />
+                </div>
+            {{end}}
+        {{end}}   
+        </div>
+
+        <h5>Current project contributors</h5>
+
+        <select
+            name="contributorCount"
+            id="contributorCount"
+            class="form-control"
+        >
+        
+        {{$Contributor := .ProjectStruct.ContributorCount}}
+        {{range $key, $value := .Contributors}}
+            {{if eq $Contributor $key}}
+                <option value="{{$key}}" selected>{{$value}}</option>
+            {{else}}
+                <option value="{{$key}}">{{$value}}</option>
+            {{end}}
+        {{end}}
+
+        </select>
+        <small id="contributorstHelp" class="form-text text-muted"
+            >Number of contributors on the project at the time of
+            posting.</small
+        >
+
+        <h5>Documentation Link</h5>
+
+        <input
+            type="text"
+            class="form-control"
+            name="documentation"
+            placeholder="Link to documentation, if any"
+            value={{.ProjectStruct.Documentation}}
+        />
+
+        <h5>Is this a public project?</h5>
+
+        <input type="radio" id="publicY" name="public" value="true" {{if eq .ProjectStruct.Public "true"}} checked {{end}} />
+        <label for="publicY">Yes</label><br />
+
+        <input type="radio" id="publicN" name="public" value="false" {{if eq .ProjectStruct.Public "false"}} checked {{end}}/>
+        <label for="publicN">No</label><br />
+
+        <h5>Is your project backed by any company?</h5>
+
+        <input
+            type="radio"
+            id="companyY"
+            name="company"
+            value="true"
+            onclick="showCompanyName(true)"
+            {{if eq .ProjectStruct.Company "true"}} checked {{end}}
+        />
+        <label for="companyY">Yes</label><br />
+
+        <input
+            type="radio"
+            id="companyN"
+            name="company"
+            value="false"
+            onclick="showCompanyName(false)"
+            {{if eq .ProjectStruct.Company "false"}} checked {{end}}
+        />
+        <label for="companyN">No</label><br />
+
+        <input
+            type="text"
+            id="companyName"
+            name="companyName"
+            placeholder="Company Name"
+            class="form-control"
+            disabled
+            value="{{.ProjectStruct.CompanyName}}"
+        />
+
+        <h5>Is your company/project funded?</h5>
+
+        <input type="radio" id="fundedY" name="funded" value="true" {{if eq .ProjectStruct.Funded "true"}} checked {{end}} />
+        <label for="fundedY">Yes</label><br />
+
+        <input type="radio" id="fundedN" name="funded" value="false" {{if eq .ProjectStruct.Funded "false"}} checked {{end}}/>
+        <label for="fundedN">No</label><br />
+
+        <h5>Note</h5>
+        <ul>
+            <li>All our communications will be in English only</li>
+            <li>
+                You understand that the quality control of your project
+                completely rests upon you. We have no say over the recruitment
+                of a contributor
+            </li>
+        </ul>
+
+        <input
+            type="submit"
+            id="preferencesBtn"
+            name="submit"
+            value="Save as draft"
+            class="btn btn-warning"
+        />
+        <input
+            type="submit"
+            id="preferencesBtn"
+            name="submit"
+            value="Save and publish"
+            class="btn btn-success"
+        />
+    </form>
+</div>
+
+{{end}} {{end}}
