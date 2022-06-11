@@ -4,7 +4,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/github_username/repo_name">
-    <img src="https://github.com/ClubTechPro/techpro.club/blob/master/assets/logos/techpro-club-logo-blue.png" alt="Logo" >
+    <img src="https://github.com/ClubTechPro/techpro.club/blob/master/assets/logos/logo-large.png" alt="Logo" >
   </a>
 
   <p align="center">
