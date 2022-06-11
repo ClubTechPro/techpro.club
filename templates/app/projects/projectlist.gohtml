@@ -6,12 +6,9 @@
 
 <br />
 {{if not .}}
-<br />
-<hr />
-<p>
-    You don't have any projects listing yet. Create your free project listing
-    <a href="/projects/create">here</a>.
-</p>
+<div class="panel panel-default">
+    You don't have any projects listing yet. Create your free project listing <a href="/projects/create">here</a>.
+</div>
 {{else}}{{range .}}
 <div class="panel panel-default">
     <div class="row">
