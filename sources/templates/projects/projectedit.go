@@ -41,8 +41,8 @@ func ProjectEdit(w http.ResponseWriter, r *http.Request){
 	}
 
 	var functions = template.FuncMap{
-		"contains" : contains,
-		"sliceToCsv" : sliceToCsv,
+		"contains" : Contains,
+		"sliceToCsv" : SliceToCsv,
 	}
 
 	ProgrammingLanguages := map[string]string{
@@ -222,7 +222,7 @@ func updateProject(w http.ResponseWriter, r *http.Request, projectID string, new
 }
 
 // Check if a string exists in a slice.
-func contains(s []string, e string) (status bool) {
+func Contains(s []string, e string) (status bool) {
     for _, a := range s {
         if a == e {
             return true
@@ -232,7 +232,7 @@ func contains(s []string, e string) (status bool) {
 }
 
 // Convert slice of strings to csv string
-func sliceToCsv(s []string) (csv string){
+func SliceToCsv(s []string) (csv string){
 	csv = strings.Join(s, ",")
 	return csv
 }

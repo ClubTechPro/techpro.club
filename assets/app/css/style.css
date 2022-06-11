@@ -64,6 +64,11 @@ body {
 }
 
 /* Footer */
+
+.before-footer-spacing {
+    margin-bottom: 30px;
+}
+
 .footer {
     background-color: #2a2a2a;
     color: #fff;
