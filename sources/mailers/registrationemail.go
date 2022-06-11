@@ -33,7 +33,7 @@ const(
 	"<a href='https://github.com/chilarai'>Github</a>, <a href='https://twitter.com/chilly5476'>Twitter</a>";
 
 
-	HtmlBodyProjects = "<p>I am Chilarai, co-founder of Techpro.club. Thank you for joining us. We are a community of opensource contributors, which helps you to discover amazing people for the development of your project for free. With more contributions, we help your project grow and gradually its adopted amongst the wider audience</p>" +
+	HtmlBodyProjects = "<p>I am Chilarai, co-founder of Techpro.club. Thank you for joining us. We are a community of opensource contributors, which helps you to discover amazing people for the development of your project for free. With more contributions, we help your project grow and gradually become adopted amongst the wider audience</p>" +
 		
 	"<h3>Where to head next?</h3>" +
 	"<p>We are currently in Beta stage and onboarding more projects and contributors. But in the meanwhile, you can</p>" +
