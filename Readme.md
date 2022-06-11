@@ -3,7 +3,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/github_username/repo_name">
+  <a href="https://github.com/ClubTechPro/techpro.club">
     <img src="https://github.com/ClubTechPro/techpro.club/blob/master/assets/logos/logo-large.png" alt="Logo" >
   </a>
 
