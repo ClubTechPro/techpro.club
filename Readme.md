@@ -16,7 +16,6 @@
   <p align="center">
     Lets contribute to the open-source projects & help them find more contributors and adopters.
     <br />
-    <a href="https://github.com/github_username/repo_name"><strong>Explore the docs »</strong></a>
     <br />
     <br />
     
@@ -112,7 +111,7 @@ The above steps are before you unlock the sending limits in SES. Read https://do
 3. Install Golang dependencies
     ```sh
     cd /path/to/project
-    go get ./...
+    go mod tidy
     ```
 4. Run the project
     ```sh
