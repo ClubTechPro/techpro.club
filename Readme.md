@@ -134,27 +134,27 @@ The above steps are before you unlock the sending limits in SES. Read https://do
     -   [x] Projects CRUD
     -   [x] Registration welcome email
     -   [x] Master templates
--   [] **v 0.2**
-    -   [] Profile management - avatar, delete account, etc.
-    -   [] Project feeds
-    -   [] Feed filters
--   [] **v 0.3**
-    -   [] Notification for contributors
-    -   [] Notification for projects
--   [] **v 0.4**
-    -   [] Project invite members
-    -   [] Project manage members
-    -   [] Share on social media
--   [] **v 0.5**
-    -   [] Project analytics
--   [] **v 0.6**
-    -   [] Badges
--   [] **v 0.7**
-    -   [] Integration with Gitlab
--   [] **v 0.8**
-    -   [] Integration with Bitbucket
--   [] **v 0.9**
-    -   [] Integration with Azure
+-   [ ] **v 0.2**
+    -   [ ] Profile management - avatar, delete account, etc.
+    -   [ ] Project feeds
+    -   [ ] Feed filters
+-   [ ] **v 0.3**
+    -   [ ] Notification for contributors
+    -   [ ] Notification for projects
+-   [ ] **v 0.4**
+    -   [ ] Project invite members
+    -   [ ] Project manage members
+    -   [ ] Share on social media
+-   [ ] **v 0.5**
+    -   [ ] Project analytics
+-   [ ] **v 0.6**
+    -   [ ] Badges
+-   [ ] **v 0.7**
+    -   [ ] Integration with Gitlab
+-   [ ] **v 0.8**
+    -   [ ] Integration with Bitbucket
+-   [ ] **v 0.9**
+    -   [ ] Integration with Azure
 
 More to follow. Perhaps, once this is done, we will move it to some other section for better tracking.
 
