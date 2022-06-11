@@ -1,10 +1,10 @@
 <div id="top"></div>
 
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
+[![Contributors]][contributors-url]
+[![Forks]][forks-url]
+[![Stargazers]][stars-url]
+[![Issues]][issues-url]
+[![MIT License]][license-url]
 
 <!-- PROJECT LOGO -->
 <br />
