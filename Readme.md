@@ -124,7 +124,7 @@ The above steps are before you unlock the sending limits in SES. Read https://do
 -   [x] **v 0.1**
     -   [x] User Authentication
     -   [x] Contributor preferences
-    -   [x] Projects CRUD
+    -   [x] Projects Create, Read, Update
     -   [x] Registration welcome email
     -   [x] Master templates
 -   [ ] **v 0.2**
@@ -149,7 +149,7 @@ The above steps are before you unlock the sending limits in SES. Read https://do
 -   [ ] **v 0.9**
     -   [ ] Integration with Azure
 
-More to follow. Perhaps, once this is done, we will move it to some other section for better tracking.
+More to follow. Perhaps, once these are done, we will move it to some other section for better tracking.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
