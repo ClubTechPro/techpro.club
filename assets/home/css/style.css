@@ -447,13 +447,20 @@ ul.footer-menu li a:hover {
     display: none;
 }
 
+.sidebar-projects {
+    background-color: #000;
+}
+
+.sidebar {
+    background-color: #016cc7;
+}
+
 .sidebar-menu {
     position: fixed;
     width: 25rem;
     top: 0;
     right: -35rem;
     height: 100%;
-    background-color: #016cc7;
     padding: 0 2.5rem;
     transition: 300ms ease-in;
     z-index: 100;
