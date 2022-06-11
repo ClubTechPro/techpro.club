@@ -26,7 +26,7 @@ func Feeds(w http.ResponseWriter, r *http.Request){
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 	}
 	
-	tmpl, err := template.New("").ParseFiles("templates/app/contributors/feeds.html", "templates/app/contributors/common/base.html")
+	tmpl, err := template.New("").ParseFiles("templates/app/contributors/feeds.gohtml", "templates/app/contributors/common/base.gohtml")
 
 	if err != nil {
 		fmt.Println(err.Error())

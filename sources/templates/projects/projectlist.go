@@ -79,7 +79,7 @@ func ProjectList(w http.ResponseWriter, r *http.Request){
 	}
 	
 
-	tmpl, err := template.New("").ParseFiles("templates/app/projects/projectlist.gohtml", "templates/app/projects/common/base.html")
+	tmpl, err := template.New("").ParseFiles("templates/app/projects/projectlist.gohtml", "templates/app/projects/common/base.gohtml")
 		if err != nil {
 			fmt.Println(err.Error())
 		}else {

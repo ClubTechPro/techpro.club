@@ -28,7 +28,7 @@ func ProjectSaved(w http.ResponseWriter, r *http.Request){
 		http.Redirect(w, r, "/projects", http.StatusSeeOther)
 	}
 	
-	tmpl, err := template.New("").ParseFiles("templates/app/projects/projectsaved.html", "templates/app/projects/common/base.html")
+	tmpl, err := template.New("").ParseFiles("templates/app/projects/projectsaved.gohtml", "templates/app/projects/common/base.gohtml")
 		if err != nil {
 			fmt.Println(err.Error())
 		}else {

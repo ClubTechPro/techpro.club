@@ -30,7 +30,7 @@ func ProjectPreview(w http.ResponseWriter, r *http.Request){
 	result := FetchProjectDetails(projectID, userID)
 	
 
-	tmpl, err := template.New("").ParseFiles("templates/app/projects/projectpreview.html", "templates/app/projects/common/base.html")
+	tmpl, err := template.New("").ParseFiles("templates/app/projects/projectpreview.gohtml", "templates/app/projects/common/base.gohtml")
 	if err != nil {
 		fmt.Println(err.Error())
 	}else {
