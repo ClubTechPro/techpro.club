@@ -53,7 +53,7 @@ func main() {
 
 	// Func to receive data after login
 	http.HandleFunc("/github/loggedin", func(w http.ResponseWriter, r *http.Request) {
-		authentication.GithubLoggedinHandler(w, r, "")
+		authentication.GithubLoggedinHandler(w, r, "", "")
 	})
 
 	http.HandleFunc("/logout", templates.Logout)

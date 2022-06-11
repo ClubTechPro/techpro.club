@@ -15,7 +15,7 @@ func CallBack(w http.ResponseWriter, r *http.Request){
         templates.ErrorHandler(w, r, http.StatusNotFound)
         return
     }
-	
+
 	tmpl, err := template.New("").ParseFiles("templates/app/contributors/callback.gohtml", "templates/app/contributors/common/base.gohtml")
 
 	if err != nil {
