@@ -15,14 +15,13 @@ import (
 )
 
 
-func GithubLoggedinHandler(w http.ResponseWriter, r *http.Request, githubData string) {
+func GithubLoggedinHandler(w http.ResponseWriter, r *http.Request, githubData, userType string) {
 	if githubData == "" {
 		// Unauthorized users get an unauthorized message
 		fmt.Println("UNAUTHORIZED!")
 		return
 	}
-
-	w.Header().Set("Content-type", "application/json")
+	
 
 	// Prettifying the json
 	var prettyJSON bytes.Buffer
@@ -41,14 +40,30 @@ func GithubLoggedinHandler(w http.ResponseWriter, r *http.Request, githubData st
 	imageLink := fmt.Sprintf("%s", jsonMap["avatar_url"])
 	repoUrl := fmt.Sprintf("%s", jsonMap["html_url"])
 
-	
-	// Return the prettified JSON as a string
-	// fmt.Fprintf(w, string(prettyJSON.Bytes()))
-	status, msg, _ := users.SaveUser(w, r, email, name, location, imageLink, repoUrl, common.CONST_GITHUB)
-	
-	if(!status){
-		fmt.Println(msg)
-	} 
+	ok := users.CheckUserWelcome(email)
+
+	if (ok && userType == common.CONST_USER_CONTRIBUTOR) {
+		// Save user session and redirect to feeds page
+		users.SaveUser(w, r, email, name, location, imageLink, repoUrl, common.CONST_GITHUB, common.CONST_USER_CONTRIBUTOR)
+	} else if (ok && userType == common.CONST_USER_PROJECT) {
+		// Save user session and redirect to projects list page
+		users.SaveUser(w, r, email, name, location, imageLink, repoUrl, common.CONST_GITHUB, common.CONST_USER_PROJECT)
+	} else {
+
+		// Callback pages for contributors and projects
+		
+		if userType == common.CONST_USER_CONTRIBUTOR{
+			contributors.CallBack(w,r)
+		} else {
+			projects.CallBack(w,r)
+		}
+		
+		w.Header().Set("Content-type", "application/json")
+		status, msg, _ := users.SaveUser(w, r, email, name, location, imageLink, repoUrl, common.CONST_GITHUB, "")
+		if(!status){
+			fmt.Println(msg)
+		} 
+	}
 }
 
 func GithubContributorLoginHandler(w http.ResponseWriter, r *http.Request) {
@@ -79,12 +94,11 @@ func GithubContributorCallbackHandler(w http.ResponseWriter, r *http.Request) {
 		users.SetSessionCookie(w,r,code)
 	}
 	
-	contributors.CallBack(w,r)
 	githubAccessToken := GetGithubAccessToken(code)
 
 	githubData := GetGithubData(githubAccessToken)
 
-	GithubLoggedinHandler(w, r, githubData)
+	GithubLoggedinHandler(w, r, githubData, common.CONST_USER_CONTRIBUTOR)
 }
 
 func GithubProjectCallbackHandler(w http.ResponseWriter, r *http.Request) {
@@ -95,13 +109,12 @@ func GithubProjectCallbackHandler(w http.ResponseWriter, r *http.Request) {
 	if !ok {
 		users.SetSessionCookie(w,r,code)
 	}
-	
-	projects.CallBack(w,r)
+
 	githubAccessToken := GetGithubAccessToken(code)
 
 	githubData := GetGithubData(githubAccessToken)
 
-	GithubLoggedinHandler(w, r, githubData)
+	GithubLoggedinHandler(w, r, githubData, common.CONST_USER_PROJECT)
 }
 
 func GetGithubData(accessToken string) (responseBody string) {

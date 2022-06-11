@@ -1,4 +1,4 @@
-{{define "contributorbase"}}
+{{define "projectbase"}}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -8,7 +8,7 @@
     <meta name="description" content="Support the open source community" />
     <link rel="icon" type="image/x-icon" href="../../assets/logos/favicon.png" />
     <meta name="author" content="Techpro Club" />
-    <title>Techpro Club for contributors</title>
+    <title>Techpro Club for projects</title>
     <!-- Font Awesome Icons -->
     <script
       src="https://kit.fontawesome.com/6255250c8f.js"
@@ -25,18 +25,18 @@
     />
   </head>
   <body>
+
     <div class="wrapper">
       <!-- Header -->
-      <header class="header">
+      <header class="header-projects">
         <div class="container-fluid">
           <div class="header-content">
-            <span class="logo"><a href="#">
+            <span class="logo"><a href="#" >
               <img src="../../assets/logos/techpro-club-logo.png" alt="Techpro club logo" width="250"/>
             </a> Beta</span>
             <div class="header-menu">
-              <a href="/projects/list" class="links"><span class="label label-pill label-success">Manage Projects</span></a>
-              <a href="/contributors/feeds" class="links">Feeds</a>
-              <a href="/contributors/preferences" class="links">Preferences</a>
+              <a href="/contributors/feeds" class="links"><span class="label label-pill label-success">Contributor Profile</span></a>
+              <a href="/projects/list" class="links">Projects</a>
               <a href="/logout" class="links">Logout</a>
             </div>
             <i id="menu-bar" class="fas fa-bars"></i>
@@ -45,13 +45,12 @@
       </header>
 
       <!-- Sidebar-Menu -->
-      <div class="sidebar-menu">
+      <div class="sidebar-menu sidebar-projects">
         <i id="sidemenu-close" class="fas fa-times"></i>
         <div class="header-menu">
-          <a href="/projects/list"><span class="label label-pill label-success">Manage Projects</span></a>
-          <a href="/contributors/feeds">Feeds</a>
-          <a href="/contributors/preferences">Preferences</a>
-          <a href="/logout">Logout</a>
+          <a href="/contributors/feeds" class="links"><span class="label label-pill label-success">Contributor Profile</span></a>
+          <a href="/projects/list" class="links">Projects</a>
+          <a href="/logout" class="links">Logout</a>
         </div>
       </div>
 

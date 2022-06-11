@@ -135,7 +135,7 @@ func ProjectEdit(w http.ResponseWriter, r *http.Request){
 		}
 		
 
-		tmpl, err := template.New("").Funcs(functions).ParseFiles("templates/app/projects/projectedit.gohtml", "templates/app/projects/common/base.html")
+		tmpl, err := template.New("").Funcs(functions).ParseFiles("templates/app/projects/projectedit.gohtml", "templates/app/projects/common/base.gohtml")
 		if err != nil {
 			fmt.Println(err.Error())
 		}else {

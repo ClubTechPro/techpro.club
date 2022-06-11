@@ -1,16 +1,14 @@
 {{define "content"}}
-<h3>Your project listings</h3>
-<a href="/projects/create"
-    ><button class="btn btn-warning">Create Listing</button></a
->
+<div class="panel-heading">
+    <a href="/projects/create"><button class="btn-success panel-heading-button">Create project</button></a>
+    
+</div>
+
 <br />
 {{if not .}}
-<br />
-<hr />
-<p>
-    You don't have any projects listing yet. Create your free project listing
-    <a href="/projects/create">here</a>.
-</p>
+<div class="panel panel-default">
+    You don't have any projects listing yet. Create your free project listing <a href="/projects/create">here</a>.
+</div>
 {{else}}{{range .}}
 <div class="panel panel-default">
     <div class="row">
@@ -18,7 +16,7 @@
             <h4>
                 {{.ProjectName}}
                 <small>
-                    <a href="/projects/view?projectid={{.Id.Hex}}">View</a>
+                    <a href="/projects/view?projectid={{.Id.Hex}}"><button class="btn btn-xs">View</button></a>
                 </small>
             </h4>
             <small class="text-muted">
@@ -38,14 +36,15 @@
             <p>{{.ProjectDescription}}</p>
             <p>
                 {{ range.Languages }}
-                <span class="label label-pill label-primary">{{.}}</span>
-                {{ end }}
-                {{ range.Allied }}
-                <span class="label label-pill label-primary">{{.}}</span>
+                <span class="label label-pill label-success">{{.}}</span>
                 {{ end }}
                 {{ range.OtherLanguages }}
-                <span class="label label-pill label-primary">{{.}}</span>
+                <span class="label label-pill label-success">{{.}}</span>
                 {{ end }}
+                {{ range.Allied }}
+                <span class="label label-pill label-default">{{.}}</span>
+                {{ end }}
+                
             </p>
         </div>
     </div>

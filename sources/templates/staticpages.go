@@ -30,7 +30,7 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	
-	tmpl := template.Must(template.ParseFiles("templates/home/index.html"))
+	tmpl := template.Must(template.ParseFiles("templates/home/index.gohtml"))
     tmpl.Execute(w, nil)
 }
 
@@ -56,7 +56,7 @@ func ProjectIndexHandler(w http.ResponseWriter, r *http.Request) {
 	}
 		
 		
-	tmpl := template.Must(template.ParseFiles("templates/home/project_index.html"))
+	tmpl := template.Must(template.ParseFiles("templates/home/project_index.gohtml"))
     tmpl.Execute(w, nil)
 }
 

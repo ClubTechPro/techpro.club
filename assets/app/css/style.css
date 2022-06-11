@@ -104,7 +104,7 @@ ul.footer-menu li a {
     padding-right: 20px;
 }
 
-ul.footer-menu li:nth-child(3) a {
+ul.footer-menu li:nth-child(4) a {
     padding-right: 0;
 }
 
@@ -117,13 +117,20 @@ ul.footer-menu li a:hover {
     display: none;
 }
 
+.sidebar-projects {
+    background-color: #000;
+}
+
+.sidebar {
+    background-color: #016cc7;
+}
+
 .sidebar-menu {
     position: fixed;
     width: 25rem;
     top: 0;
     right: -35rem;
     height: 100%;
-    background-color: #016cc7;
     padding: 0 2.5rem;
     transition: 300ms ease-in;
     z-index: 10;
@@ -193,4 +200,20 @@ ul.footer-menu li a:hover {
 .panel {
     max-width: 800px;
     margin: auto;
+}
+
+.panel-heading {
+    max-width: 800px;
+    margin: auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.panel-heading-button {
+    float: left;
+    display: flex;
+}
+
+.social-buttons {
+    margin-bottom: 20px;
 }

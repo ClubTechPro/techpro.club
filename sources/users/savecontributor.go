@@ -25,7 +25,7 @@ type UserStruct struct {
 }
 
 // Save a user to database and send a welcome email for first time users
-func SaveUser(w http.ResponseWriter, r *http.Request, email, name, location, imageLink, repoUrl, source string )(status bool, msg string, userIdObject interface{}){
+func SaveUser(w http.ResponseWriter, r *http.Request, email, name, location, imageLink, repoUrl, source, userType string )(status bool, msg string, userIdObject interface{}){
 	
 	client, _ := common.Mongoconnect()
 	defer client.Disconnect(context.TODO())
@@ -56,7 +56,7 @@ func SaveUser(w http.ResponseWriter, r *http.Request, email, name, location, ima
 					
 				// Code is the session
 				session := r.URL.Query().Get("code")
-				SaveUserDbSession(userIdObject.(primitive.ObjectID).Hex(), session)
+				SaveUserDbSession(userIdObject.(primitive.ObjectID).Hex(), session, email)
 
 				mailers.RegistrationEmail(email, name)
 			}
@@ -72,9 +72,15 @@ func SaveUser(w http.ResponseWriter, r *http.Request, email, name, location, ima
 				fmt.Println(err.Error())
 			} else {
 				session := r.URL.Query().Get("code")
-				SaveUserDbSession(result.ID.Hex(), session)
+				SaveUserDbSession(result.ID.Hex(), session, email)
 			}
 
+			// Redirect to respective home pages of user
+			if userType == common.CONST_USER_CONTRIBUTOR{
+				http.Redirect(w, r, "/contributors/feeds", http.StatusPermanentRedirect)
+			} else {
+				http.Redirect(w, r, "/projects/list", http.StatusPermanentRedirect)
+			}
 		}
 		
 	}

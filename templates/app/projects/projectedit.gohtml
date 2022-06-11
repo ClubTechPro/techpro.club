@@ -1,5 +1,5 @@
 {{define "content"}}
-<h3>Edit project</h3>
+<h3 class="panel-heading">Edit project <a href="/projects/view?projectid={{.ProjectStruct.Id.Hex}}"><button class="btn btn-xs">Preview</button></a></h3>
 {{if not .}} No such project exists {{else}}
 <div class="panel panel-default">
     <form method="post" content-type="x-www-form-urlencoded">
@@ -234,7 +234,7 @@
             id="preferencesBtn"
             name="submit"
             value="Save as draft"
-            class="btn btn-warning"
+            class="btn btn-default"
         />
         <input
             type="submit"

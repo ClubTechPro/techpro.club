@@ -43,7 +43,7 @@ func Preferences(w http.ResponseWriter, r *http.Request){
 	}
 
 	if r.Method == "GET"{
-		tmpl, err := template.New("").ParseFiles("templates/app/contributors/preferences.html", "templates/app/contributors/common/base.html")
+		tmpl, err := template.New("").ParseFiles("templates/app/contributors/preferences.gohtml", "templates/app/contributors/common/base.gohtml")
 		if err != nil {
 			fmt.Println(err.Error())
 		}else {

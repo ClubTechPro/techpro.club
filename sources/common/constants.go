@@ -9,6 +9,10 @@ const(
 	CONST_SESSION_NAME = "session"
 	CONST_USER_NAME = "name"
 
+	// User type
+	CONST_USER_CONTRIBUTOR = "contributor"
+	CONST_USER_PROJECT = "project"
+
 	// DB Flags
 	CONST_ACTIVE = 1
 	CONST_INACTIVE = 0
@@ -20,4 +24,5 @@ const(
 	CONST_MO_USER_SESSIONS = "user_sessions"
 	CONST_MO_CONTRIBUTOR_PREFERENCES = "contributor_preferences"
 	CONST_PR_PROJECTS = "projects"
+	CONST_MO_WELCOME_USER = "user_welcome" // to check if the user was shown the welcome message after first login
 )
