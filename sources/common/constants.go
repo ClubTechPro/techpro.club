@@ -24,5 +24,4 @@ const(
 	CONST_MO_USER_SESSIONS = "user_sessions"
 	CONST_MO_CONTRIBUTOR_PREFERENCES = "contributor_preferences"
 	CONST_PR_PROJECTS = "projects"
-	CONST_MO_WELCOME_USER = "user_welcome" // to check if the user was shown the welcome message after first login
 )

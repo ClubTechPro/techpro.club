@@ -16,10 +16,6 @@ type UserSession struct{
 	SessionID string `json:"sessionId"`
 }
 
-type UserWelcome struct{
-	Email string `json:"email"`
-}
-
 // Get status, user id from session cookie
 func getUserID(sessionId string) (status bool, errMsg string, userID string) {
 
@@ -159,14 +155,6 @@ func SaveUserDbSession(userId, sessionId, email string) (status bool, errMsg str
 	} else {
 		status = true
 		errMsg = ""
-
-		// Save to user welcome collection
-		userWelcome := UserWelcome{
-			email,
-		}
-
-		saveUserWelcome := client.Database(dbName).Collection(common.CONST_MO_WELCOME_USER)
-		saveUserWelcome.InsertOne(context.TODO(), userWelcome)
 	}
 
 	return status, errMsg
@@ -209,17 +197,17 @@ func deleteDbSession(w http.ResponseWriter, r *http.Request, sessionID string)(s
 	return status, errMsg
 }
 
-// Check if welcome message already seen
-func CheckUserWelcome(email string)(status bool){
+// Check if user exists
+func CheckUserExists(email string)(status bool){
 	status = false
 
 	client, _ := common.Mongoconnect()
 	defer client.Disconnect(context.TODO())
 
 	dbName := common.GetMoDb()
-	countUserWelcome := client.Database(dbName).Collection(common.CONST_MO_WELCOME_USER)
+	countUserExists := client.Database(dbName).Collection(common.CONST_MO_USERS)
 
-	countUsers, _ := countUserWelcome.CountDocuments(context.TODO(), bson.M{"email": email})
+	countUsers, _ := countUserExists.CountDocuments(context.TODO(), bson.M{"email": email})
 
 	if countUsers > 0 {
 		status = true

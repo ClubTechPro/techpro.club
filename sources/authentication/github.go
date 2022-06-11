@@ -40,7 +40,7 @@ func GithubLoggedinHandler(w http.ResponseWriter, r *http.Request, githubData, u
 	imageLink := fmt.Sprintf("%s", jsonMap["avatar_url"])
 	repoUrl := fmt.Sprintf("%s", jsonMap["html_url"])
 
-	ok := users.CheckUserWelcome(email)
+	ok := users.CheckUserExists(email)
 
 	if (ok && userType == common.CONST_USER_CONTRIBUTOR) {
 		// Save user session and redirect to feeds page
