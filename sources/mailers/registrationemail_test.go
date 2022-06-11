@@ -10,7 +10,7 @@ func TestRegistrationEmail(t *testing.T){
 	// Change the Email id and name here
 	
 	/**
-	got := RegistrationEmail("chilly5476@gmail.com", "Unit Testing")
+	got := RegistrationEmail("chilly5476@gmail.com", "Unit Testing", common.CONST_USER_CONTRIBUTOR)
 
 	if !got{
 		t.Errorf("Registration email not working")

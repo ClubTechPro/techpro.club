@@ -58,7 +58,7 @@ func SaveUser(w http.ResponseWriter, r *http.Request, email, name, location, ima
 				session := r.URL.Query().Get("code")
 				SaveUserDbSession(userIdObject.(primitive.ObjectID).Hex(), session, email)
 
-				mailers.RegistrationEmail(email, name)
+				mailers.RegistrationEmail(email, name, userType)
 			}
 		} else {
 
