@@ -200,5 +200,7 @@ Links -
 
 -   [Best Readme Template](https://github.com/othneildrew/Best-README-Template)
 -   [Meetup website template](https://onepagelove.com/meetup)
+-   [Build with Linode Hackathon — June 2022](https://www.linode.com/?utm_source=hashnode&utm_medium=article&utm_campaign=hackathon_announcement)
+-   [Hashnode](https://hashnode.com/)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
