@@ -111,7 +111,7 @@ The above steps are before you unlock the sending limits in SES. Read https://do
     ```sh
     go run main.go
     ```
-    Open a browser and hit `http://localhost:8080`
+    Open a browser and hit `http://localhost:8080`. If you want to host the application on your own server, <a href="hosting.md">read this</a>
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
