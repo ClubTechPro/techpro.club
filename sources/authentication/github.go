@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
 
 	"techpro.club/sources/common"
@@ -14,8 +13,14 @@ import (
 	"techpro.club/sources/users"
 )
 
+type GithubEmailStruct struct{
+	Email string `json:"email"`
+	Primary bool `json:"primary"`
+	Verified bool `json:"verified"`
+	Visibility string `json:"visibility"`
+}
 
-func GithubLoggedinHandler(w http.ResponseWriter, r *http.Request, githubData, userType string) {
+func GithubLoggedinHandler(w http.ResponseWriter, r *http.Request, githubData, accessToken, userType string) {
 	if githubData == "" {
 		// Unauthorized users get an unauthorized message
 		fmt.Println("UNAUTHORIZED!")
@@ -28,7 +33,7 @@ func GithubLoggedinHandler(w http.ResponseWriter, r *http.Request, githubData, u
 	// json.indent is a library utility function to prettify JSON indentation
 	parserr := json.Indent(&prettyJSON, []byte(githubData), "", "\t")
 	if parserr != nil {
-		log.Panic("JSON parse error")
+		fmt.Println("JSON parse error")
 	}
 
 	var jsonMap map[string]interface{}
@@ -40,14 +45,19 @@ func GithubLoggedinHandler(w http.ResponseWriter, r *http.Request, githubData, u
 	imageLink := fmt.Sprintf("%s", jsonMap["avatar_url"])
 	repoUrl := fmt.Sprintf("%s", jsonMap["html_url"])
 
+	// Github sends "%!s(<nil>)", if nil found
+	if email == "%!s(<nil>)"{
+		email = GetUserEmail(accessToken)
+	} 
+
 	ok := users.CheckUserExists(email)
 
 	if (ok && userType == common.CONST_USER_CONTRIBUTOR) {
 		// Save user session and redirect to feeds page
-		users.SaveUser(w, r, email, name, location, imageLink, repoUrl, common.CONST_GITHUB, common.CONST_USER_CONTRIBUTOR)
+		users.SaveUser(w, r, email, name, location, imageLink, repoUrl, common.CONST_GITHUB, userType)
 	} else if (ok && userType == common.CONST_USER_PROJECT) {
 		// Save user session and redirect to projects list page
-		users.SaveUser(w, r, email, name, location, imageLink, repoUrl, common.CONST_GITHUB, common.CONST_USER_PROJECT)
+		users.SaveUser(w, r, email, name, location, imageLink, repoUrl, common.CONST_GITHUB, userType)
 	} else {
 
 		// Callback pages for contributors and projects
@@ -59,7 +69,7 @@ func GithubLoggedinHandler(w http.ResponseWriter, r *http.Request, githubData, u
 		}
 		
 		w.Header().Set("Content-type", "application/json")
-		status, msg, _ := users.SaveUser(w, r, email, name, location, imageLink, repoUrl, common.CONST_GITHUB, "")
+		status, msg, _ := users.SaveUser(w, r, email, name, location, imageLink, repoUrl, common.CONST_GITHUB, userType)
 		if(!status){
 			fmt.Println(msg)
 		} 
@@ -98,7 +108,7 @@ func GithubContributorCallbackHandler(w http.ResponseWriter, r *http.Request) {
 
 	githubData := GetGithubData(githubAccessToken)
 
-	GithubLoggedinHandler(w, r, githubData, common.CONST_USER_CONTRIBUTOR)
+	GithubLoggedinHandler(w, r, githubData, githubAccessToken, common.CONST_USER_CONTRIBUTOR)
 }
 
 func GithubProjectCallbackHandler(w http.ResponseWriter, r *http.Request) {
@@ -114,13 +124,13 @@ func GithubProjectCallbackHandler(w http.ResponseWriter, r *http.Request) {
 
 	githubData := GetGithubData(githubAccessToken)
 
-	GithubLoggedinHandler(w, r, githubData, common.CONST_USER_PROJECT)
+	GithubLoggedinHandler(w, r, githubData, githubAccessToken, common.CONST_USER_PROJECT)
 }
 
 func GetGithubData(accessToken string) (responseBody string) {
 	req, reqerr := http.NewRequest("GET", "https://api.github.com/user", nil)
 	if reqerr != nil {
-		log.Panic("API Request creation failed")
+		fmt.Println("API Request creation failed")
 	}
 
 	authorizationHeaderValue := fmt.Sprintf("token %s", accessToken)
@@ -128,12 +138,44 @@ func GetGithubData(accessToken string) (responseBody string) {
 
 	resp, resperr := http.DefaultClient.Do(req)
 	if resperr != nil {
-		log.Panic("Request failed")
+		fmt.Println("Request failed")
 	}
 
 	respbody, _ := ioutil.ReadAll(resp.Body)
 
 	return string(respbody)
+}
+
+func GetUserEmail(accessToken string)(primaryEmail string){
+	req, reqerr := http.NewRequest("GET", "https://api.github.com/user/emails", nil)
+	if reqerr != nil {
+		fmt.Println("API Request creation failed")
+	}
+
+	authorizationHeaderValue := fmt.Sprintf("token %s", accessToken)
+	req.Header.Set("Authorization", authorizationHeaderValue)
+
+	resp, resperr := http.DefaultClient.Do(req)
+	if resperr != nil {
+		fmt.Println("Request failed")
+	} 
+
+	respbody, _ := ioutil.ReadAll(resp.Body)
+
+	var emailStructSlice []GithubEmailStruct
+    err := json.Unmarshal(respbody, &emailStructSlice)
+    if err != nil {
+        panic(err)
+    } else {
+		for _, emailStruct := range emailStructSlice {
+
+			if (emailStruct.Primary){
+				primaryEmail = emailStruct.Email
+			}
+		}
+	}
+
+	return primaryEmail
 }
 
 func GetGithubAccessToken(code string) (accessToken string) {
@@ -146,14 +188,14 @@ func GetGithubAccessToken(code string) (accessToken string) {
 
 	req, reqerr := http.NewRequest("POST", "https://github.com/login/oauth/access_token", bytes.NewBuffer(requestJSON))
 	if reqerr != nil {
-		log.Panic("Request creation failed")
+		fmt.Println("Request creation failed")
 	}
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("Accept", "application/json")
 
 	resp, resperr := http.DefaultClient.Do(req)
 	if resperr != nil {
-		log.Panic("Request failed")
+		fmt.Println("Request failed")
 	}
 
 	respbody, _ := ioutil.ReadAll(resp.Body)

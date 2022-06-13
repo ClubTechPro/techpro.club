@@ -53,12 +53,22 @@ const(
 
 func RegistrationEmail(emailRecipient, name, userType string) (status bool) {
 
-    Sender := common.GetSesSender()   
+	Sender := common.GetSesSender()   
     Recipient := emailRecipient
-    Subject := "Welcome to Techpro.Club, " + name
+    var Subject string
+	var HtmlBody string
+
+	fmt.Println(userType)
+
+	// Github sends "%!s(<nil>)", if nil found
+	if(name == "%!s(<nil>)"){
+		Subject = "Welcome to Techpro.Club"
+		HtmlBody = "<p>Hello,</p>"
+	} else {
+		Subject = "Welcome to Techpro.Club, " + name
+		HtmlBody = "<p>Hello " + name + ",</p>"
+	}
     
-    // The HTML body for the email.
-    HtmlBody :=  "<p>Hello " + name + ",</p>"
 
 	if userType == common.CONST_USER_CONTRIBUTOR {
 		HtmlBody += HtmlBodyContributors
