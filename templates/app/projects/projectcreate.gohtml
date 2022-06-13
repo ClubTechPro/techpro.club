@@ -187,4 +187,14 @@
     </form>
 </div>
 <div class="before-footer-spacing"></div>
+
+<script>
+function showCompanyName(status){
+    if(status){
+        $("#companyName").prop('disabled', false);
+    } else {
+        $("#companyName").prop('disabled', true);
+    }
+}
+</script>
 {{ end }}
