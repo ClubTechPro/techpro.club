@@ -58,7 +58,6 @@ func RegistrationEmail(emailRecipient, name, userType string) (status bool) {
     var Subject string
 	var HtmlBody string
 
-	fmt.Println(userType)
 
 	// Github sends "%!s(<nil>)", if nil found
 	if(name == "%!s(<nil>)"){
