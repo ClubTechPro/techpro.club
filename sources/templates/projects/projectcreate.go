@@ -20,29 +20,6 @@ type FinalOutStruct struct{
 	Contributors map[string]string `json:"contributors"`
 }
 
-type NewProjectStruct struct{
-	UserID string `json:"userId"`
-	ProjectName string `json:"projectName"`
-	ProjectDescription string `json:"projectDescription"`
-	RepoLink string `json:"repoLink"`
-	Languages []string `json:"languages"`
-	OtherLanguages []string `json:"otherLanguages"`
-	Allied []string `json:"allied"`
-	ProjectType []string `json:"projectType"`
-	ContributorCount string `json:"contributorCount"`
-	Documentation string `json:"documentation"`
-	Public string `json:"public"`
-	Company string `json:"company"`
-	CompanyName string `json:"companyName"`
-	Funded string `json:"funded"`
-	CreatedDate string `json:"createdDate"`
-	PublishedDate string `json:"publishedDate"`
-	ClosedDate string `json:"closedDate"`
-	IsActive int `json:"isActive"`
-}
-
-
-
 func ProjectCreate(w http.ResponseWriter, r *http.Request){
 
 	if r.URL.Path != "/projects/create" {
@@ -177,13 +154,13 @@ func ProjectCreate(w http.ResponseWriter, r *http.Request){
 
 			timeNow := time.Now()
 			dt := timeNow.Format(time.UnixDate)
-			var result NewProjectStruct
+			var result common.SaveProjectStruct
 
 			if submit == "Save as draft" {
-				result = NewProjectStruct{userID, projectName, projectDescription, repoLink, language, otherLanguagesSplit, allied, projectType, contributorCount, documentation, public, company, companyName ,funded, dt, "", "", common.CONST_INACTIVE}
+				result = common.SaveProjectStruct{userID, projectName, projectDescription, repoLink, language, otherLanguagesSplit, allied, projectType, contributorCount, documentation, public, company, companyName ,funded, dt, "", "", common.CONST_INACTIVE}
 				saveProject(w, r, result)
 			} else {
-				result = NewProjectStruct{userID, projectName, projectDescription, repoLink, language, otherLanguagesSplit, allied, projectType, contributorCount, documentation, public, company, companyName ,funded, dt, dt, "", common.CONST_UNDER_MODERATION}
+				result = common.SaveProjectStruct{userID, projectName, projectDescription, repoLink, language, otherLanguagesSplit, allied, projectType, contributorCount, documentation, public, company, companyName ,funded, dt, dt, "", common.CONST_UNDER_MODERATION}
 				saveProject(w, r, result)
 			}	
 		}
@@ -191,7 +168,7 @@ func ProjectCreate(w http.ResponseWriter, r *http.Request){
 }
 
 
-func saveProject(w http.ResponseWriter, r *http.Request, newProjectStruct NewProjectStruct){
+func saveProject(w http.ResponseWriter, r *http.Request, newProjectStruct common.SaveProjectStruct){
 	client, _ := common.Mongoconnect()
 	defer client.Disconnect(context.TODO())
 
