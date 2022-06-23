@@ -20,7 +20,7 @@ type FinalProjectOutStruct struct{
 	AlliedServices map[string]string `json:"alliedServices"`
 	ProjectType map[string]string `json:"projectType"`
 	Contributors map[string]string `json:"contributors"`
-	ProjectStruct ProjectStruct `json:"projectStruct"`
+	ProjectStruct common.FetchProjectStruct `json:"projectStruct"`
 }
 
 func ProjectEdit(w http.ResponseWriter, r *http.Request){
@@ -167,20 +167,20 @@ func ProjectEdit(w http.ResponseWriter, r *http.Request){
 
 			timeNow := time.Now()
 			dt := timeNow.Format(time.UnixDate)
-			var result NewProjectStruct
+			var result common.SaveProjectStruct
 
 			if submit == "Save as draft" {
-				result = NewProjectStruct{userID, projectName, projectDescription, repoLink, language, otherLanguagesSplit, allied, projectType, contributorCount, documentation, public, company, companyName ,funded, dt, "", "", common.CONST_INACTIVE}
+				result = common.SaveProjectStruct{userID, projectName, projectDescription, repoLink, language, otherLanguagesSplit, allied, projectType, contributorCount, documentation, public, company, companyName ,funded, dt, "", "", common.CONST_INACTIVE}
 				updateProject(w, r, projectID, result)
 			} else {
-				result = NewProjectStruct{userID, projectName, projectDescription, repoLink, language, otherLanguagesSplit, allied, projectType, contributorCount, documentation, public, company, companyName ,funded, dt, dt, "", common.CONST_UNDER_MODERATION}
+				result = common.SaveProjectStruct{userID, projectName, projectDescription, repoLink, language, otherLanguagesSplit, allied, projectType, contributorCount, documentation, public, company, companyName ,funded, dt, dt, "", common.CONST_UNDER_MODERATION}
 				updateProject(w, r, projectID, result)
 			}	
 		}
 	}
 }
 
-func FetchProjectDetails(projectID, userID string) (projectDetails ProjectStruct){
+func FetchProjectDetails(projectID, userID string) (projectDetails common.FetchProjectStruct){
 	if(projectID != ""){
 
 		projectIdHex, err := primitive.ObjectIDFromHex(projectID)
@@ -204,7 +204,7 @@ func FetchProjectDetails(projectID, userID string) (projectDetails ProjectStruct
 	return projectDetails
 }
 
-func updateProject(w http.ResponseWriter, r *http.Request, projectID string, newProjectStruct NewProjectStruct){
+func updateProject(w http.ResponseWriter, r *http.Request, projectID string, newProjectStruct common.SaveProjectStruct){
 	client, _ := common.Mongoconnect()
 	defer client.Disconnect(context.TODO())
 

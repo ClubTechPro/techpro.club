@@ -20,20 +20,7 @@ type FinalPreferencesOutStruct struct{
 	AlliedServices map[string]string `json:"alliedServices"`
 	ProjectType map[string]string `json:"projectType"`
 	Contributors map[string]string `json:"contributors"`
-	ContributorPreferences ContributorPreferencesStruct `json:"contributorPreferences"`
-}
-
-type ContributorPreferencesStruct struct{
-	UserID string `json:"userId"`
-	Languages []string `json:"languages"`
-	OtherLanguages []string `json:"otherLanguages"`
-	Allied []string `json:"allied"`
-	ProjectType []string `json:"projectType"`
-	NotificationFrequency string `json:"notificationFrequency"`
-	ContributorCount string `json:"contributorCount"`
-	PaidJob string `json:"paidJob"`
-	Relocation string `json:"relocation"`
-	Qualification string `json:"qualification"`
+	ContributorPreferences common.SaveContributorPreferencesStruct `json:"contributorPreferences"`
 }
 
 func Preferences(w http.ResponseWriter, r *http.Request){
@@ -168,7 +155,7 @@ func Preferences(w http.ResponseWriter, r *http.Request){
 
 			otherLanguagesSplit := strings.Split(otherLanguages, ",")
 
-			result := ContributorPreferencesStruct{userID, languages, otherLanguagesSplit, allied, projectType, notificationFrequency, contributorCount, paidJob, relocation, qualification}
+			result := common.SaveContributorPreferencesStruct{userID, languages, otherLanguagesSplit, allied, projectType, notificationFrequency, contributorCount, paidJob, relocation, qualification}
 
 			client, _ := common.Mongoconnect()
 			defer client.Disconnect(context.TODO())
@@ -190,7 +177,7 @@ func Preferences(w http.ResponseWriter, r *http.Request){
 }
 
 // Return contributor preferences, if already saved
-func fetchPreferences(userID string) (preferences ContributorPreferencesStruct){
+func fetchPreferences(userID string) (preferences common.SaveContributorPreferencesStruct){
 	client, _ := common.Mongoconnect()
 	defer client.Disconnect(context.TODO())
 
