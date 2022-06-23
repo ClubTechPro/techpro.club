@@ -1,4 +1,5 @@
 # Sample configuration for hosting
+If you want to host your own version of the application on a web server, this sample configuration will help. Originally for Ubuntu with Nginx as reverse proxy
 
 ## Enable firewall to listen to port 80 & 443
 

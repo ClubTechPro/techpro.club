@@ -61,7 +61,7 @@ Our core services to the open source projects will be free forever. Feel free to
 -   [Mongodb](https://www.mongodb.com/)
 -   [Bootstrap](https://getbootstrap.com)
 -   [JQuery](https://jquery.com)
--   [AWS SES](https://aws.amazon.com/ses/)
+<!-- -   [AWS SES](https://aws.amazon.com/ses/) -->
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -81,7 +81,7 @@ Github project is needed to authenticate users. You may do so by visiting [https
 
 **Note** - Create a `Github App` and not `OAuth App` because the later doesn't permit multiple callback URLs.
 
-#### AWS SES
+#### AWS SES (Optional for emails)
 
 You may create a free AWS account for a year with their terms and conditions.
 
@@ -111,7 +111,7 @@ The above steps are before you unlock the sending limits in SES. Read https://do
     ```sh
     go run main.go
     ```
-    Open a browser and hit `http://localhost:8080`
+    Open a browser and hit `http://localhost:8080`. If you want to host the application on your own server, <a href="hosting.md">read this</a>
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
