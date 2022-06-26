@@ -38,7 +38,7 @@
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
-    <li><a href="#contributors">Contributors</a></li>
+    <li><a href="#core-team">Core Team</a></li>
   </ol>
 </details>
 
@@ -58,10 +58,10 @@ Our core services to the open source projects will be free forever. Feel free to
 
 ### Built With
 
-- [Golang](https://go.dev/)
-- [Mongodb](https://www.mongodb.com/)
-- [Bootstrap](https://getbootstrap.com)
-- [JQuery](https://jquery.com)
+-   [Golang](https://go.dev/)
+-   [Mongodb](https://www.mongodb.com/)
+-   [Bootstrap](https://getbootstrap.com)
+-   [JQuery](https://jquery.com)
 <!-- -   [AWS SES](https://aws.amazon.com/ses/) -->
 
 <p align="right">(<a href="#top">back to top</a>)</p>
@@ -97,22 +97,22 @@ The above steps are before you unlock the sending limits in SES. Read https://do
 ### Installation
 
 1. Clone the repo
-   ```sh
-   git clone https://github.com/ClubTechPro/techpro.club.git
-   ```
+    ```sh
+    git clone https://github.com/ClubTechPro/techpro.club.git
+    ```
 2. Set Environment variables
    Rename the `src/.env.sample` to `src/.env` and replace with actual credentials obtained from the steps mentioned in Prerequisites.
 
 3. Install Golang dependencies
-   ```sh
-   cd /path/to/project
-   go mod tidy
-   ```
+    ```sh
+    cd /path/to/project
+    go mod tidy
+    ```
 4. Run the project
-   ```sh
-   go run main.go
-   ```
-   Open a browser and hit `http://localhost:8080`. If you want to host the application on your own server, <a href="hosting.md">read this</a>
+    ```sh
+    go run main.go
+    ```
+    Open a browser and hit `http://localhost:8080`. If you want to host the application on your own server, <a href="hosting.md">read this</a>
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -122,33 +122,33 @@ The above steps are before you unlock the sending limits in SES. Read https://do
 
 ## Roadmap
 
-- [x] **v 0.1**
-  - [x] User Authentication
-  - [x] Contributor preferences
-  - [x] Projects Create, Read, Update
-  - [x] Registration welcome email
-  - [x] Master templates
-- [ ] **v 0.2**
-  - [ ] Profile management - avatar, delete account, etc.
-  - [ ] Project feeds
-  - [ ] Feed filters
-- [ ] **v 0.3**
-  - [ ] Notification for contributors
-  - [ ] Notification for projects
-- [ ] **v 0.4**
-  - [ ] Project invite members
-  - [ ] Project manage members
-  - [ ] Share on social media
-- [ ] **v 0.5**
-  - [ ] Project analytics
-- [ ] **v 0.6**
-  - [ ] Badges
-- [ ] **v 0.7**
-  - [ ] Integration with Gitlab
-- [ ] **v 0.8**
-  - [ ] Integration with Bitbucket
-- [ ] **v 0.9**
-  - [ ] Integration with Azure
+-   [x] **v 0.1**
+    -   [x] User Authentication
+    -   [x] Contributor preferences
+    -   [x] Projects Create, Read, Update
+    -   [x] Registration welcome email
+    -   [x] Master templates
+-   [ ] **v 0.2**
+    -   [ ] Profile management - avatar, delete account, etc.
+    -   [ ] Project feeds
+    -   [ ] Feed filters
+-   [ ] **v 0.3**
+    -   [ ] Notification for contributors
+    -   [ ] Notification for projects
+-   [ ] **v 0.4**
+    -   [ ] Project invite members
+    -   [ ] Project manage members
+    -   [ ] Share on social media
+-   [ ] **v 0.5**
+    -   [ ] Project analytics
+-   [ ] **v 0.6**
+    -   [ ] Badges
+-   [ ] **v 0.7**
+    -   [ ] Integration with Gitlab
+-   [ ] **v 0.8**
+    -   [ ] Integration with Bitbucket
+-   [ ] **v 0.9**
+    -   [ ] Integration with Azure
 
 More to follow. Perhaps, once these are done, we will move it to some other section for better tracking.
 
@@ -185,13 +185,13 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 Techproclub -
 
-- Twitter: [@ClubTechpro](https://twitter.com/ClubTechpro)
-- Email: hello@techpro.club
+-   Twitter: [@ClubTechpro](https://twitter.com/ClubTechpro)
+-   Email: hello@techpro.club
 
 Links -
 
-- Project Link: [https://github.com/ClubTechPro/techpro.club](https://github.com/ClubTechPro/techpro.club)
-- Application Link : [Techpro.club](https://techpro.club)
+-   Project Link: [https://github.com/ClubTechPro/techpro.club](https://github.com/ClubTechPro/techpro.club)
+-   Application Link : [Techpro.club](https://techpro.club)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -199,13 +199,14 @@ Links -
 
 ## Acknowledgments
 
-- [Best Readme Template](https://github.com/othneildrew/Best-README-Template)
-- [Meetup website template](https://onepagelove.com/meetup)
-- [Build with Linode Hackathon — June 2022](https://www.linode.com/?utm_source=hashnode&utm_medium=article&utm_campaign=hackathon_announcement)
-- [Hashnode](https://hashnode.com/)
+-   [Best Readme Template](https://github.com/othneildrew/Best-README-Template)
+-   [Meetup website template](https://onepagelove.com/meetup)
+-   [Build with Linode Hackathon — June 2022](https://www.linode.com/?utm_source=hashnode&utm_medium=article&utm_campaign=hackathon_announcement)
+-   [Hashnode](https://hashnode.com/)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-## Contributors
+## Core Team
 
-- [Rohit Verma](https://github.com/RohitV5)
+-   [Chilarai](https://github.com/chilarai)
+-   [Rohit Verma](https://github.com/RohitV5)
