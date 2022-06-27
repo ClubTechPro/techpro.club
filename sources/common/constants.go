@@ -8,6 +8,7 @@ const(
 	// Session
 	CONST_SESSION_NAME = "session"
 	CONST_USER_NAME = "name"
+	CONST_USER_IMAGE = "image"
 
 	// User type
 	CONST_USER_CONTRIBUTOR = "contributor"

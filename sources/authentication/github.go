@@ -68,7 +68,6 @@ func GithubLoggedinHandler(w http.ResponseWriter, r *http.Request, githubData, a
 			projects.CallBack(w,r)
 		}
 		
-		w.Header().Set("Content-type", "application/json")
 		status, msg, _ := users.SaveUser(w, r, email, name, location, imageLink, repoUrl, common.CONST_GITHUB, userType)
 		if(!status){
 			fmt.Println(msg)
