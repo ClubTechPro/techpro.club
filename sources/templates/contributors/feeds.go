@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"html/template"
+	"log"
 	"net/http"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -30,6 +31,20 @@ func Feeds(w http.ResponseWriter, r *http.Request){
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 	}
 	
+
+	var userNameImage common.UsernameImageStruct
+
+	// Fetch user name and image from saved browser cookies
+	status, userName, image := templates.FetchUsernameImage(w, r)
+
+	if(!status){
+		log.Println("Error fetching user name and image from cookies")
+	} else {
+		userNameImage  = common.UsernameImageStruct{userName,image}
+	}
+	
+
+
 	fetchActiveProjects(0)
 
 	tmpl, err := template.New("").ParseFiles("templates/app/contributors/feeds.gohtml", "templates/app/contributors/common/base.gohtml")
@@ -37,7 +52,7 @@ func Feeds(w http.ResponseWriter, r *http.Request){
 	if err != nil {
 		fmt.Println(err.Error())
 	}else {
-		tmpl.ExecuteTemplate(w, "contributorbase", nil) 
+		tmpl.ExecuteTemplate(w, "contributorbase", userNameImage) 
 	}
 
 }

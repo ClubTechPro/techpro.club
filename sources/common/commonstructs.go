@@ -111,3 +111,9 @@ type SaveContributorPreferencesStruct struct{
 	Relocation string `json:"relocation"`
 	Qualification string `json:"qualification"`
 }
+
+// Username and image struct
+type UsernameImageStruct struct{
+	Username string `json:"username"`
+	Image string `json:"image"`
+}
