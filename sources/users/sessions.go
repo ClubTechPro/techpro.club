@@ -215,3 +215,35 @@ func CheckUserExists(email string)(status bool){
 
 	return status
 }
+
+
+// fetch user image from database
+func FetchUserImage(userId string)(status bool, errMsg string, image string){
+	status = false
+	errMsg = ""
+	image = ""
+
+	client, _ := common.Mongoconnect()
+	defer client.Disconnect(context.TODO())
+
+	dbName := common.GetMoDb()
+	countUserExists := client.Database(dbName).Collection(common.CONST_MO_USERS)
+
+	type userStruct struct{
+		ImageLink string `json:"imageLink"`
+	}
+
+	var result userStruct
+	err := countUserExists.FindOne(context.TODO(), bson.M{"userid": userId}).Decode(&result)
+
+	if err != nil {
+		status = false
+		errMsg = err.Error()
+	} else {
+		status = true
+		errMsg = ""
+		image = result.ImageLink
+	}
+
+	return status, errMsg, image
+}
