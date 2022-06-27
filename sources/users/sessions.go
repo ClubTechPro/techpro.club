@@ -16,6 +16,7 @@ type UserSession struct{
 	SessionID string `json:"sessionId"`
 }
 
+
 // Get status, user id from session cookie
 func getUserID(sessionId string) (status bool, errMsg string, userID string) {
 
@@ -45,20 +46,19 @@ func getUserID(sessionId string) (status bool, errMsg string, userID string) {
 	return status, errMsg, userID
 }
 
-// Get user name from cookie
-func GetUserName(w http.ResponseWriter, r *http.Request) (status bool, userName string) {
-
-	userNameCookie, err := r.Cookie(common.CONST_USER_NAME)
-
-	if err != nil {
-		status = false
-		userName = ""
-	} else {
-		status = true
-		userName = userNameCookie.Value
+// Set session cookie for user
+func SetSessionCookie(w http.ResponseWriter, r *http.Request, session string) (sessionID string) {
+	
+	// session cookie
+	sessionCookie := &http.Cookie{
+		Name : common.CONST_SESSION_NAME,
+		Value: session,
+		Path : "/",
 	}
-	return status, userName
+	http.SetCookie(w, sessionCookie)
+	return sessionID
 }
+
 
 // Get user session from cookie
 func GetSession(w http.ResponseWriter, r *http.Request) (status bool, sessionID string) {
@@ -73,30 +73,6 @@ func GetSession(w http.ResponseWriter, r *http.Request) (status bool, sessionID 
 		sessionID = sessionCookie.Value
 	}
 	return status, sessionID
-}
-
-// Set session cookie for user
-func SetSessionCookie(w http.ResponseWriter, r *http.Request, session string) (sessionID string) {
-	
-	// session cookie
-	sessionCookie := &http.Cookie{
-		Name : common.CONST_SESSION_NAME,
-		Value: session,
-		Path : "/",
-	}
-	http.SetCookie(w, sessionCookie)
-	return sessionID
-}
-
-// Set user name cookie
-func SetUserCookie(w http.ResponseWriter, r *http.Request, userName string) {
-	// user cookie
-	userCookie := &http.Cookie{
-		Name : common.CONST_USER_NAME,
-		Value: userName,
-		Path : "/",
-	}
-	http.SetCookie(w, userCookie)
 }
 
 // Delete session cookie for user
@@ -122,6 +98,33 @@ func DeleteSessionCookie(w http.ResponseWriter, r *http.Request) {
 	http.SetCookie(w, sessionCookie)
 }
 
+/* User name session methods*/
+// Set user name cookie
+func SetUserCookie(w http.ResponseWriter, r *http.Request, userName string) {
+	// user cookie
+	userCookie := &http.Cookie{
+		Name : common.CONST_USER_NAME,
+		Value: userName,
+		Path : "/",
+	}
+	http.SetCookie(w, userCookie)
+}
+
+// Get user name from cookie
+func GetUserName(w http.ResponseWriter, r *http.Request) (status bool, userName string) {
+
+	userNameCookie, err := r.Cookie(common.CONST_USER_NAME)
+
+	if err != nil {
+		status = false
+		userName = ""
+	} else {
+		status = true
+		userName = userNameCookie.Value
+	}
+	return status, userName
+}
+
 // Delete user name cookie
 func DeleteUserCookie(w http.ResponseWriter, r *http.Request) {
 	// user cookie
@@ -133,6 +136,33 @@ func DeleteUserCookie(w http.ResponseWriter, r *http.Request) {
 	}
 	http.SetCookie(w, userCookie)
 }
+
+/* User image session methods*/
+// Set image cookie
+func SetUserImageCookie(w http.ResponseWriter, r *http.Request, image string) {
+	// user cookie
+	userCookie := &http.Cookie{
+		Name : common.CONST_USER_IMAGE,
+		Value: image,
+		Path : "/",
+	}
+	http.SetCookie(w, userCookie)
+}
+
+// Get image cookie
+func GetUserImageCookie(w http.ResponseWriter, r *http.Request) (status bool, userImage string) {
+	userImageCookie, err := r.Cookie(common.CONST_USER_IMAGE)
+
+	if err != nil {
+		status = false
+		userImage = ""
+	} else {
+		status = true
+		userImage = userImageCookie.Value
+	}
+	return status, userImage
+}
+
 
 // Save user session in database
 func SaveUserDbSession(userId, sessionId, email string) (status bool, errMsg string) {
@@ -214,4 +244,36 @@ func CheckUserExists(email string)(status bool){
 	}
 
 	return status
+}
+
+
+// fetch user image from database
+func FetchUserImage(userId string)(status bool, errMsg string, image string){
+	status = false
+	errMsg = ""
+	image = ""
+
+	client, _ := common.Mongoconnect()
+	defer client.Disconnect(context.TODO())
+
+	dbName := common.GetMoDb()
+	countUserExists := client.Database(dbName).Collection(common.CONST_MO_USERS)
+
+	type userStruct struct{
+		ImageLink string `json:"imageLink"`
+	}
+
+	var result userStruct
+	err := countUserExists.FindOne(context.TODO(), bson.M{"userid": userId}).Decode(&result)
+
+	if err != nil {
+		status = false
+		errMsg = err.Error()
+	} else {
+		status = true
+		errMsg = ""
+		image = result.ImageLink
+	}
+
+	return status, errMsg, image
 }

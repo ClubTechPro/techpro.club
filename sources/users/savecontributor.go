@@ -57,6 +57,8 @@ func SaveUser(w http.ResponseWriter, r *http.Request, email, name, location, ima
 				// Code is the session
 				session := r.URL.Query().Get("code")
 				SaveUserDbSession(userIdObject.(primitive.ObjectID).Hex(), session, email)
+				SetUserCookie(w, r, name)
+				SetUserImageCookie(w, r, imageLink)
 
 				mailers.RegistrationEmail(email, name, userType)
 			}
@@ -73,6 +75,8 @@ func SaveUser(w http.ResponseWriter, r *http.Request, email, name, location, ima
 			} else {
 				session := r.URL.Query().Get("code")
 				SaveUserDbSession(result.ID.Hex(), session, email)
+				SetUserCookie(w, r, name)
+				SetUserImageCookie(w, r, imageLink)
 			}
 
 			// Redirect to respective home pages of user
