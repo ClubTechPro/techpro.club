@@ -5,11 +5,11 @@
 </div>
 
 <br />
-{{if not .}}
+{{if not .ProjectsList}}
 <div class="panel panel-default">
     You don't have any projects listing yet. Create your free project listing <a href="/projects/create">here</a>.
 </div>
-{{else}}{{range .}}
+{{else}}{{range .ProjectsList}}
 <div class="panel panel-default">
     <div class="row">
         <div class="col col-md-12 col-sm-6">

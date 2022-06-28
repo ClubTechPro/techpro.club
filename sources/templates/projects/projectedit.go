@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"html/template"
+	"log"
 	"net/http"
 	"strings"
 	"time"
@@ -21,6 +22,7 @@ type FinalProjectOutStruct struct{
 	ProjectType map[string]string `json:"projectType"`
 	Contributors map[string]string `json:"contributors"`
 	ProjectStruct common.FetchProjectStruct `json:"projectStruct"`
+	UserNameImage common.UsernameImageStruct `json:"userNameImage"`
 }
 
 func ProjectEdit(w http.ResponseWriter, r *http.Request){
@@ -120,6 +122,17 @@ func ProjectEdit(w http.ResponseWriter, r *http.Request){
 		"more_than_10" : "More than 10",
 	}
 
+	var userNameImage common.UsernameImageStruct
+
+	// Fetch user name and image from saved browser cookies
+	status, userName, image := templates.FetchUsernameImage(w, r)
+
+	if(!status){
+		log.Println("Error fetching user name and image from cookies")
+	} else {
+		userNameImage  = common.UsernameImageStruct{userName,image}
+	}
+
 	if r.Method == "GET"{
 
 		projectID := r.URL.Query().Get("projectid")
@@ -132,6 +145,7 @@ func ProjectEdit(w http.ResponseWriter, r *http.Request){
 			ProjectType,
 			Contributors,
 			result,
+			userNameImage,
 		}
 		
 

@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"html/template"
+	"log"
 	"net/http"
 	"strings"
 	"time"
@@ -18,6 +19,7 @@ type FinalOutStruct struct{
 	AlliedServices map[string]string `json:"alliedServices"`
 	ProjectType map[string]string `json:"projectType"`
 	Contributors map[string]string `json:"contributors"`
+	UserNameImage common.UsernameImageStruct `json:"userNameImage"`
 }
 
 func ProjectCreate(w http.ResponseWriter, r *http.Request){
@@ -113,21 +115,33 @@ func ProjectCreate(w http.ResponseWriter, r *http.Request){
 		"less_than_10" : "Less than 10",
 		"more_than_10" : "More than 10",
 	}
+
+	var userNameImage common.UsernameImageStruct
+
+	// Fetch user name and image from saved browser cookies
+	status, userName, image := templates.FetchUsernameImage(w, r)
+
+	if(!status){
+		log.Println("Error fetching user name and image from cookies")
+	} else {
+		userNameImage  = common.UsernameImageStruct{userName,image}
+	}
 	
 	if r.Method == "GET"{
 
-		constantLists := FinalOutStruct{
+		output := FinalOutStruct{
 			ProgrammingLanguages,
 			AlliedServices,
 			ProjectType,
 			Contributors,
+			userNameImage,
 		}
 
 		tmpl, err := template.New("").ParseFiles("templates/app/projects/projectcreate.gohtml", "templates/app/projects/common/base.gohtml")
 		if err != nil {
 			fmt.Println(err.Error())
 		}else {
-			tmpl.ExecuteTemplate(w, "projectbase", constantLists) 
+			tmpl.ExecuteTemplate(w, "projectbase", output) 
 		}
 
 	} else {

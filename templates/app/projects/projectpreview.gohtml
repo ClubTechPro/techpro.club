@@ -1,41 +1,41 @@
 {{define "content"}}
-<h3 class="panel-heading">Project details <a href="/projects/edit?projectid={{.Id.Hex}}"><button class="btn btn-xs">Edit project</button></a></h3>
+<h3 class="panel-heading">Project details <a href="/projects/edit?projectid={{.ProjectPreview.Id.Hex}}"><button class="btn btn-xs">Edit project</button></a></h3>
 <div class="panel panel-default">
     <div class="row rowspacing">
         <div class="col col-md-12 col-sm-6"><b>Name</b></div>
-        <div class="col col-md-12 col-sm-6">{{.ProjectName}}</div>
+        <div class="col col-md-12 col-sm-6">{{.ProjectPreview.ProjectName}}</div>
     </div>
 
     <div class="row rowspacing">
         <div class="col col-md-12 col-sm-6"><b>Description</b></div>
-        <div class="col col-md-12 col-sm-6">{{.ProjectDescription}}</div>
+        <div class="col col-md-12 col-sm-6">{{.ProjectPreview.ProjectDescription}}</div>
     </div>
 
     <div class="row rowspacing">
         <div class="col col-md-12 col-sm-6"><b>Languages</b></div>
         <div class="col col-md-12 col-sm-6">
-            {{range .Languages}}<span>{{.}},</span>{{end}}
+            {{range .ProjectPreview.Languages}}<span>{{.}},</span>{{end}}
         </div>
     </div>
 
     <div class="row rowspacing">
         <div class="col col-md-12 col-sm-6"><b>Other Languages</b></div>
         <div class="col col-md-12 col-sm-6">
-            {{range .OtherLanguages}}<span>{{.}},</span>{{end}}
+            {{range .ProjectPreview.OtherLanguages}}<span>{{.}},</span>{{end}}
         </div>
     </div>
 
     <div class="row rowspacing">
         <div class="col col-md-12 col-sm-6"><b>Allied Services</b></div>
         <div class="col col-md-12 col-sm-6">
-            {{range .Allied}}<span>{{.}},</span>{{end}}
+            {{range .ProjectPreview.Allied}}<span>{{.}},</span>{{end}}
         </div>
     </div>
 
     <div class="row rowspacing">
         <div class="col col-md-12 col-sm-6"><b>Project Type</b></div>
         <div class="col col-md-12 col-sm-6">
-            {{range .ProjectType}}<span>{{.}},</span>{{end}}
+            {{range .ProjectPreview.ProjectType}}<span>{{.}},</span>{{end}}
         </div>
     </div>
 
@@ -43,7 +43,7 @@
         <div class="col col-md-12 col-sm-6">
             <b>Current Project Contributors</b>
         </div>
-        <div class="col col-md-12 col-sm-6">{{.ContributorCount}}</div>
+        <div class="col col-md-12 col-sm-6">{{.ProjectPreview.ContributorCount}}</div>
     </div>
 
     <div class="row rowspacing">
@@ -51,7 +51,7 @@
             <b>Documentation Link</b>
         </div>
         <div class="col col-md-12 col-sm-6">
-            <a href="{{.Documentation}}">{{.Documentation}}</a>
+            <a href="{{.ProjectPreview.Documentation}}">{{.ProjectPreview.Documentation}}</a>
         </div>
     </div>
 
@@ -64,16 +64,16 @@
     <div class="row rowspacing">
         <div class="col col-md-4 col-sm-6">
             <h6>Repository type</h6>
-            {{if .Public}}Public Repository{{else}} Private Repository {{end}}
+            {{if .ProjectPreview.Public}}Public Repository{{else}} Private Repository {{end}}
         </div>
         <div class="col col-md-4 col-sm-6">
             <h6>Company</h6>
-            {{if .Company}}{{.CompanyName}}{{end}}
+            {{if .ProjectPreview.Company}}{{.ProjectPreview.CompanyName}}{{end}}
         </div>
 
         <div class="col col-md-4 col-sm-6">
             <h6>Funded</h6>
-            {{if .Funded}}Yes {{else}} No{{end}}
+            {{if eq .ProjectPreview.Funded "true"}}Yes {{else}} No{{end}}
         </div>
     </div>
 </div>
