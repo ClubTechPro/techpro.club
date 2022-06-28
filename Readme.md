@@ -38,6 +38,7 @@
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
+    <li><a href="#founder">Founder</a></li>
     <li><a href="#core-team">Core Team</a></li>
   </ol>
 </details>
@@ -206,7 +207,8 @@ Links -
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-## Core Team
-
+## Founder
 -   [Chilarai](https://github.com/chilarai)
+
+## Core Team
 -   [Rohit Verma](https://github.com/RohitV5)
