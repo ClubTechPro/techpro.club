@@ -21,6 +21,7 @@ type FinalPreferencesOutStruct struct{
 	ProjectType map[string]string `json:"projectType"`
 	Contributors map[string]string `json:"contributors"`
 	ContributorPreferences common.SaveContributorPreferencesStruct `json:"contributorPreferences"`
+	UserNameImage common.UsernameImageStruct `json:"userNameImage"`
 }
 
 func Preferences(w http.ResponseWriter, r *http.Request){
@@ -120,6 +121,18 @@ func Preferences(w http.ResponseWriter, r *http.Request){
 		"more_than_10" : "More than 10",
 	}
 
+	var userNameImage common.UsernameImageStruct
+
+	// Fetch user name and image from saved browser cookies
+	status, userName, image := templates.FetchUsernameImage(w, r)
+
+	if(!status){
+		log.Println("Error fetching user name and image from cookies")
+	} else {
+		userNameImage  = common.UsernameImageStruct{userName,image}
+	}
+
+
 	if r.Method == "GET"{
 		preferences := fetchPreferences(userID)
 
@@ -129,6 +142,7 @@ func Preferences(w http.ResponseWriter, r *http.Request){
 			ProjectType,
 			Contributors,
 			preferences,
+			userNameImage,
 		}
 
 		tmpl, err := template.New("").Funcs(functions).ParseFiles("templates/app/contributors/preferences.gohtml", "templates/app/contributors/common/base.gohtml")

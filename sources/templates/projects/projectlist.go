@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"html/template"
+	"log"
 	"net/http"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -12,6 +13,10 @@ import (
 	"techpro.club/sources/users"
 )
 
+type FinalProjectListOutStruct struct{
+	ProjectsList []common.FetchProjectStruct `json:"projectsList"`
+	UserNameImage common.UsernameImageStruct `json:"userNameImage"`
+}
 
 func ProjectList(w http.ResponseWriter, r *http.Request){
 	
@@ -29,6 +34,18 @@ func ProjectList(w http.ResponseWriter, r *http.Request){
 		users.DeleteUserCookie(w, r)
 
 		http.Redirect(w, r, "/projects", http.StatusSeeOther)
+	}
+
+	var finalOutStruct FinalProjectListOutStruct
+	var userNameImage common.UsernameImageStruct
+
+	// Fetch user name and image from saved browser cookies
+	status, userName, image := templates.FetchUsernameImage(w, r)
+
+	if(!status){
+		log.Println("Error fetching user name and image from cookies")
+	} else {
+		userNameImage  = common.UsernameImageStruct{userName,image}
 	}
 
 
@@ -55,12 +72,14 @@ func ProjectList(w http.ResponseWriter, r *http.Request){
 			}
 		}
 	}
+
+	finalOutStruct = FinalProjectListOutStruct{results, userNameImage}
 	
 
 	tmpl, err := template.New("").ParseFiles("templates/app/projects/projectlist.gohtml", "templates/app/projects/common/base.gohtml")
 	if err != nil {
 		fmt.Println(err.Error())
 	}else {
-		tmpl.ExecuteTemplate(w, "projectbase", results) 
+		tmpl.ExecuteTemplate(w, "projectbase", finalOutStruct) 
 	}
 }
