@@ -83,6 +83,25 @@ type SaveUserSessionStruct struct{
 	SessionID string `json:"sessionId"`
 }
 
+// Fetch social Struct
+type FetchSocialStruct struct{
+	Id primitive.ObjectID `json:"id" bson:"_id,omitempty"`
+	UserID string `json:"userId"`
+	Twitter string `json:"twitter"`
+	Facebook string `json:"facebook"`
+	LinkedIn string `json:"linkedin"`
+	Stackoverflow string `json:"stackoverflow"`
+}
+
+// save social Struct
+type SaveSocialStruct struct{
+	UserID string `json:"userId"`
+	Twitter string `json:"twitter"`
+	Facebook string `json:"facebook"`
+	LinkedIn string `json:"linkedin"`
+	Stackoverflow string `json:"stackoverflow"`
+}
+
 // Fetch contributor preferences Struct
 type FetchContributorPreferencesStruct struct{
 	Id primitive.ObjectID `json:"id" bson:"_id,omitempty"`
