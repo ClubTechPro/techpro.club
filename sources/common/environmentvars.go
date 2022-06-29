@@ -60,6 +60,28 @@ func GetMoPass() (moPass string) {
 	return moPass
 }
 
+// Get mongodb auth db MO_AUTH_DB from environment variable
+func GetMoAuthDb() (moAuthDb string) {
+
+	moAuthDb, exists := os.LookupEnv("MO_AUTH_DB")
+	if !exists {
+		log.Fatal("MO_AUTH_DB not defined in .env file")
+	}
+
+	return moAuthDb
+}
+
+// Get mongodb auth method MO_AUTH_METHOD from environment variable
+func GetMoAuthMethod() (moAuthMethod string) {
+
+	moAuthMethod, exists := os.LookupEnv("MO_AUTH_METHOD")
+	if !exists {
+		log.Fatal("MO_AUTH_METHOD not defined in .env file")
+	}
+
+	return moAuthMethod
+}
+
 // Get Github client id from environment variable
 func GetGithubClientID() (githubClientID string) {
 
