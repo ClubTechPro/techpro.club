@@ -75,24 +75,7 @@ func UserSettings(w http.ResponseWriter, r *http.Request) {
 			twitter := r.Form.Get("twitter")
 			stackoverflow := r.Form.Get("stackoverflow")
 			
-
-			result := common.SaveContributorPreferencesStruct{userID, languages, otherLanguagesSplit, allied, projectType, notificationFrequency, contributorCount, paidJob, relocation, qualification}
-
-			client, _ := common.Mongoconnect()
-			defer client.Disconnect(context.TODO())
-	
-			dbName := common.GetMoDb()
-			saveContributorPreference := client.Database(dbName).Collection(common.CONST_MO_CONTRIBUTOR_PREFERENCES)
-	
-			_, err := saveContributorPreference.InsertOne(context.TODO(), result)
-	
-			if err != nil {
-				fmt.Println(err)
-			}
-			
-			
-
-			http.Redirect(w, r, "/contributors/thankyou", http.StatusSeeOther)
+			fmt.Println(name, repoUrl, facebook, linkedin, twitter, stackoverflow)
 		}
 	}
 }
