@@ -1,0 +1,101 @@
+{{define "content"}}
+<h3 class="panel-heading">User Profile</h3>
+<div class="panel panel-default">
+    <form method="post" content-type="x-www-form-urlencoded">
+
+        <img src="{{.UserProfile.ImageLink}}" height="50" alt="profile image"/>
+
+         <div class="row border border-primary">
+            <div class="col col-md-3 col-sm-6">
+                <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    value="{{.UserProfile.Name}}"
+                />
+            </div>
+        </div>
+
+
+         <div class="row border border-primary">
+            <div class="col col-md-3 col-sm-6">
+                <input
+                    type="text"
+                    id="email"
+                    name="email"
+                    disabled
+                    value="{{.UserProfile.Email}}"
+                />
+            </div>
+        </div>
+
+        <div class="row border border-primary">
+            <div class="col col-md-3 col-sm-6">
+                <input
+                    type="text"
+                    id="repourl"
+                    name="repourl"
+                    value="{{.UserProfile.RepoUrl}}"
+                />
+            </div>
+        </div>
+
+         <div class="row border border-primary">
+            <div class="col col-md-3 col-sm-6">
+                <input
+                    type="text"
+                    id="facebook"
+                    name="facebook"
+                    placeholder="Facebook"
+                    value="{{.UserSocials.Facebook}}"
+                />
+            </div>
+        </div>
+
+        <div class="row border border-primary">
+            <div class="col col-md-3 col-sm-6">
+                <input
+                    type="text"
+                    id="twitter"
+                    name="twitter"
+                    placeholder="Twitter"
+                    value="{{.UserSocials.Twitter}}"
+                />
+            </div>
+        </div>
+
+        <div class="row border border-primary">
+            <div class="col col-md-3 col-sm-6">
+                <input
+                    type="text"
+                    id="linkedin"
+                    name="linkedin"
+                    placeholder="Linkedin"
+                    value="{{.UserSocials.LinkedIn}}"
+                />
+            </div>
+        </div>
+
+        <div class="row border border-primary">
+            <div class="col col-md-3 col-sm-6">
+                <input
+                    type="text"
+                    id="stackoverflow"
+                    name="stackoverflow"
+                    placeholder="Stackoverflow"
+                    value="{{.UserSocials.Stackoverflow}}"
+                />
+            </div>
+        </div>
+
+        <br />
+        <input
+            type="submit"
+            id="saveSettingsBtn"
+            value="Save"
+            class="btn btn-success"
+        />
+    </form>
+</div>
+<div class="before-footer-spacing"></div>
+{{end}}
