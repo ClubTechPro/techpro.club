@@ -51,7 +51,7 @@ func UserSettings(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method == "POST"{
 		// Update user profile
-		
+
 		errParse := r.ParseForm()
 		if errParse != nil {
 			log.Println(errParse.Error())
@@ -88,15 +88,13 @@ func UserSettings(w http.ResponseWriter, r *http.Request) {
 }
 
 // Fetch user profile
-func fetchUserProfile(userID string)(userProfile common.FetchUserStruct){
+func fetchUserProfile(userID primitive.ObjectID)(userProfile common.FetchUserStruct){
 	client, _ := common.Mongoconnect()
 	defer client.Disconnect(context.TODO())
 
-	userIDHex, _ := primitive.ObjectIDFromHex(userID)
-
 	dbName := common.GetMoDb()
 	fetchUsers := client.Database(dbName).Collection(common.CONST_MO_USERS)
-	err := fetchUsers.FindOne(context.TODO(),  bson.M{"_id": userIDHex}, options.FindOne().SetProjection(bson.M{"_id": 0})).Decode(&userProfile)
+	err := fetchUsers.FindOne(context.TODO(),  bson.M{"_id": userID}, options.FindOne().SetProjection(bson.M{"_id": 0})).Decode(&userProfile)
 
 	if err != nil {
 		fmt.Println(err, userID)
@@ -106,17 +104,14 @@ func fetchUserProfile(userID string)(userProfile common.FetchUserStruct){
 }
 
 // Update user profile
-func UpdateUserProfile(userID, name, repoLink string)(status bool, msg string){
-
-	userIDHex, _ := primitive.ObjectIDFromHex(userID)
-
+func UpdateUserProfile(userID primitive.ObjectID, name, repoLink string)(status bool, msg string){
 
 	client, _ := common.Mongoconnect()
 	defer client.Disconnect(context.TODO())
 
 	dbName := common.GetMoDb()
 	updateUsers := client.Database(dbName).Collection(common.CONST_MO_USERS)
-	_ , errUpdate := updateUsers.UpdateOne(context.TODO(), bson.M{"_id": userIDHex}, bson.M{"$set": bson.M{"name": name, "repourl": repoLink}})
+	_ , errUpdate := updateUsers.UpdateOne(context.TODO(), bson.M{"_id": userID}, bson.M{"$set": bson.M{"name": name, "repourl": repoLink}})
 
 	if errUpdate != nil {
 		status = false
@@ -130,7 +125,7 @@ func UpdateUserProfile(userID, name, repoLink string)(status bool, msg string){
 }
 
 // Fetch socials
-func fetchSocials(userID string)(socials common.FetchSocialStruct){
+func fetchSocials(userID primitive.ObjectID)(socials common.FetchSocialStruct){
 	client, _ := common.Mongoconnect()
 	defer client.Disconnect(context.TODO())
 
@@ -146,7 +141,7 @@ func fetchSocials(userID string)(socials common.FetchSocialStruct){
 }
 
 // Update socials
-func updateSocials(userID, facebook, linkedin, twitter, stackoverflow string)(status bool, msg string){
+func updateSocials(userID primitive.ObjectID, facebook, linkedin, twitter, stackoverflow string)(status bool, msg string){
 	client, _ := common.Mongoconnect()
 	defer client.Disconnect(context.TODO())
 

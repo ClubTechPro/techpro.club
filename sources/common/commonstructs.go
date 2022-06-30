@@ -2,10 +2,33 @@ package common
 
 import "go.mongodb.org/mongo-driver/bson/primitive"
 
+// Feeds struct
+type FeedStruct struct {
+	Id primitive.ObjectID `json:"id" bson:"_id,omitempty"`
+	ProjectName string `json:"projectName"`
+	ProjectDescription string `json:"projectDescription"`
+	RepoLink string `json:"repoLink"`
+	Languages []string `json:"languages"`
+	OtherLanguages []string `json:"otherLanguages"`
+	Allied []string `json:"allied"`
+	Company string `json:"company"`
+	CompanyName string `json:"companyName"`
+	CreatedDate string `json:"createdDate"`
+	Userdetails []FeedParentUserStruct `json:"userdetails"`
+}
+
+
+// Feed parent user struct
+type FeedParentUserStruct struct{
+	Id primitive.ObjectID `json:"id" bson:"_id,omitempty"`
+	Name string `json:"name"`
+	ImageLink string `json:"imageLink"`
+}
+
 // Fetch projects collection struct
 type FetchProjectStruct struct{
 	Id primitive.ObjectID `json:"id" bson:"_id,omitempty"`
-	UserID string `json:"userId"`
+	UserID primitive.ObjectID `json:"userId"`
 	ProjectName string `json:"projectName"`
 	ProjectDescription string `json:"projectDescription"`
 	RepoLink string `json:"repoLink"`
@@ -27,7 +50,7 @@ type FetchProjectStruct struct{
 
 // Save projects collection struct
 type SaveProjectStruct struct{
-	UserID string `json:"userId"`
+	UserID primitive.ObjectID `json:"userId"`
 	ProjectName string `json:"projectName"`
 	ProjectDescription string `json:"projectDescription"`
 	RepoLink string `json:"repoLink"`
@@ -73,20 +96,20 @@ type SaveUserStruct struct {
 // Fetch user sessions Struct
 type FetchUserSessionStruct struct{
 	Id primitive.ObjectID `json:"id" bson:"_id,omitempty"`
-	UserID string `json:"userId"`
+	UserID primitive.ObjectID `json:"userId"`
 	SessionID string `json:"sessionId"`
 }
 
 // Save user sessions Struct
 type SaveUserSessionStruct struct{
-	UserID string `json:"userId"`
+	UserID primitive.ObjectID `json:"userId"`
 	SessionID string `json:"sessionId"`
 }
 
 // Fetch social Struct
 type FetchSocialStruct struct{
 	Id primitive.ObjectID `json:"id" bson:"_id,omitempty"`
-	UserID string `json:"userId"`
+	UserID primitive.ObjectID `json:"userId"`
 	Twitter string `json:"twitter"`
 	Facebook string `json:"facebook"`
 	LinkedIn string `json:"linkedin"`
@@ -95,7 +118,7 @@ type FetchSocialStruct struct{
 
 // save social Struct
 type SaveSocialStruct struct{
-	UserID string `json:"userId"`
+	UserID primitive.ObjectID `json:"userId"`
 	Twitter string `json:"twitter"`
 	Facebook string `json:"facebook"`
 	LinkedIn string `json:"linkedin"`
@@ -105,7 +128,7 @@ type SaveSocialStruct struct{
 // Fetch contributor preferences Struct
 type FetchContributorPreferencesStruct struct{
 	Id primitive.ObjectID `json:"id" bson:"_id,omitempty"`
-	UserID string `json:"userId"`
+	UserID primitive.ObjectID `json:"userId"`
 	Languages []string `json:"languages"`
 	OtherLanguages []string `json:"otherLanguages"`
 	Allied []string `json:"allied"`
@@ -119,7 +142,7 @@ type FetchContributorPreferencesStruct struct{
 
 // Save contributor preferences Struct
 type SaveContributorPreferencesStruct struct{
-	UserID string `json:"userId"`
+	UserID primitive.ObjectID `json:"userId"`
 	Languages []string `json:"languages"`
 	OtherLanguages []string `json:"otherLanguages"`
 	Allied []string `json:"allied"`

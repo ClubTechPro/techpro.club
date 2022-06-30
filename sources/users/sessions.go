@@ -8,17 +8,18 @@ import (
 	"techpro.club/sources/common"
 
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 type UserSession struct{
-	UserID string `json:"userId"`
+	UserID primitive.ObjectID `json:"userId"`
 	SessionID string `json:"sessionId"`
 }
 
 
 // Get status, user id from session cookie
-func getUserID(sessionId string) (status bool, errMsg string, userID string) {
+func getUserID(sessionId string) (status bool, errMsg string, userID primitive.ObjectID) {
 
 	// Fetch userId from database
 	client, _ := common.Mongoconnect()
@@ -27,7 +28,7 @@ func getUserID(sessionId string) (status bool, errMsg string, userID string) {
 	dbName := common.GetMoDb()
 			
 	type userStruct struct{
-		Userid string `json:"userid"`
+		Userid primitive.ObjectID `json:"userid"`
 	}
 	var result userStruct
 	savedUserSession := client.Database(dbName).Collection(common.CONST_MO_USER_SESSIONS)
@@ -36,7 +37,7 @@ func getUserID(sessionId string) (status bool, errMsg string, userID string) {
 	if err != nil {
 		status = false
 		errMsg = err.Error()
-		userID = ""
+		userID = primitive.NilObjectID
 	} else {
 		status = true
 		errMsg = ""
@@ -165,7 +166,7 @@ func GetUserImageCookie(w http.ResponseWriter, r *http.Request) (status bool, us
 
 
 // Save user session in database
-func SaveUserDbSession(userId, sessionId, email string) (status bool, errMsg string) {
+func SaveUserDbSession(userId primitive.ObjectID, sessionId, email string) (status bool, errMsg string) {
 
 	// Insert into database
 	result := UserSession{userId, sessionId}
@@ -191,7 +192,7 @@ func SaveUserDbSession(userId, sessionId, email string) (status bool, errMsg str
 }
 
 // Checks if session is valid, else return false
-func ValidateDbSession(w http.ResponseWriter, r *http.Request)(status bool, userID string){
+func ValidateDbSession(w http.ResponseWriter, r *http.Request)(status bool, userID primitive.ObjectID){
 	ok, sessionID := GetSession(w, r)
 	status = false
 	if ok {

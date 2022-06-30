@@ -56,7 +56,7 @@ func SaveUser(w http.ResponseWriter, r *http.Request, email, name, location, ima
 					
 				// Code is the session
 				session := r.URL.Query().Get("code")
-				SaveUserDbSession(userIdObject.(primitive.ObjectID).Hex(), session, email)
+				SaveUserDbSession(userIdObject.(primitive.ObjectID), session, email)
 				SetUserCookie(w, r, name)
 				SetUserImageCookie(w, r, imageLink)
 
@@ -74,7 +74,7 @@ func SaveUser(w http.ResponseWriter, r *http.Request, email, name, location, ima
 				fmt.Println(err.Error())
 			} else {
 				session := r.URL.Query().Get("code")
-				SaveUserDbSession(result.ID.Hex(), session, email)
+				SaveUserDbSession(result.ID, session, email)
 				SetUserCookie(w, r, name)
 				SetUserImageCookie(w, r, imageLink)
 			}
