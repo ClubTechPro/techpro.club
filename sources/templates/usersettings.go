@@ -49,34 +49,41 @@ func UserSettings(w http.ResponseWriter, r *http.Request) {
 	} 
 
 
-	if r.Method == "GET"{
-		userprofile := fetchUserProfile(userID)
-		socials := fetchSocials(userID)
-
-		userSettingsStruct := SettingsStruct{userprofile, socials}
-		fmt.Println(userSettingsStruct)
-
-		tmpl, err := template.New("").ParseFiles("templates/app/settings.gohtml", "templates/app/contributors/common/base.gohtml")
-		if err != nil {
-			fmt.Println(err.Error())
-		}else {
-			tmpl.ExecuteTemplate(w, "contributorbase", userSettingsStruct) 
-		}
-
-	} else {
+	if r.Method == "POST"{
+		// Update user profile
+		
 		errParse := r.ParseForm()
 		if errParse != nil {
 			log.Println(errParse.Error())
 		} else {
 			name := r.Form.Get("name")
-			repoUrl := r.Form.Get("otherLanguages")
+			repoUrl := r.Form.Get("repourl")
 			facebook := r.Form.Get("facebook")
 			linkedin := r.Form.Get("linkedin")
 			twitter := r.Form.Get("twitter")
 			stackoverflow := r.Form.Get("stackoverflow")
 			
-			fmt.Println(name, repoUrl, facebook, linkedin, twitter, stackoverflow)
+			socialStatus, socialMsg := updateSocials(userID, facebook, linkedin, twitter, stackoverflow)
+			profileStatus, profileMsg := UpdateUserProfile(userID, name, repoUrl)
+
+			if (socialStatus && profileStatus){
+				fmt.Println("ok",socialMsg, profileMsg)
+			} else {
+				fmt.Println("Wrong", socialMsg, profileMsg)
+			}
 		}
+	}
+
+	userprofile := fetchUserProfile(userID)
+	socials := fetchSocials(userID)
+
+	userSettingsStruct := SettingsStruct{userprofile, socials}
+
+	tmpl, err := template.New("").ParseFiles("templates/app/settings.gohtml", "templates/app/contributors/common/base.gohtml")
+	if err != nil {
+		fmt.Println(err.Error())
+	}else {
+		tmpl.ExecuteTemplate(w, "contributorbase", userSettingsStruct) 
 	}
 }
 
@@ -88,8 +95,8 @@ func fetchUserProfile(userID string)(userProfile common.FetchUserStruct){
 	userIDHex, _ := primitive.ObjectIDFromHex(userID)
 
 	dbName := common.GetMoDb()
-	fetchPreferences := client.Database(dbName).Collection(common.CONST_MO_USERS)
-	err := fetchPreferences.FindOne(context.TODO(),  bson.M{"_id": userIDHex}, options.FindOne().SetProjection(bson.M{"_id": 0})).Decode(&userProfile)
+	fetchUsers := client.Database(dbName).Collection(common.CONST_MO_USERS)
+	err := fetchUsers.FindOne(context.TODO(),  bson.M{"_id": userIDHex}, options.FindOne().SetProjection(bson.M{"_id": 0})).Decode(&userProfile)
 
 	if err != nil {
 		fmt.Println(err, userID)
@@ -99,8 +106,27 @@ func fetchUserProfile(userID string)(userProfile common.FetchUserStruct){
 }
 
 // Update user profile
-func UpdateUserProfile(){
+func UpdateUserProfile(userID, name, repoLink string)(status bool, msg string){
 
+	userIDHex, _ := primitive.ObjectIDFromHex(userID)
+
+
+	client, _ := common.Mongoconnect()
+	defer client.Disconnect(context.TODO())
+
+	dbName := common.GetMoDb()
+	updateUsers := client.Database(dbName).Collection(common.CONST_MO_USERS)
+	_ , errUpdate := updateUsers.UpdateOne(context.TODO(), bson.M{"_id": userIDHex}, bson.M{"$set": bson.M{"name": name, "repourl": repoLink}})
+
+	if errUpdate != nil {
+		status = false
+		msg = errUpdate.Error()
+	} else {
+		status = true
+		msg = "Success"
+	}
+
+	return status, msg
 }
 
 // Fetch socials
@@ -109,18 +135,52 @@ func fetchSocials(userID string)(socials common.FetchSocialStruct){
 	defer client.Disconnect(context.TODO())
 
 	dbName := common.GetMoDb()
-	fetchPreferences := client.Database(dbName).Collection(common.CONST_MO_SOCIALS)
-	err := fetchPreferences.FindOne(context.TODO(),  bson.M{"userid": userID}, options.FindOne().SetProjection(bson.M{"_id": 0})).Decode(&socials)
+	fetchSocials := client.Database(dbName).Collection(common.CONST_MO_SOCIALS)
+	err := fetchSocials.FindOne(context.TODO(),  bson.M{"userid": userID}, options.FindOne().SetProjection(bson.M{"_id": 0})).Decode(&socials)
 
 	if err != nil {
 		fmt.Println(err, userID)
 	} 
 
-	fmt.Println(socials)
 	return socials
 }
 
 // Update socials
-func updateSocials(){
+func updateSocials(userID, facebook, linkedin, twitter, stackoverflow string)(status bool, msg string){
+	client, _ := common.Mongoconnect()
+	defer client.Disconnect(context.TODO())
 
+	dbName := common.GetMoDb()
+	fetchSocials := client.Database(dbName).Collection(common.CONST_MO_SOCIALS)
+	countUsers, errSearch := fetchSocials.CountDocuments(context.TODO(),  bson.M{"userid": userID})
+
+	if errSearch != nil {
+		status = false
+		msg = errSearch.Error()
+	} else {
+		if (countUsers == 0){
+			// Insert
+			insertResult, errInsert := fetchSocials.InsertOne(context.TODO(), bson.M{"userid": userID, "facebook": facebook, "linkedin": linkedin, "twitter": twitter, "stackoverflow": stackoverflow})
+			if errInsert != nil {
+				status = false
+				msg = errInsert.Error()
+			} else {
+				status = true
+				msg = insertResult.InsertedID.(primitive.ObjectID).Hex()
+			}
+
+		} else {
+			// Update
+			_, errUpdate := fetchSocials.UpdateOne(context.TODO(),  bson.M{"userid": userID}, bson.M{"$set": bson.M{"facebook": facebook, "linkedin": linkedin, "twitter": twitter, "stackoverflow": stackoverflow}})
+			if errUpdate != nil {
+				status = false
+				msg = errUpdate.Error()
+			} else {
+				status = true
+				msg = "Success"
+			}
+		}
+	}
+
+	return status, msg
 }
