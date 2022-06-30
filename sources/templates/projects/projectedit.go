@@ -194,7 +194,7 @@ func ProjectEdit(w http.ResponseWriter, r *http.Request){
 	}
 }
 
-func FetchProjectDetails(projectID, userID string) (projectDetails common.FetchProjectStruct){
+func FetchProjectDetails(projectID string, userID primitive.ObjectID) (projectDetails common.FetchProjectStruct){
 	if(projectID != ""){
 
 		projectIdHex, err := primitive.ObjectIDFromHex(projectID)

@@ -1,5 +1,6 @@
 {{define "content"}}
 <h3 class="panel-heading">Projects Feed</h3>
+{{if not .Projects}}
 <div class="panel panel-default">
     <div class="card-body">
         <h3 class="card-title">Project list coming soon</h3>
@@ -17,6 +18,31 @@
         <span class="label label-pill label-success">News</span>
     </div>
 </div>
+{{else}}
+{{range .Projects}}
+{{$User := index .Userdetails 0}}
 
+<div class="panel panel-default">
+    <div class="card-body">
+        <h3 class="card-title">{{.ProjectName}}</h3>
+        <h6 class="card-subtitle mb-2 text-muted">By {{$User.Name}}</h6>
+        <p class="card-text">
+            {{.ProjectDescription}}
+        </p>
+        <div class="social-buttons">
+            {{ range .Languages }}
+            <span class="label label-pill label-success">{{.}}</span>
+            {{ end }}
+            {{ range .OtherLanguages }}
+            <span class="label label-pill label-success">{{.}}</span>
+            {{ end }}
+            {{ range .Allied }}
+            <span class="label label-pill label-default">{{.}}</span>
+            {{ end }}
+        </div>
+    </div>
+</div>
+{{end}}
+{{end}}
 <script async defer src="https://buttons.github.io/buttons.js"></script>
 {{end}}

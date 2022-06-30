@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"techpro.club/sources/common"
 	"techpro.club/sources/templates"
@@ -191,7 +192,7 @@ func Preferences(w http.ResponseWriter, r *http.Request){
 }
 
 // Return contributor preferences, if already saved
-func fetchPreferences(userID string) (preferences common.SaveContributorPreferencesStruct){
+func fetchPreferences(userID primitive.ObjectID) (preferences common.SaveContributorPreferencesStruct){
 	client, _ := common.Mongoconnect()
 	defer client.Disconnect(context.TODO())
 
