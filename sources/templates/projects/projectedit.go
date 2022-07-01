@@ -47,81 +47,6 @@ func ProjectEdit(w http.ResponseWriter, r *http.Request){
 		"sliceToCsv" : SliceToCsv,
 	}
 
-	ProgrammingLanguages := map[string]string{
-		"c" : "C",
-		"cpp" : "C++",
-		"csharp" : "C#",
-		"clojure" : "Clojure",
-		"codeql" : "CodeQL",
-		"coffeescript" : "CoffeeScript",
-		"dm" : "DM",
-		"dart" : "Dart",
-		"elixir" : "Elixir",
-		"elm" : "Elm",
-		"emacslisp" : "Emacs Lisp",
-		"erlang" : "Erlang",
-		"fsharp" : "F#",
-		"fortran" : "Fortran",
-		"go" : "Golang",
-		"groovy" : "Groovy",
-		"java" : "Java",
-		"js" : "Javascript",
-		"jinja" : "Jinja",
-		"jsonnet" : "Jsonnet",
-		"julia" : "Julia",
-		"kotlin" : "Kotlin",
-		"lean" : "Lean",
-		"lua" : "Lua",
-		"matlab" : "Matlab",
-		"nix" : "Nix",
-		"objectivec" : "Objective-C",
-		"ocaml" : "OCaml",
-		"perl" : "Perl",
-		"php" : "PHP",
-		"powershell" : "Powershell",
-		"puppet" : "Puppet",
-		"python" : "Python",
-		"r" : "R",
-		"roff" : "Roff",
-		"ruby" : "Ruby",
-		"rust" : "Rust",
-		"scala" : "Scala",
-		"scss" : "SCSS",
-		"shell" : "Shell",
-		"swift" : "Swift",
-		"systemverilog" : "System Verilog",
-		"typescript" : "Typescript",
-		"vala" : "Vala",
-		"verilog" : "Verilog",
-		"vimscript" : "Vim script",
-		"vbnet" : "Visual Basic .NET",
-		"wasm" : "WebAssembly",
-		"yaml" : "YAML",
-	}
-	
-	AlliedServices := map[string] string {
-		"devops" : "DevOps",
-		"documentation" : "Documentation",
-		"sanitization" : "Code Sanitization",
-		"test" : "Test Cases",
-	}
-	
-	ProjectType := map[string]string{
-		"library_plugin" : "Library/Plugin",
-		"database" : "Database",
-		"webapp" : "Web Application",
-		"mobileapp" : "Mobile Application", 
-		"desktopapp" : "Desktop Application",
-		"others" : "Others",
-	
-	}
-
-	Contributors := map[string]string{
-		"1" : "Project founder only",
-		"less_than_10" : "Less than 10",
-		"more_than_10" : "More than 10",
-	}
-
 	var userNameImage common.UsernameImageStruct
 
 	// Fetch user name and image from saved browser cookies
@@ -140,10 +65,10 @@ func ProjectEdit(w http.ResponseWriter, r *http.Request){
 		result := FetchProjectDetails(projectID, userID)
 
 		constantLists := FinalProjectOutStruct{
-			ProgrammingLanguages,
-			AlliedServices,
-			ProjectType,
-			Contributors,
+			common.ProgrammingLanguages,
+			common.AlliedServices,
+			common.ProjectType,
+			common.Contributors,
 			result,
 			userNameImage,
 		}
