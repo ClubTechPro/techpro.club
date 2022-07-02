@@ -1,4 +1,4 @@
-package contributors
+package projects
 
 import (
 	"net/http"
@@ -8,7 +8,7 @@ import (
 )
 
 func Notifications(w http.ResponseWriter, r *http.Request){
-	if r.URL.Path != "/contributors/notifications" {
+	if r.URL.Path != "/projects/notifications" {
         templates.ErrorHandler(w, r, http.StatusNotFound)
         return
     }
