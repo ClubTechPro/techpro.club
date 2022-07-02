@@ -46,7 +46,15 @@ func Feeds(w http.ResponseWriter, r *http.Request){
 		userNameImage  = common.UsernameImageStruct{userName,image}
 	}
 	
-	results := fetchActiveProjects(0)
+	// TEST CONDITIONS
+	// This has to come from the actual frontend
+	pageid := int64(0)
+	tags := []string{"cpp"}
+	keyword := "Go"
+	// TEST CONDITIONS ENDS
+
+	
+	results := filterActiveProjects(pageid, tags, keyword)
 
 	output := FinalFeedsOutputStruct{results, userNameImage}
 
@@ -60,7 +68,9 @@ func Feeds(w http.ResponseWriter, r *http.Request){
 
 }
 
-func fetchActiveProjects(pageid int64)(results []common.FeedStruct){
+
+// Filter all active projects from the database according to filters
+func filterActiveProjects(pageid int64, tags []string, keyword string)(results []common.FeedStruct){
 
 	resultsPerPage := int64(20)
 
@@ -91,7 +101,19 @@ func fetchActiveProjects(pageid int64)(results []common.FeedStruct){
 		"userdetails" : bson.M{ "_id" : 1, "name": 1, "imagelink" :1},
 	}}
 
-	aggCondition := bson.M{"$match": bson.M{"isactive": bson.M{"$eq": common.CONST_ACTIVE}}}
+	var orConditions []bson.M
+	var finalConditions []bson.M
+
+	orConditions = append(orConditions, bson.M{"languages": bson.M{"$in": tags}})
+	orConditions = append(orConditions, bson.M{"otherlanguages": bson.M{"$in": tags}})
+	orConditions = append(orConditions, bson.M{"allied": bson.M{"$in": tags}})
+	
+	finalConditions = append(finalConditions, bson.M{"isactive": bson.M{"$eq": common.CONST_ACTIVE}})
+	finalConditions = append(finalConditions, bson.M{"projectname" : bson.M{"$regex": keyword}})
+	finalConditions = append(finalConditions, bson.M{"$or" : orConditions})
+
+	aggCondition := bson.M{"$match": bson.M{"$and" : finalConditions}}
+
 
 	aggSkip := bson.M{"$skip": (pageid * resultsPerPage)}
     aggLimit := bson.M{"$limit": resultsPerPage}
