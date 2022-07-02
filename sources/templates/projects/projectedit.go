@@ -131,7 +131,7 @@ func FetchProjectDetails(projectID string, userID primitive.ObjectID) (projectDe
 			defer client.Disconnect(context.TODO())
 
 			dbName := common.GetMoDb()
-			fetchProject := client.Database(dbName).Collection(common.CONST_PR_PROJECTS)
+			fetchProject := client.Database(dbName).Collection(common.CONST_MO_PROJECTS)
 			err := fetchProject.FindOne(context.TODO(),  bson.M{"userid": userID, "_id": projectIdHex}).Decode(&projectDetails)
 
 			if err != nil {
@@ -148,7 +148,7 @@ func updateProject(w http.ResponseWriter, r *http.Request, projectID string, new
 	defer client.Disconnect(context.TODO())
 
 	dbName := common.GetMoDb()
-	saveProject := client.Database(dbName).Collection(common.CONST_PR_PROJECTS)
+	saveProject := client.Database(dbName).Collection(common.CONST_MO_PROJECTS)
 
 	projectIdHex, _ := primitive.ObjectIDFromHex(projectID)
 	_, err := saveProject.UpdateOne(context.TODO(), bson.M{"_id": projectIdHex}, bson.M{"$set": newProjectStruct})
