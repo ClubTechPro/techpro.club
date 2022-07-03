@@ -53,7 +53,7 @@ func Feeds(w http.ResponseWriter, r *http.Request){
 	keyword := "Go"
 	// TEST CONDITIONS ENDS
 
-	
+
 	results := filterActiveProjects(pageid, tags, keyword)
 
 	output := FinalFeedsOutputStruct{results, userNameImage}
@@ -72,14 +72,28 @@ func Feeds(w http.ResponseWriter, r *http.Request){
 // Filter all active projects from the database according to filters
 func filterActiveProjects(pageid int64, tags []string, keyword string)(results []common.FeedStruct){
 
+	var orConditions []bson.M
+	var finalConditions []bson.M
 	resultsPerPage := int64(20)
 
 	client, _ := common.Mongoconnect()
 	defer client.Disconnect(context.TODO())
 
 	dbName := common.GetMoDb()
-	fetchProjects := client.Database(dbName).Collection(common.CONST_PR_PROJECTS)
+	fetchProjects := client.Database(dbName).Collection(common.CONST_MO_PROJECTS)
 
+	// Filter where conditions
+	orConditions = append(orConditions, bson.M{"languages": bson.M{"$in": tags}})
+	orConditions = append(orConditions, bson.M{"otherlanguages": bson.M{"$in": tags}})
+	orConditions = append(orConditions, bson.M{"allied": bson.M{"$in": tags}})
+	
+	finalConditions = append(finalConditions, bson.M{"isactive": bson.M{"$eq": common.CONST_ACTIVE}})
+	finalConditions = append(finalConditions, bson.M{"projectname" : bson.M{"$regex": keyword}})
+	finalConditions = append(finalConditions, bson.M{"$or" : orConditions})
+
+	aggCondition := bson.M{"$match": bson.M{"$and" : finalConditions}}
+
+	// Filter joins
 	aggLookup := bson.M{"$lookup": bson.M{
 		"from":         common.CONST_MO_USERS,    // the collection name
 		"localField":   "projects.userid", 	      // the field on the child struct
@@ -100,20 +114,6 @@ func filterActiveProjects(pageid int64, tags []string, keyword string)(results [
 		"createddate": 1,
 		"userdetails" : bson.M{ "_id" : 1, "name": 1, "imagelink" :1},
 	}}
-
-	var orConditions []bson.M
-	var finalConditions []bson.M
-
-	orConditions = append(orConditions, bson.M{"languages": bson.M{"$in": tags}})
-	orConditions = append(orConditions, bson.M{"otherlanguages": bson.M{"$in": tags}})
-	orConditions = append(orConditions, bson.M{"allied": bson.M{"$in": tags}})
-	
-	finalConditions = append(finalConditions, bson.M{"isactive": bson.M{"$eq": common.CONST_ACTIVE}})
-	finalConditions = append(finalConditions, bson.M{"projectname" : bson.M{"$regex": keyword}})
-	finalConditions = append(finalConditions, bson.M{"$or" : orConditions})
-
-	aggCondition := bson.M{"$match": bson.M{"$and" : finalConditions}}
-
 
 	aggSkip := bson.M{"$skip": (pageid * resultsPerPage)}
     aggLimit := bson.M{"$limit": resultsPerPage}

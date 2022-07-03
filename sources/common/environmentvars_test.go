@@ -4,6 +4,7 @@ import (
 	"testing"
 )
 
+// Test GetGithubClientID exists
 func TestGetGithubClientID(t *testing.T){
 	got := GetGithubClientID()
 

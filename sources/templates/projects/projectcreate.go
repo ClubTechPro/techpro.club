@@ -112,7 +112,7 @@ func saveProject(w http.ResponseWriter, r *http.Request, newProjectStruct common
 	defer client.Disconnect(context.TODO())
 
 	dbName := common.GetMoDb()
-	saveProject := client.Database(dbName).Collection(common.CONST_PR_PROJECTS)
+	saveProject := client.Database(dbName).Collection(common.CONST_MO_PROJECTS)
 
 	_, err := saveProject.InsertOne(context.TODO(), newProjectStruct)
 

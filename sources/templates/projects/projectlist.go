@@ -53,7 +53,7 @@ func ProjectList(w http.ResponseWriter, r *http.Request){
 	defer client.Disconnect(context.TODO())
 
 	dbName := common.GetMoDb()
-	fetchProject := client.Database(dbName).Collection(common.CONST_PR_PROJECTS)
+	fetchProject := client.Database(dbName).Collection(common.CONST_MO_PROJECTS)
 	projectsList, err := fetchProject.Find(context.TODO(),  bson.M{"userid": userID})
 
 	var results []common.FetchProjectStruct

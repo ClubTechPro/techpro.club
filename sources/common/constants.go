@@ -25,5 +25,8 @@ const(
 	CONST_MO_SOCIALS = "socials"
 	CONST_MO_USER_SESSIONS = "user_sessions"
 	CONST_MO_CONTRIBUTOR_PREFERENCES = "contributor_preferences"
-	CONST_PR_PROJECTS = "projects"
+	CONST_MO_PROJECTS = "projects"
+	CONST_MO_CONTRIBUTOR_NOTIFICATIONS = "contributor_notifications"
+	CONST_MO_PROJECT_NOTIFICATIONS = "project_notifications"
+	CONST_MO_BOOKMARKS = "bookmarks"
 )
