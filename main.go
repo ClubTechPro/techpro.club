@@ -31,6 +31,7 @@ func main() {
 
 	// Users
 	http.HandleFunc("/users/settings", templates.UserSettings)
+	http.HandleFunc("/users/notifications", templates.Notifications)
 
 	// Templates/Contributors
 	http.HandleFunc("/contributors/feeds", contributors.Feeds)

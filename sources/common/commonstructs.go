@@ -25,6 +25,30 @@ type FeedParentUserStruct struct{
 	ImageLink string `json:"imageLink"`
 }
 
+// Fetch Notifications Struct
+type FetchNotificationStruct struct {
+	Id primitive.ObjectID `json:"id"`
+	UserID primitive.ObjectID `json:"userID"`
+	NotificationType string `json:"notificationType"`
+	Subject string `json:"subject"`
+	Message string `json:"message"`
+	Link string `json:"link"`
+	CreatedDate string `json:"createdDate"`
+	Read bool `json:"read"`
+}
+
+// Save Notifications Struct
+type SaveNotificationStruct struct {
+	UserID primitive.ObjectID `json:"userID"`
+	NotificationType string `json:"notificationType"`
+	Subject string `json:"subject"`
+	Message string `json:"message"`
+	Link string `json:"link"`
+	CreatedDate string `json:"createdDate"`
+	Read bool `json:"read"`
+}
+
+
 // Fetch projects collection struct
 type FetchProjectStruct struct{
 	Id primitive.ObjectID `json:"id" bson:"_id,omitempty"`
