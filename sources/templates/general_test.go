@@ -40,12 +40,8 @@ func TestSliceToCsv(t *testing.T) {
 
 // Test FetchProjectDetails
 func TestFetchProjectDetails(t *testing.T) {
-	var testProjectID string = "12345"
-	testUserID, err := primitive.ObjectIDFromHex("62bd7328bf850f09cb4d5a3a")
-
-	if err != nil {
-		t.Errorf(err.Error())
-	}
+	var testProjectID string = "62bd7328bf850f09cb4d5a3a"
+	testUserID := primitive.NewObjectID()
 
 	status, msg, _ := FetchProjectDetails(testProjectID, testUserID)
 

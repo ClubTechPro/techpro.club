@@ -1,11 +1,9 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"techpro.club/sources/authentication"
 	"techpro.club/sources/common"
 	"techpro.club/sources/templates"
@@ -17,16 +15,6 @@ import (
 
 
 func init() {
-	testUserID1 := primitive.NewObjectID()
-	fmt.Println("Init test 1", testUserID1)
-
-	testUserID, err1 := primitive.ObjectIDFromHex("62bd7328bf850f09cb4d5a3a")
-	if err1 != nil {
-		fmt.Println("Init error", err1.Error())
-	} else {
-		fmt.Println("Init fine", testUserID)
-	}
-	
 	// loads values from .env into the system
 	if err := godotenv.Load(); err != nil {
 		log.Fatal("No .env file found")

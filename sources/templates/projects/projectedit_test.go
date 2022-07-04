@@ -9,7 +9,7 @@ import (
 
 // Test UpdateProject
 func TestUpdateProject(t *testing.T){
-	var testProjectID string = "12345"
+	var testProjectID string = "62bd7328bf850f09cb4d5a3a"
 	var newProjectStruct common.SaveProjectStruct = common.SaveProjectStruct{}
 	var testW http.ResponseWriter = http.ResponseWriter(nil)
 	var testR *http.Request = new(http.Request)
