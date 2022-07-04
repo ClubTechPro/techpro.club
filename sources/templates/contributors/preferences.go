@@ -125,17 +125,17 @@ func Preferences(w http.ResponseWriter, r *http.Request){
 	var userNameImage common.UsernameImageStruct
 
 	// Fetch user name and image from saved browser cookies
-	status, userName, image := templates.FetchUsernameImage(w, r)
+	status, msg, userName, image := templates.FetchUsernameImage(w, r)
 
 	if(!status){
-		log.Println("Error fetching user name and image from cookies")
+		log.Println(msg)
 	} else {
 		userNameImage  = common.UsernameImageStruct{userName,image}
 	}
 
 
 	if r.Method == "GET"{
-		preferences := fetchPreferences(userID)
+		_, _, preferences := fetchPreferences(userID)
 
 		finalPreferencesOutStruct := FinalPreferencesOutStruct{
 			ProgrammingLanguages,
@@ -154,46 +154,21 @@ func Preferences(w http.ResponseWriter, r *http.Request){
 		}
 	} else {
 	
-		errParse := r.ParseForm()
-		if errParse != nil {
-			log.Println(errParse.Error())
+		status, msg := savePreferences(w, r, userID)
+		if !status{
+			fmt.Println(msg)
 		} else {
-			languages := r.Form["language"]
-			otherLanguages := r.Form.Get("otherLanguages")
-			allied := r.Form["allied"]
-			notificationFrequency := r.Form.Get("emailFrequency")
-			projectType := r.Form["pType"]
-			contributorCount := r.Form.Get("contributorCount")
-			paidJob :=  r.Form.Get("paidJob")
-			relocation := r.Form.Get("relocation")
-			qualification := r.Form.Get("qualification")
-
-			otherLanguagesSplit := strings.Split(otherLanguages, ",")
-
-			result := common.SaveContributorPreferencesStruct{userID, languages, otherLanguagesSplit, allied, projectType, notificationFrequency, contributorCount, paidJob, relocation, qualification}
-
-			client, _ := common.Mongoconnect()
-			defer client.Disconnect(context.TODO())
-	
-			dbName := common.GetMoDb()
-			saveContributorPreference := client.Database(dbName).Collection(common.CONST_MO_CONTRIBUTOR_PREFERENCES)
-	
-			_, err := saveContributorPreference.InsertOne(context.TODO(), result)
-	
-			if err != nil {
-				fmt.Println(err)
-			}
-			
-			
-
 			http.Redirect(w, r, "/contributors/thankyou", http.StatusSeeOther)
 		}
 	}
 }
 
 // Return contributor preferences, if already saved
-func fetchPreferences(userID primitive.ObjectID) (preferences common.SaveContributorPreferencesStruct){
-	client, _ := common.Mongoconnect()
+func fetchPreferences(userID primitive.ObjectID) (status bool, msg string, preferences common.SaveContributorPreferencesStruct){
+	status = false
+	msg = ""
+
+	_, _, client := common.Mongoconnect()
 	defer client.Disconnect(context.TODO())
 
 	dbName := common.GetMoDb()
@@ -201,8 +176,54 @@ func fetchPreferences(userID primitive.ObjectID) (preferences common.SaveContrib
 	err := fetchPreferences.FindOne(context.TODO(),  bson.M{"userid": userID}, options.FindOne().SetProjection(bson.M{"_id": 0})).Decode(&preferences)
 
 	if err != nil {
-		fmt.Println(err, userID)
-	} 
+		msg = err.Error()
+		status = false
+	} else {
+		msg= "Success"
+		status = true
+	}
 
-	return preferences
+	return status, msg, preferences
+}
+
+// Save preferences for contributor
+func savePreferences(w http.ResponseWriter, r *http.Request, userID primitive.ObjectID) (status bool, msg string){
+	status = false
+	msg = ""
+
+	errParse := r.ParseForm()
+	if errParse != nil {
+		msg = errParse.Error()
+	} else {
+		languages := r.Form["language"]
+		otherLanguages := r.Form.Get("otherLanguages")
+		allied := r.Form["allied"]
+		notificationFrequency := r.Form.Get("emailFrequency")
+		projectType := r.Form["pType"]
+		contributorCount := r.Form.Get("contributorCount")
+		paidJob :=  r.Form.Get("paidJob")
+		relocation := r.Form.Get("relocation")
+		qualification := r.Form.Get("qualification")
+
+		otherLanguagesSplit := strings.Split(otherLanguages, ",")
+
+		result := common.SaveContributorPreferencesStruct{userID, languages, otherLanguagesSplit, allied, projectType, notificationFrequency, contributorCount, paidJob, relocation, qualification}
+
+		_, _, client := common.Mongoconnect()
+		defer client.Disconnect(context.TODO())
+
+		dbName := common.GetMoDb()
+		saveContributorPreference := client.Database(dbName).Collection(common.CONST_MO_CONTRIBUTOR_PREFERENCES)
+
+		_, err := saveContributorPreference.InsertOne(context.TODO(), result)
+
+		if err != nil {
+			msg = err.Error()
+		} else {
+			status = true
+			msg = "Success"
+		}
+	}
+
+	return status, msg
 }

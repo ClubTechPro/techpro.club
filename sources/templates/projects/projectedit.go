@@ -50,10 +50,10 @@ func ProjectEdit(w http.ResponseWriter, r *http.Request){
 	var userNameImage common.UsernameImageStruct
 
 	// Fetch user name and image from saved browser cookies
-	status, userName, image := templates.FetchUsernameImage(w, r)
+	status, msg, userName, image := templates.FetchUsernameImage(w, r)
 
 	if(!status){
-		log.Println("Error fetching user name and image from cookies")
+		log.Println(msg)
 	} else {
 		userNameImage  = common.UsernameImageStruct{userName,image}
 	}
@@ -127,7 +127,7 @@ func FetchProjectDetails(projectID string, userID primitive.ObjectID) (projectDe
 		if err != nil {
 			fmt.Println(err.Error())
 		} else {
-			client, _ := common.Mongoconnect()
+			_, _, client := common.Mongoconnect()
 			defer client.Disconnect(context.TODO())
 
 			dbName := common.GetMoDb()
@@ -144,7 +144,7 @@ func FetchProjectDetails(projectID string, userID primitive.ObjectID) (projectDe
 }
 
 func updateProject(w http.ResponseWriter, r *http.Request, projectID string, newProjectStruct common.SaveProjectStruct){
-	client, _ := common.Mongoconnect()
+	_, _, client := common.Mongoconnect()
 	defer client.Disconnect(context.TODO())
 
 	dbName := common.GetMoDb()

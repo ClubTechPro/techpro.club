@@ -36,41 +36,20 @@ func Notifications(w http.ResponseWriter, r *http.Request){
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 	}
 
-	var Notificaitons []common.FetchNotificationStruct
 	var userNameImage common.UsernameImageStruct
 
 	// Fetch user name and image from saved browser cookies
-	status, userName, image := FetchUsernameImage(w, r)
+	status, msg, userName, image := FetchUsernameImage(w, r)
 
 	if(!status){
-		log.Println("Error fetching user name and image from cookies")
+		log.Println(msg)
 	} else {
 		userNameImage  = common.UsernameImageStruct{userName,image}
 	}
 
-	client, _ := common.Mongoconnect()
-	defer client.Disconnect(context.TODO())
+	_, _, Notifications := fetchNotificationList(w, r, userID)
 
-	dbName := common.GetMoDb()
-	fetchNotifications := client.Database(dbName).Collection(common.CONST_MO_CONTRIBUTOR_NOTIFICATIONS)
-	notifications, errNotifications := fetchNotifications.Find(context.TODO(), bson.M{"userid" : userID})
-
-	if errNotifications != nil{
-		fmt.Println(errNotifications.Error())
-	} else {
-		for notifications.Next(context.TODO()){
-			var notification common.FetchNotificationStruct
-			errNotifications := notifications.Decode(&notification)
-
-			if errNotifications != nil{
-				fmt.Println(errNotifications.Error())
-			} else {
-				Notificaitons = append(Notificaitons, notification)
-			}
-		}
-	}
-
-	output := NotificationStruct{Notificaitons, userNameImage}
+	output := NotificationStruct{Notifications, userNameImage}
 
 	tmpl, err := template.New("").ParseFiles("templates/app/notifications.gohtml", "templates/app/contributors/common/base.gohtml")
 
@@ -87,7 +66,7 @@ func NotificationsCount(userID primitive.ObjectID)(status bool, msg string, coun
 	msg = "Success"
 	count = 0
 
-	client, _ := common.Mongoconnect()
+	status, msg, client := common.Mongoconnect()
 	defer client.Disconnect(context.TODO())
 
 	dbName := common.GetMoDb()
@@ -99,8 +78,42 @@ func NotificationsCount(userID primitive.ObjectID)(status bool, msg string, coun
 		msg = errCount.Error()
 	} else {
 		status = true
-		msg = ""
+		msg = "Success"
 	}
 
 	return status, msg, count
+}
+
+// Fetch notifications list
+func fetchNotificationList(w http.ResponseWriter, r *http.Request, userID primitive.ObjectID)(status bool, msg string, Notifications []common.FetchNotificationStruct){
+	status = false
+	msg = ""
+
+	status, msg, client := common.Mongoconnect()
+	defer client.Disconnect(context.TODO())
+
+	dbName := common.GetMoDb()
+	fetchNotifications := client.Database(dbName).Collection(common.CONST_MO_CONTRIBUTOR_NOTIFICATIONS)
+	notifications, errNotifications := fetchNotifications.Find(context.TODO(), bson.M{"userid" : userID})
+
+	if errNotifications != nil{
+		fmt.Println(errNotifications.Error())
+		msg = errNotifications.Error()
+	} else {
+		for notifications.Next(context.TODO()){
+			var notification common.FetchNotificationStruct
+			errNotifications := notifications.Decode(&notification)
+
+			if errNotifications != nil{
+				status = false
+				msg = errNotifications.Error()
+			} else {
+				status = true
+				msg = "Success"
+				Notifications = append(Notifications, notification)
+			}
+		}
+	}
+
+	return status, msg, Notifications
 }

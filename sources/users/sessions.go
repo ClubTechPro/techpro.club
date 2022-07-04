@@ -22,7 +22,7 @@ type UserSession struct{
 func getUserID(sessionId string) (status bool, errMsg string, userID primitive.ObjectID) {
 
 	// Fetch userId from database
-	client, _ := common.Mongoconnect()
+	_, _, client := common.Mongoconnect()
 	defer client.Disconnect(context.TODO())
 
 	dbName := common.GetMoDb()
@@ -171,7 +171,7 @@ func SaveUserDbSession(userId primitive.ObjectID, sessionId, email string) (stat
 	// Insert into database
 	result := UserSession{userId, sessionId}
 	
-	client, _ := common.Mongoconnect()
+	_, _, client := common.Mongoconnect()
 	defer client.Disconnect(context.TODO())
 
 	dbName := common.GetMoDb()
@@ -209,7 +209,7 @@ func ValidateDbSession(w http.ResponseWriter, r *http.Request)(status bool, user
 // Delete the session from the databse
 func deleteDbSession(w http.ResponseWriter, r *http.Request, sessionID string)(status bool, errMsg string) {
 
-	client, _ := common.Mongoconnect()
+	_, _, client := common.Mongoconnect()
 	defer client.Disconnect(context.TODO())
 
 	dbName := common.GetMoDb()
@@ -232,7 +232,7 @@ func deleteDbSession(w http.ResponseWriter, r *http.Request, sessionID string)(s
 func CheckUserExists(email string)(status bool){
 	status = false
 
-	client, _ := common.Mongoconnect()
+	_, _, client := common.Mongoconnect()
 	defer client.Disconnect(context.TODO())
 
 	dbName := common.GetMoDb()
@@ -254,7 +254,7 @@ func FetchUserImage(userId string)(status bool, errMsg string, image string){
 	errMsg = ""
 	image = ""
 
-	client, _ := common.Mongoconnect()
+	_, _, client := common.Mongoconnect()
 	defer client.Disconnect(context.TODO())
 
 	dbName := common.GetMoDb()
