@@ -10,10 +10,19 @@ import (
 func TestContains(t *testing.T) {
 	var testString []string = []string{"test", "test2", "test3"}
 	var testSubstring string = "tset"
+	var testSubstring2 string = "test"
 
-	var testResult bool = Contains(testString, testSubstring)
+	// Check pass
+	status := Contains(testString, testSubstring)
 
-	if !testResult {
+	if status {
+		t.Errorf("contains() failed")
+	}
+
+	// Check fail
+	status = Contains(testString, testSubstring2)
+
+	if !status {
 		t.Errorf("contains() failed")
 	}
 }
@@ -32,7 +41,7 @@ func TestSliceToCsv(t *testing.T) {
 // Test FetchProjectDetails
 func TestFetchProjectDetails(t *testing.T) {
 	var testProjectID string = "12345"
-	var testUserID primitive.ObjectID = primitive.NewObjectID()
+	testUserID, _ := primitive.ObjectIDFromHex("62bd7328bf850f09cb4d5a3a")
 
 	status, msg, _ := FetchProjectDetails(testProjectID, testUserID)
 
