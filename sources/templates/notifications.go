@@ -60,30 +60,6 @@ func Notifications(w http.ResponseWriter, r *http.Request){
 	}
 }
 
-// Find total unread notifications for a user from database
-func NotificationsCount(userID primitive.ObjectID)(status bool, msg string, count int64){
-	status = true
-	msg = "Success"
-	count = 0
-
-	status, msg, client := common.Mongoconnect()
-	defer client.Disconnect(context.TODO())
-
-	dbName := common.GetMoDb()
-	countNotifications := client.Database(dbName).Collection(common.CONST_MO_CONTRIBUTOR_NOTIFICATIONS)
-	count, errCount := countNotifications.CountDocuments(context.TODO(), bson.M{"read": false, "userid" : userID})
-
-	if errCount != nil{
-		status = false
-		msg = errCount.Error()
-	} else {
-		status = true
-		msg = "Success"
-	}
-
-	return status, msg, count
-}
-
 // Fetch notifications list
 func fetchNotificationList(w http.ResponseWriter, r *http.Request, userID primitive.ObjectID)(status bool, msg string, Notifications []common.FetchNotificationStruct){
 	status = false

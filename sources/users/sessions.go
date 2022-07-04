@@ -19,7 +19,7 @@ type UserSession struct{
 
 
 // Get status, user id from session cookie
-func getUserID(sessionId string) (status bool, errMsg string, userID primitive.ObjectID) {
+func getUserIDFromSession(sessionId string) (status bool, errMsg string, userID primitive.ObjectID) {
 
 	// Fetch userId from database
 	_, _, client := common.Mongoconnect()
@@ -195,14 +195,15 @@ func SaveUserDbSession(userId primitive.ObjectID, sessionId, email string) (stat
 func ValidateDbSession(w http.ResponseWriter, r *http.Request)(status bool, userID primitive.ObjectID){
 	ok, sessionID := GetSession(w, r)
 	status = false
+
 	if ok {
-		okUser, _, userId := getUserID(sessionID)
+		okUser, _, userId := getUserIDFromSession(sessionID)
 		userID = userId
 
 		if okUser {
 			status = true
 		}
-	}
+	} 
 	return status, userID
 }
 
@@ -229,8 +230,9 @@ func deleteDbSession(w http.ResponseWriter, r *http.Request, sessionID string)(s
 }
 
 // Check if user exists
-func CheckUserExists(email string)(status bool){
+func CheckUserExists(email string)(status bool, msg string){
 	status = false
+	msg = ""
 
 	_, _, client := common.Mongoconnect()
 	defer client.Disconnect(context.TODO())
@@ -238,43 +240,18 @@ func CheckUserExists(email string)(status bool){
 	dbName := common.GetMoDb()
 	countUserExists := client.Database(dbName).Collection(common.CONST_MO_USERS)
 
-	countUsers, _ := countUserExists.CountDocuments(context.TODO(), bson.M{"email": email})
-
-	if countUsers > 0 {
-		status = true
-	}
-
-	return status
-}
-
-
-// fetch user image from database
-func FetchUserImage(userId string)(status bool, errMsg string, image string){
-	status = false
-	errMsg = ""
-	image = ""
-
-	_, _, client := common.Mongoconnect()
-	defer client.Disconnect(context.TODO())
-
-	dbName := common.GetMoDb()
-	countUserExists := client.Database(dbName).Collection(common.CONST_MO_USERS)
-
-	type userStruct struct{
-		ImageLink string `json:"imageLink"`
-	}
-
-	var result userStruct
-	err := countUserExists.FindOne(context.TODO(), bson.M{"userid": userId}).Decode(&result)
+	countUsers, err := countUserExists.CountDocuments(context.TODO(), bson.M{"email": email})
 
 	if err != nil {
-		status = false
-		errMsg = err.Error()
+		msg = err.Error()
 	} else {
-		status = true
-		errMsg = ""
-		image = result.ImageLink
+		if countUsers > 0 {
+			status = true
+		} else {
+			msg = "User does not exist"
+		}
 	}
+	
 
-	return status, errMsg, image
+	return status, msg
 }

@@ -61,6 +61,7 @@ func SliceToCsv(s []string) (csv string){
 	return csv
 }
 
+// Fetch project details from database
 func FetchProjectDetails(projectID string, userID primitive.ObjectID) (status bool, msg string, projectDetails common.FetchProjectStruct){
 
 	status = false
@@ -92,4 +93,28 @@ func FetchProjectDetails(projectID string, userID primitive.ObjectID) (status bo
 	}
 
 	return status, msg, projectDetails
+}
+
+// Find total unread notifications for a user from database
+func NotificationsCount(userID primitive.ObjectID)(status bool, msg string, count int64){
+	status = true
+	msg = "Success"
+	count = 0
+
+	status, msg, client := common.Mongoconnect()
+	defer client.Disconnect(context.TODO())
+
+	dbName := common.GetMoDb()
+	countNotifications := client.Database(dbName).Collection(common.CONST_MO_CONTRIBUTOR_NOTIFICATIONS)
+	count, errCount := countNotifications.CountDocuments(context.TODO(), bson.M{"read": false, "userid" : userID})
+
+	if errCount != nil{
+		status = false
+		msg = errCount.Error()
+	} else {
+		status = true
+		msg = "Success"
+	}
+
+	return status, msg, count
 }

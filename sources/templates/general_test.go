@@ -40,3 +40,14 @@ func TestFetchProjectDetails(t *testing.T) {
 		t.Errorf(msg)
 	}
 }
+
+// Test NotificationsCount
+func TestNotificationsCount(t *testing.T) {
+	var testUserID primitive.ObjectID = primitive.NewObjectID()
+
+	status, msg, _ := NotificationsCount(testUserID)
+
+	if !status {
+		t.Errorf(msg)
+	}
+}
