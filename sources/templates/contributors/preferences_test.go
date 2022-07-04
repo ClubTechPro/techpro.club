@@ -2,24 +2,31 @@ package contributors
 
 import (
 	"net/http"
-	"strings"
 	"testing"
+
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-func TestPreferences(t *testing.T){
+// Test FetchPreferences
+func TestFetchPreferences(t *testing.T){
+	var sampleUserId primitive.ObjectID = primitive.NewObjectID()
+	
+	status, msg, _ := fetchPreferences(sampleUserId)
 
-	// Check for get request
-	_, errGet := http.NewRequest(http.MethodGet, "/contributors/preferences", nil) 
-	if errGet != nil {
-        t.Errorf(errGet.Error())
-    }
+	if !status {
+		t.Errorf(msg)
+	}
+}
 
-	// Check for post request
-	req, errPost := http.NewRequest(http.MethodPost, "/contributors/preferences",
-		strings.NewReader("notificationFrequency=a&contributorCount=b"))
-	req.Header.Set("Content-Type", "application/x-www-form-urlencoded; param=value")
+// Test SavePreferences
+func TestSavePreferences(t *testing.T){
+	var testUserId primitive.ObjectID = primitive.NewObjectID()
+	var testW http.ResponseWriter = http.ResponseWriter(nil)
+	var testR *http.Request = new(http.Request)
 
-	if errPost != nil {
-        t.Errorf(errPost.Error())
-    }
+	status, msg := savePreferences(testW, testR, testUserId)
+	
+	if !status {
+		t.Errorf(msg)
+	}
 }

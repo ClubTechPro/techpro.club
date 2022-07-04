@@ -8,6 +8,7 @@ import (
 	"net/http"
 
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"techpro.club/sources/common"
 	"techpro.club/sources/templates"
 	"techpro.club/sources/users"
@@ -47,32 +48,8 @@ func ProjectList(w http.ResponseWriter, r *http.Request){
 	} else {
 		userNameImage  = common.UsernameImageStruct{userName,image}
 	}
-
-
-	_, _, client := common.Mongoconnect()
-	defer client.Disconnect(context.TODO())
-
-	dbName := common.GetMoDb()
-	fetchProject := client.Database(dbName).Collection(common.CONST_MO_PROJECTS)
-	projectsList, err := fetchProject.Find(context.TODO(),  bson.M{"userid": userID})
-
-	var results []common.FetchProjectStruct
-
-	if err != nil {
-		fmt.Println(err)
-	} else {
-		for projectsList.Next(context.TODO()){
-			var elem common.FetchProjectStruct
-			errDecode := projectsList.Decode(&elem)
-
-			if errDecode != nil {
-				fmt.Println(errDecode.Error())
-			} else {
-				results = append(results, elem)
-			}
-		}
-	}
-
+	
+	_, _, results := listProjects(w, r, userID)
 	finalOutStruct = FinalProjectListOutStruct{results, userNameImage}
 	
 
@@ -82,4 +59,40 @@ func ProjectList(w http.ResponseWriter, r *http.Request){
 	}else {
 		tmpl.ExecuteTemplate(w, "projectbase", finalOutStruct) 
 	}
+}
+
+
+// List projects
+func listProjects(w http.ResponseWriter, r *http.Request, userID primitive.ObjectID)(status bool, msg string, results []common.FetchProjectStruct){
+	
+	status = false
+	msg = ""
+
+	_, _, client := common.Mongoconnect()
+	defer client.Disconnect(context.TODO())
+
+	dbName := common.GetMoDb()
+	fetchProject := client.Database(dbName).Collection(common.CONST_MO_PROJECTS)
+	projectsList, err := fetchProject.Find(context.TODO(),  bson.M{"userid": userID})
+
+
+	if err != nil {
+		msg = err.Error()
+	} else {
+		for projectsList.Next(context.TODO()){
+			var elem common.FetchProjectStruct
+			errDecode := projectsList.Decode(&elem)
+
+			if errDecode != nil {
+				msg = errDecode.Error()
+				status = false
+			} else {
+				status = true
+				msg = "Success"
+				results = append(results, elem)
+			}
+		}
+	}
+
+	return status, msg, results
 }

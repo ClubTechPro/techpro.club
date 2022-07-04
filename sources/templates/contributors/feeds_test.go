@@ -4,7 +4,7 @@ import (
 	"testing"
 )
 
-func TestingFilterActiveProjects(t *testing.T){
+func TestFilterActiveProjects(t *testing.T){
 	
 	// TEST CONDITIONS
 	// This has to come from the actual frontend

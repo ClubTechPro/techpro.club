@@ -13,7 +13,6 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"techpro.club/sources/common"
 	"techpro.club/sources/templates"
-	"techpro.club/sources/templates/projects"
 	"techpro.club/sources/users"
 )
 type FinalPreferencesOutStruct struct{
@@ -44,8 +43,8 @@ func Preferences(w http.ResponseWriter, r *http.Request){
 	}
 
 	var functions = template.FuncMap{
-		"contains" : projects.Contains,
-		"sliceToCsv" : projects.SliceToCsv,
+		"contains" : templates.Contains,
+		"sliceToCsv" : templates.SliceToCsv,
 	}
 
 	ProgrammingLanguages := map[string]string{

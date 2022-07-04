@@ -46,7 +46,7 @@ func ProjectPreview(w http.ResponseWriter, r *http.Request){
 	}
 
 	projectID := r.URL.Query().Get("projectid")
-	result := FetchProjectDetails(projectID, userID)
+	_, _, result := templates.FetchProjectDetails(projectID, userID)
 
 	finalOutStruct = FinalProjectPreviewOutStruct{result, userNameImage}
 	

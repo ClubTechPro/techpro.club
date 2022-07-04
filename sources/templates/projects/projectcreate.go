@@ -102,12 +102,17 @@ func ProjectCreate(w http.ResponseWriter, r *http.Request){
 				result = common.SaveProjectStruct{userID, projectName, projectDescription, repoLink, language, otherLanguagesSplit, allied, projectType, contributorCount, documentation, public, company, companyName ,funded, dt, dt, "", common.CONST_UNDER_MODERATION}
 				saveProject(w, r, result)
 			}	
+
+			http.Redirect(w, r, "/projects/thankyou", http.StatusSeeOther)
 		}
 	}
 }
 
 
-func saveProject(w http.ResponseWriter, r *http.Request, newProjectStruct common.SaveProjectStruct){
+func saveProject(w http.ResponseWriter, r *http.Request, newProjectStruct common.SaveProjectStruct)(status bool, msg string){
+	status = false
+	msg = ""
+
 	_, _, client:= common.Mongoconnect()
 	defer client.Disconnect(context.TODO())
 
@@ -117,8 +122,11 @@ func saveProject(w http.ResponseWriter, r *http.Request, newProjectStruct common
 	_, err := saveProject.InsertOne(context.TODO(), newProjectStruct)
 
 	if err != nil {
-		fmt.Println(err)
+		msg = err.Error()
+	} else {
+		status = true
+		msg = "Success"
 	}
 
-	http.Redirect(w, r, "/projects/thankyou", http.StatusSeeOther)
+	return status, msg
 }

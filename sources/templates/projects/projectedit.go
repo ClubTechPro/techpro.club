@@ -43,8 +43,8 @@ func ProjectEdit(w http.ResponseWriter, r *http.Request){
 	}
 
 	var functions = template.FuncMap{
-		"contains" : Contains,
-		"sliceToCsv" : SliceToCsv,
+		"contains" : templates.Contains,
+		"sliceToCsv" : templates.SliceToCsv,
 	}
 
 	var userNameImage common.UsernameImageStruct
@@ -62,7 +62,7 @@ func ProjectEdit(w http.ResponseWriter, r *http.Request){
 
 		projectID := r.URL.Query().Get("projectid")
 
-		result := FetchProjectDetails(projectID, userID)
+		_, _, result := templates.FetchProjectDetails(projectID, userID)
 
 		constantLists := FinalProjectOutStruct{
 			common.ProgrammingLanguages,
@@ -114,36 +114,18 @@ func ProjectEdit(w http.ResponseWriter, r *http.Request){
 			} else {
 				result = common.SaveProjectStruct{userID, projectName, projectDescription, repoLink, language, otherLanguagesSplit, allied, projectType, contributorCount, documentation, public, company, companyName ,funded, dt, dt, "", common.CONST_UNDER_MODERATION}
 				updateProject(w, r, projectID, result)
-			}	
+			}
+			
+			http.Redirect(w, r, "/projects/thankyou", http.StatusSeeOther)
 		}
 	}
 }
 
-func FetchProjectDetails(projectID string, userID primitive.ObjectID) (projectDetails common.FetchProjectStruct){
-	if(projectID != ""){
+// Update project function
+func updateProject(w http.ResponseWriter, r *http.Request, projectID string, newProjectStruct common.SaveProjectStruct)(status bool, msg string){
+	status = false
+	msg = ""
 
-		projectIdHex, err := primitive.ObjectIDFromHex(projectID)
-
-		if err != nil {
-			fmt.Println(err.Error())
-		} else {
-			_, _, client := common.Mongoconnect()
-			defer client.Disconnect(context.TODO())
-
-			dbName := common.GetMoDb()
-			fetchProject := client.Database(dbName).Collection(common.CONST_MO_PROJECTS)
-			err := fetchProject.FindOne(context.TODO(),  bson.M{"userid": userID, "_id": projectIdHex}).Decode(&projectDetails)
-
-			if err != nil {
-				fmt.Println(err)
-			} 
-		}
-	}
-
-	return projectDetails
-}
-
-func updateProject(w http.ResponseWriter, r *http.Request, projectID string, newProjectStruct common.SaveProjectStruct){
 	_, _, client := common.Mongoconnect()
 	defer client.Disconnect(context.TODO())
 
@@ -155,23 +137,13 @@ func updateProject(w http.ResponseWriter, r *http.Request, projectID string, new
 
 	if err != nil {
 		fmt.Println(err)
+		msg = err.Error()
+	} else {
+		status = true
+		msg = "Success"
 	}
 
-	http.Redirect(w, r, "/projects/thankyou", http.StatusSeeOther)
-}
+	return status, msg
 
-// Check if a string exists in a slice.
-func Contains(s []string, e string) (status bool) {
-    for _, a := range s {
-        if a == e {
-            return true
-        }
-    }
-    return false
-}
-
-// Convert slice of strings to csv string
-func SliceToCsv(s []string) (csv string){
-	csv = strings.Join(s, ",")
-	return csv
+	
 }
