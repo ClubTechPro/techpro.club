@@ -74,8 +74,8 @@ func UserSettings(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	userprofile := fetchUserProfile(userID)
-	socials := fetchSocials(userID)
+	_, _, userprofile := fetchUserProfile(userID)
+	_, _, socials := fetchSocials(userID)
 
 	userSettingsStruct := SettingsStruct{userprofile, socials}
 
@@ -88,8 +88,10 @@ func UserSettings(w http.ResponseWriter, r *http.Request) {
 }
 
 // Fetch user profile
-func fetchUserProfile(userID primitive.ObjectID)(userProfile common.FetchUserStruct){
-	client, _ := common.Mongoconnect()
+func fetchUserProfile(userID primitive.ObjectID)(status bool, msg string, userProfile common.FetchUserStruct){
+	status = false
+	msg = ""
+	_, _, client := common.Mongoconnect()
 	defer client.Disconnect(context.TODO())
 
 	dbName := common.GetMoDb()
@@ -97,16 +99,19 @@ func fetchUserProfile(userID primitive.ObjectID)(userProfile common.FetchUserStr
 	err := fetchUsers.FindOne(context.TODO(),  bson.M{"_id": userID}, options.FindOne().SetProjection(bson.M{"_id": 0})).Decode(&userProfile)
 
 	if err != nil {
-		fmt.Println(err, userID)
-	} 
+		msg = err.Error()
+	}  else {
+		msg = "Success"
+		status = true
+	}
 
-	return userProfile
+	return status, msg, userProfile
 }
 
 // Update user profile
 func UpdateUserProfile(userID primitive.ObjectID, name, repoLink string)(status bool, msg string){
 
-	client, _ := common.Mongoconnect()
+	_, _, client := common.Mongoconnect()
 	defer client.Disconnect(context.TODO())
 
 	dbName := common.GetMoDb()
@@ -125,8 +130,12 @@ func UpdateUserProfile(userID primitive.ObjectID, name, repoLink string)(status 
 }
 
 // Fetch socials
-func fetchSocials(userID primitive.ObjectID)(socials common.FetchSocialStruct){
-	client, _ := common.Mongoconnect()
+func fetchSocials(userID primitive.ObjectID)(status bool, msg string, socials common.FetchSocialStruct){
+
+	status = false
+	msg = ""
+
+	_, _, client := common.Mongoconnect()
 	defer client.Disconnect(context.TODO())
 
 	dbName := common.GetMoDb()
@@ -134,15 +143,18 @@ func fetchSocials(userID primitive.ObjectID)(socials common.FetchSocialStruct){
 	err := fetchSocials.FindOne(context.TODO(),  bson.M{"userid": userID}, options.FindOne().SetProjection(bson.M{"_id": 0})).Decode(&socials)
 
 	if err != nil {
-		fmt.Println(err, userID)
-	} 
+		msg = err.Error()
+	} else {
+		msg = "Success"
+		status = true
+	}
 
-	return socials
+	return status, msg, socials
 }
 
 // Update socials
 func updateSocials(userID primitive.ObjectID, facebook, linkedin, twitter, stackoverflow string)(status bool, msg string){
-	client, _ := common.Mongoconnect()
+	_, _, client := common.Mongoconnect()
 	defer client.Disconnect(context.TODO())
 
 	dbName := common.GetMoDb()

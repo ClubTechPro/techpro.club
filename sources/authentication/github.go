@@ -50,7 +50,7 @@ func GithubLoggedinHandler(w http.ResponseWriter, r *http.Request, githubData, a
 		email = GetUserEmail(accessToken)
 	} 
 
-	ok := users.CheckUserExists(email)
+	ok, _ := users.CheckUserExists(email)
 
 	if (ok && userType == common.CONST_USER_CONTRIBUTOR) {
 		// Save user session and redirect to feeds page

@@ -3,9 +3,9 @@ package common
 import "testing"
 
 func TestMongoConnnect(t *testing.T){
-	_, got := Mongoconnect()
+	status, msg, _ := Mongoconnect()
 
-	if !got {
-		t.Errorf("Connection to mongodb failed")
+	if !status {
+		t.Errorf(msg)
 	}
 }

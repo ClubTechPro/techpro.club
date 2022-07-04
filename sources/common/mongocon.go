@@ -2,22 +2,22 @@ package common
 
 import (
 	"context"
-	"log"
 
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 // Mongoconnect function
-func Mongoconnect() (client *mongo.Client, status bool) {
+func Mongoconnect() (status bool, msg string, client *mongo.Client) {
+	status = true
+	msg = ""
+
 	Mohost := GetMoHost()
 	Moport := GetMoPort()
 	Mouser := GetMoUser()
 	Mopass := GetMoPass()
 	MoAuthMethod := GetMoAuthMethod()
 	MoAuthDb := GetMoAuthDb()
-
-	status = true
 
 	credentials := options.Credential{
 		Username: Mouser,
@@ -29,14 +29,17 @@ func Mongoconnect() (client *mongo.Client, status bool) {
 	// Set client options
 	clientOptions := options.Client().ApplyURI(Mohost + Moport).SetAuth(credentials)
 
+	
 	// Connect to MongoDB
 	client, err := mongo.Connect(context.TODO(), clientOptions)
 
 	if err != nil {
-		status = false
-		log.Fatal(err.Error())
+		msg = err.Error()
+	} else {
+		msg = "Success"
+		status = true
 	}
 
-	return client, status
+	return status, msg, client
 
 }

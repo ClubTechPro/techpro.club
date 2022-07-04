@@ -21,10 +21,10 @@ func CallBack(w http.ResponseWriter, r *http.Request){
 	var userNameImage common.UsernameImageStruct
 
 	// Fetch user name and image from saved browser cookies
-	status, userName, image := templates.FetchUsernameImage(w, r)
+	status, msg, userName, image := templates.FetchUsernameImage(w, r)
 
 	if(!status){
-		log.Println("Error fetching user name and image from cookies")
+		log.Println(msg)
 	} else {
 		userNameImage  = common.UsernameImageStruct{userName,image}
 	}

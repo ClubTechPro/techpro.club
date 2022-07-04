@@ -38,10 +38,10 @@ func Feeds(w http.ResponseWriter, r *http.Request){
 	var userNameImage common.UsernameImageStruct
 
 	// Fetch user name and image from saved browser cookies
-	status, userName, image := templates.FetchUsernameImage(w, r)
+	status, msg, userName, image := templates.FetchUsernameImage(w, r)
 
 	if(!status){
-		log.Println("Error fetching user name and image from cookies")
+		log.Println(msg)
 	} else {
 		userNameImage  = common.UsernameImageStruct{userName,image}
 	}
@@ -51,10 +51,8 @@ func Feeds(w http.ResponseWriter, r *http.Request){
 	pageid := int64(0)
 	tags := []string{"cpp"}
 	keyword := "Go"
-	// TEST CONDITIONS ENDS
 
-
-	results := filterActiveProjects(pageid, tags, keyword)
+	_, _, results := filterActiveProjects(pageid, tags, keyword)
 
 	output := FinalFeedsOutputStruct{results, userNameImage}
 
@@ -70,13 +68,16 @@ func Feeds(w http.ResponseWriter, r *http.Request){
 
 
 // Filter all active projects from the database according to filters
-func filterActiveProjects(pageid int64, tags []string, keyword string)(results []common.FeedStruct){
+func filterActiveProjects(pageid int64, tags []string, keyword string)(status bool, msg string, results []common.FeedStruct){
+
+	status = false
+	msg = ""
 
 	var orConditions []bson.M
 	var finalConditions []bson.M
 	resultsPerPage := int64(20)
 
-	client, _ := common.Mongoconnect()
+	status, msg,  client := common.Mongoconnect()
 	defer client.Disconnect(context.TODO())
 
 	dbName := common.GetMoDb()
@@ -122,6 +123,7 @@ func filterActiveProjects(pageid int64, tags []string, keyword string)(results [
 
 	if err != nil {
 		fmt.Println(err.Error())
+		msg = err.Error()
 	} else {
 		for projectsList.Next(context.TODO()){
 			var elem common.FeedStruct
@@ -129,12 +131,15 @@ func filterActiveProjects(pageid int64, tags []string, keyword string)(results [
 
 			if errDecode != nil {
 				fmt.Println(errDecode.Error())
+				msg = errDecode.Error()
 			} else {
 				results = append(results, elem)
+				status = true
+				msg = "Success"
 			}
 		}
 
 	}
 
-	return results
+	return status, msg, results
 }

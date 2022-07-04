@@ -27,7 +27,7 @@ type UserStruct struct {
 // Save a user to database and send a welcome email for first time users
 func SaveUser(w http.ResponseWriter, r *http.Request, email, name, location, imageLink, repoUrl, source, userType string )(status bool, msg string, userIdObject interface{}){
 	
-	client, _ := common.Mongoconnect()
+	_, _, client := common.Mongoconnect()
 	defer client.Disconnect(context.TODO())
 
 	dbName := common.GetMoDb()
