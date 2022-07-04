@@ -36,8 +36,8 @@ jobs:
               uses: supercharge/mongodb-github-action@1.7.0
               with:
                   mongodb-version: ${{ matrix.mongodb-version }}
-                  mongodb-username: MO_USER
-                  mongodb-password: MO_PASS
+                  mongodb-username: ${{secrets.MO_USER}}
+                  mongodb-password: ${{secrets.MO_PASS}}
                   mongodb-db: supercharge
 
             - name: Build
