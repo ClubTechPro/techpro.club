@@ -183,3 +183,9 @@ type UsernameImageStruct struct{
 	Username string `json:"username"`
 	Image string `json:"image"`
 }
+
+// Bookmark struct
+type BookmarkStruct struct{
+	Id primitive.ObjectID `json:"id" bson:"_id,omitempty"`
+	ProjectBookmarks []primitive.ObjectID `json:"projectBookmarks"`
+}
