@@ -101,3 +101,55 @@ func listBookmarks(w http.ResponseWriter, r *http.Request, userID primitive.Obje
 
 	return status, msg, results
 }
+
+// Add a bookmark for a user
+func AddBookmark(userID primitive.ObjectID, projectID primitive.ObjectID)(status bool, msg string){
+	
+	status = false
+	msg = ""
+	var bookmarkResult common.BookmarkStruct
+
+	_, _, client := common.Mongoconnect()
+	defer client.Disconnect(context.TODO())
+
+	dbName := common.GetMoDb()
+	fetchBookmarks := client.Database(dbName).Collection(common.CONST_MO_BOOKMARKS)
+	errBookmarks := fetchBookmarks.FindOne(context.TODO(),  bson.M{"userid": userID}).Decode(&bookmarkResult)
+
+	if errBookmarks != nil {
+		fetchBookmarks.InsertOne(context.TODO(), bson.M{"userid": userID, "projects": projectID})
+		status = true
+		msg = "Success"
+	} else {
+		fetchBookmarks.UpdateOne(context.TODO(), bson.M{"userid": userID}, bson.M{"$addToSet": bson.M{"projects": projectID}})
+		status = true
+		msg = "Success"
+	}
+
+	return status, msg
+}
+
+// Remove a bookmark for a user
+func RemoveBookmark(userID primitive.ObjectID, projectID primitive.ObjectID)(status bool, msg string){
+	
+	status = false
+	msg = ""
+	var bookmarkResult common.BookmarkStruct
+
+	_, _, client := common.Mongoconnect()
+	defer client.Disconnect(context.TODO())
+
+	dbName := common.GetMoDb()
+	fetchBookmarks := client.Database(dbName).Collection(common.CONST_MO_BOOKMARKS)
+	errBookmarks := fetchBookmarks.FindOne(context.TODO(),  bson.M{"userid": userID}).Decode(&bookmarkResult)
+
+	if errBookmarks != nil {
+		msg = errBookmarks.Error()
+	} else {
+		fetchBookmarks.UpdateOne(context.TODO(), bson.M{"userid": userID}, bson.M{"$pull": bson.M{"projects": projectID}})
+		status = true
+		msg = "Success"
+	}
+
+	return status, msg
+}
