@@ -3,270 +3,689 @@
     <head>
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="description" content="Support the open source community" />
-        <link rel="icon" type="image/x-icon" href="assets/logos/favicon.png" />
+        <meta
+            name="description"
+            content="We help people build their career portfolios
+		by encouraging them to contribute to open-source projects."
+        />
+        <link rel="icon" type="image/x-icon" href="assets/img/favicon.png" />
         <meta name="author" content="Techpro Club" />
         <title>Techpro Club for contributors</title>
-        <!-- Font Awesome Icons -->
-        <script
-            src="https://kit.fontawesome.com/6255250c8f.js"
-            crossorigin="anonymous"
-        ></script>
-        <!-- Bootstrap -->
-        <link href="assets/home/css/bootstrap.min.css" rel="stylesheet" />
-        <link href="assets/home/css/style.css" rel="stylesheet" />
-        <link href="assets/home/css/themify-icons.css" rel="stylesheet" />
-        <link
-            href="assets/home/css/dosis-font.css"
-            rel="stylesheet"
-            type="text/css"
+        <meta
+            content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+            name="viewport"
         />
-        <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-        <!--[if lt IE 9]>
-            <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-            <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-        <![endif]-->
 
-        <!-- Global site tag (gtag.js) - Google Analytics -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-GH8ZTCTKD0"></script>
-        <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-
-        gtag('config', 'G-GH8ZTCTKD0');
-        </script>
+        <!-- ================== BEGIN core-css ================== -->
+        <link
+            href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700"
+            rel="stylesheet"
+        />
+        <link
+            href="/assets/home/css/corporate/vendor.min.css"
+            rel="stylesheet"
+        />
+        <link href="/assets/home/css/corporate/app.min.css" rel="stylesheet" />
+        <!-- ================== END core-css ================== -->
     </head>
-    <body id="page-top" data-spy="scroll" data-target=".side-menu">
-        <nav class="side-menu">
-            <ul>
-                <li class="hidden active">
-                    <a class="page-scroll" href="#page-top"></a>
-                </li>
-                <li>
-                    <a href="#home" class="page-scroll">
-                        <span class="menu-title">Home</span>
-                        <span class="dot"></span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#features" class="page-scroll">
-                        <span class="menu-title">Features</span>
-                        <span class="dot"></span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#about" class="page-scroll">
-                        <span class="menu-title">About</span>
-                        <span class="dot"></span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
+    <body>
+        <!-- begin #page-loader -->
+        <div id="page-loader" class="fade show">
+            <span class="spinner"></span>
+        </div>
+        <!-- end #page-loader -->
+        <!-- BEGIN #page-container -->
+        <div id="page-container">
+            <!-- BEGIN header -->
+            <div class="header header-float">
+                <div class="container d-flex">
+                    <div class="header-logo">
+                        <a href="/" class="logo-link">
+                            <img
+                                src="assets/img/logo_white.png"
+                                alt="Techpro.club logo white"
+                                height="40"
+                            />
+                        </a>
+                    </div>
+                    <div class="header-nav">
+                        <div class="container">
+                            <div class="header-nav-item">
+                                <a href="/company" class="header-nav-link"
+                                    >Who We Are</a
+                                >
+                            </div>
 
-        <div class="container-fluid home">
-            <div class="header-menu">
-                <span
-                    ><a href="https://blogs.techpro.club/" target="_blank"
-                        ><button class="btn btn-yellow">Blogs</button></a
-                    ></span
-                >
-                <span
-                    ><a
-                        href="https://github.com/ClubTechPro/techpro.club"
-                        target="_blank"
-                        ><button class="btn btn-yellow">Github</button></a
-                    ></span
-                >
+                            <div class="header-nav-item">
+                                <a
+                                    href="https://blogs.techpro.club"
+                                    target="_blank"
+                                    class="header-nav-link"
+                                    >Blogs</a
+                                >
+                            </div>
+                            <div class="header-nav-item">
+                                <a href="/careers" class="header-nav-link"
+                                    >Careers</a
+                                >
+                            </div>
+                            <div class="header-nav-item">
+                                <a href="/contactus" class="header-nav-link"
+                                    >Contact Us</a
+                                >
+                            </div>
+                        </div>
+                    </div>
+
+                    <button
+                        class="header-mobile-nav-toggler"
+                        type="button"
+                        data-toggle="header-mobile-nav"
+                    >
+                        <span class="header-mobile-nav-toggler-icon"></span>
+                    </button>
+                </div>
             </div>
-            <i id="menu-bar" class="hamburger-icon fas fa-bars"></i>
-            <!-- Start: Header -->
-            <div class="row hero-header" id="home">
-                <div class="col-md-7 hero-header-item">
-                    <span>
-                        <!-- <img src="/assets/logos/techpro-club-logo.png" class="logo"  alt="techpro club logo"/>  -->
-                        <picture>
-                            <source
-                                media="(min-width:465px)"
-                                srcset="assets/logos/techpro-club-logo.png"
+            <!-- END header -->
+
+            <!-- BEGIN section -->
+            <div class="section section-hero">
+                <!-- BEGIN section-bg -->
+                <div
+                    class="section-bg with-cover"
+                    style="
+                        background-image: url(/assets/home/img/corporate/img-1.jpg);
+                    "
+                ></div>
+                <div class="section-bg bg-gray-800 bg-opacity-50"></div>
+                <!-- END section-bg -->
+
+                <!-- BEGIN container -->
+                <div class="container position-relative">
+                    <!-- BEGIN section-hero-content -->
+                    <div class="section-hero-content">
+                        <!-- BEGIN row -->
+                        <div class="row">
+                            <!-- BEGIN col-8 -->
+                            <div class="col-lg-8 col-lg-10">
+                                <!-- BEGIN hero-title-desc -->
+                                <h1 class="hero-title mb-3 mt-5 pt-md-5">
+                                    Start your career today
+                                </h1>
+                                <div class="fs-18px text-white text-opacity-80">
+                                    Many students and freshers around the world
+                                    use our platform to build their career
+                                    portfolios. Join us today as an opensource
+                                    project owner or a developer
+                                </div>
+                                <!-- END hero-title-desc -->
+
+                                <!-- BEGIN row -->
+                                <div class="row text-white mt-4 mb-5 pb-5">
+                                    <!-- BEGIN col-4 -->
+                                    <div class="col-lg-4 mb-3 mb-lg-0">
+                                        <a href="/contributors/github/login">
+                                            <button
+                                                type="button"
+                                                class="btn btn-primary btn-lg"
+                                            >
+                                                <span
+                                                    ><i
+                                                        class="fa-brands fa-github me-2"
+                                                    ></i></span
+                                                ><span>Signup with Github</span>
+                                            </button>
+                                        </a>
+                                    </div>
+                                    <!-- END col-4 -->
+                                </div>
+                                <!-- END row -->
+
+                                <a
+                                    href="/company"
+                                    class="hero-btn fw-bold mb-n5"
+                                    ><i class="fa fa-arrow-right"></i> Learn
+                                    About Our Company</a
+                                >
+                            </div>
+                            <!-- END col-8 -->
+                        </div>
+                        <!-- END row -->
+                    </div>
+                    <!-- END section-hero-content -->
+                </div>
+                <!-- END container -->
+            </div>
+            <!-- END section -->
+
+            <!-- BEGIN section -->
+            <div class="section">
+                <!-- BEGIN container -->
+                <div class="container">
+                    <!-- BEGIN section-title -->
+                    <div class="pt-lg-5 pb-lg-3 text-center">
+                        <div
+                            class="display-6 fw-bolder mb-3 d-flex align-items-center justify-content-center"
+                        >
+                            Our mission
+                        </div>
+                        <p class="fs-18px mb-5">
+                            We help students and freshers build their career
+                            portfolios
+                            <span class="d-none d-lg-inline"><br /></span>by
+                            encouraging them to contribute to open-source
+                            projects.
+                        </p>
+
+                        <div class="mb-4 fw-bold text-black">
+                            Built on top of
+                        </div>
+                        <div class="text-gray-500 text-center mb-5">
+                            <img
+                                src="assets/img/golang_logo.png"
+                                height="30"
+                                alt="golang logo"
+                                class="me-4"
                             />
                             <img
-                                src="assets/logos/techpro-club-logo-white.png"
-                                class="logo"
-                                alt="techpro club logo"
+                                src="assets/img/mongodb_logo.png"
+                                height="30"
+                                alt="mongodb logo"
+                                class="me-4"
                             />
-                        </picture>
-                        Beta
-                    </span>
-                    <h1>Let's contribute to the open source projects</h1>
-                    <a
-                        href="/contributors/github/login"
-                        class="btn btn-lg btn-black"
-                        ><span class="github-icon-spacing"
-                            ><img
-                                src="assets/logos/thirdparty/GitHub-Mark-Light-32px.png"
-                                height="25"
-                                alt="github logo mark" /></span
-                        >Sign in with GitHub</a
-                    >
-                    <div>
-                        <a href="/projects"
-                            ><button class="btn btn-trasnparent">
-                                Looking for project contributors? Click here
-                            </button></a
-                        >
-                    </div>
-                </div>
-                <div class="col-md-5 hidden-xs">
-                    <img
-                        src="assets/home/img/rocket.png"
-                        class="rocket animated bounce"
-                        alt="hero banner rocket image"
-                    />
-                </div>
-            </div>
-            <!-- End: Header -->
-        </div>
+                            <img
+                                src="assets/img/bootstrap_logo.png"
+                                height="30"
+                                alt="bootstrap logo"
+                            />
+                        </div>
 
-        <!-- Sidebar-Menu -->
-        <div class="sidebar-menu sidebar">
-            <i id="sidemenu-close" class="fas fa-times"></i>
-            <div class="header-menu">
-                <a href="https://blogs.techpro.club/" target="_blank"
-                    ><button class="btn btn-yellow">Blogs</button></a
-                >
-                <a
-                    href="https://github.com/ClubTechPro/techpro.club"
-                    target="_blank"
-                    ><button class="btn btn-yellow">Github</button></a
-                >
-            </div>
-        </div>
-        <div class="container">
-            <!-- Start: Desc -->
-            <div class="row me-row content-ct" id="features">
-                <h2 class="row-title">Features</h2>
-                <div class="col-md-4 feature">
-                    <span class="ti-ticket"></span>
-                    <h3>Projects</h3>
-                    <p>
-                        Innumerable projects to work on based upon your matching
-                        skills and many more to learn about.
-                    </p>
-                </div>
-                <div class="col-md-4 feature">
-                    <span class="ti-microphone"></span>
-                    <h3>Notifications</h3>
-                    <p>
-                        Get notified by email when a project is looking for
-                        contributors matching your skillset.
-                    </p>
-                </div>
-                <div class="col-md-4 feature">
-                    <span class="ti-world"></span>
-                    <h3>People around the globe!</h3>
-                    <p>
-                        Meet project founders and developers around the globe
-                        and discuss new ideas.
-                    </p>
-                </div>
-            </div>
-            <!-- End: Desc -->
-        </div>
+                        <div class="mb-4 fw-bold text-black">
+                            Star us on Github
+                        </div>
 
-        <!-- Start: About -->
-        <div class="container-fluid tickets" id="about">
-            <div class="row me-row content-ct">
-                <h2 class="row-title">About</h2>
-
-                <div class="col-md-4 col-sm-6 col-md-offset-1">
-                    <img
-                        src="assets/home/img/work-from-home.png"
-                        alt="work from home"
-                    />
-                </div>
-                <div class="col-md-5 col-sm-6 text-justify">
-                    <p>
-                        There are thousands of opensource projects and libraries
-                        which have become the backbone for various other
-                        projects. Without a community of active contributors,
-                        these projects are very hard to maintain and cannot
-                        adapt to the latest changes.
-                    </p>
-                    <p>
-                        <b><a href="https://techpro.club">Techpro club</a></b
-                        > is an exclusive platform for open source contributors,
-                        which helps you to discover such wonderful projects and
-                        encourages you to participate.
-                    </p>
-                    <p>
-                        With all our efforts as the community grows, you, as an
-                        individual, enhance your skillsets and portfolio.
-                    </p>
-                    <p>
-                        Our core services to the open source projects will be
-                        free forever, and if you wish to contribute to us or
-                        report a bug, please visit our
                         <a
+                            class="github-button"
                             href="https://github.com/ClubTechPro/techpro.club"
-                            target="_blank"
-                            >Github repository here</a
+                            data-color-scheme="no-preference: light; light: light; dark: dark;"
+                            data-size="large"
+                            data-show-count="true"
+                            aria-label="Star ClubTechPro/techpro.club on GitHub"
+                            >Star</a
                         >
-                    </p>
+                    </div>
+                    <!-- END section-title -->
+                </div>
+                <!-- END container -->
+            </div>
+            <!-- END section -->
+
+            <!-- BEGIN section -->
+            <div class="section bg-light">
+                <!-- BEGIN container -->
+                <div class="container">
+                    <!-- BEGIN row -->
+                    <div class="row align-items-center">
+                        <!-- BEGIN col-6 -->
+                        <div class="col-lg-6 pe-lg-4 mb-5 mb-lg-0">
+                            <div class="section-subtitle">Our Platform</div>
+                            <div class="section-title">Why Us?</div>
+                            <div class="section-desc">
+                                <p>
+                                    There are thousands of opensource projects
+                                    and libraries which have become the backbone
+                                    for various other projects. Without a
+                                    community of active contributors, these
+                                    projects are very hard to maintain and
+                                    cannot adapt to the latest changes.
+                                </p>
+                                <p>
+                                    <b
+                                        ><a href="https://techpro.club"
+                                            >Techpro club</a
+                                        ></b
+                                    > is an exclusive platform for open source
+                                    contributors, which helps you to discover
+                                    such wonderful projects and encourages you
+                                    to participate.
+                                </p>
+                                <p>
+                                    With all our efforts as the community grows,
+                                    you, as an individual, enhance your
+                                    skillsets and portfolio.
+                                </p>
+                                <p>
+                                    We are open-source, and if you wish to
+                                    contribute to us or report a bug, please
+                                    visit our
+                                    <a
+                                        href="https://github.com/ClubTechPro/techpro.club"
+                                        target="_blank"
+                                        >Github repository here</a
+                                    >
+                                </p>
+                            </div>
+                            <a href="/company" class="section-btn"
+                                ><i class="fa fa-arrow-right"></i> Learn More</a
+                            >
+                        </div>
+                        <!-- END col-6 -->
+                        <!-- BEGIN col-6 -->
+                        <div class="col-lg-6 ps-lg-4">
+                            <div class="section-media">
+                                <img
+                                    src="/assets/home/img/corporate/img-5.jpg"
+                                    alt=""
+                                    class="mw-100"
+                                />
+                            </div>
+                        </div>
+                        <!-- END col-6 -->
+                    </div>
+                    <!-- END row -->
+                </div>
+                <!-- END container -->
+            </div>
+            <!-- END section -->
+
+            <div class="section">
+                <div class="container">
+                    <!-- Start: Desc -->
+                    <div class="row me-row content-ct" id="features">
+                        <div class="section-title">Features</div>
+                        <div class="section-subtitle">For Developers</div>
+
+                        <div class="col-lg-4">
+                            <!-- BEGIN card -->
+                            <div class="card shadow border-0 mb-5">
+                                <div class="card-body p-4">
+                                    <div
+                                        class="mb-3 w-50px h-50px rounded-3 bg-indigo text-white d-flex align-items-center justify-content-center position-relative"
+                                    >
+                                        <i
+                                            class="fa-solid fa-diagram-project fs-28px"
+                                        ></i>
+                                    </div>
+                                    <h4>Projects</h4>
+                                    <p class="fw-bold text-gray-600 mb-0">
+                                        Innumerable projects to work on based
+                                        upon your matching skills and many more
+                                        to learn.
+                                    </p>
+                                </div>
+                            </div>
+                            <!-- END card -->
+                        </div>
+
+                        <div class="col-lg-4">
+                            <!-- BEGIN card -->
+                            <div class="card shadow border-0 mb-5">
+                                <div class="card-body p-4">
+                                    <div
+                                        class="mb-3 w-50px h-50px rounded-3 bg-primary-500 text-white d-flex align-items-center justify-content-center position-relative"
+                                    >
+                                        <i
+                                            class="fa-solid fa-id-badge fs-28px"
+                                        ></i>
+                                    </div>
+                                    <h4>Developer portfolio</h4>
+                                    <p class="fw-bold text-gray-600 mb-0">
+                                        As you keep contributing, you will learn
+                                        and build a solid portfolio.
+                                    </p>
+                                </div>
+                            </div>
+                            <!-- END card -->
+                        </div>
+
+                        <div class="col-lg-4">
+                            <!-- BEGIN card -->
+                            <div class="card shadow border-0 mb-5">
+                                <div class="card-body p-4">
+                                    <div
+                                        class="mb-3 w-50px h-50px rounded-3 bg-orange text-white d-flex align-items-center justify-content-center position-relative"
+                                    >
+                                        <i class="fa-solid fa-star fs-28px"></i>
+                                    </div>
+                                    <h4>Get Hired</h4>
+                                    <p class="fw-bold text-gray-600 mb-0">
+                                        Get hired and receive recommendations
+                                        from your employers
+                                    </p>
+                                </div>
+                            </div>
+                            <!-- END card -->
+                        </div>
+
+                        <div class="section-subtitle">For Project Owners</div>
+
+                        <div class="col-lg-4">
+                            <!-- BEGIN card -->
+                            <div class="card shadow border-0 mb-5">
+                                <div class="card-body p-4">
+                                    <div
+                                        class="mb-3 w-50px h-50px rounded-3 bg-red text-white d-flex align-items-center justify-content-center position-relative"
+                                    >
+                                        <i class="fa-solid fa-list fs-28px"></i>
+                                    </div>
+                                    <h4>Multiple Projects</h4>
+                                    <p class="fw-bold text-gray-600 mb-0">
+                                        Post and manage your projects for free.
+                                        Its unlimited and with no time
+                                        boundations!
+                                    </p>
+                                </div>
+                            </div>
+                            <!-- END card -->
+                        </div>
+
+                        <div class="col-lg-4">
+                            <!-- BEGIN card -->
+                            <div class="card shadow border-0 mb-5">
+                                <div class="card-body p-4">
+                                    <div
+                                        class="mb-3 w-50px h-50px rounded-3 bg-info text-white d-flex align-items-center justify-content-center position-relative"
+                                    >
+                                        <i class="fa fa-users fs-28px"></i>
+                                    </div>
+                                    <h4>Contributors</h4>
+                                    <p class="fw-bold text-gray-600 mb-0">
+                                        Find the best project contributors
+                                        across the world according to your
+                                        project needs
+                                    </p>
+                                </div>
+                            </div>
+                            <!-- END card -->
+                        </div>
+
+                        <div class="col-lg-4">
+                            <!-- BEGIN card -->
+                            <div class="card shadow border-0 mb-5">
+                                <div class="card-body p-4">
+                                    <div
+                                        class="mb-3 w-50px h-50px rounded-3 bg-yellow text-black d-flex align-items-center justify-content-center position-relative"
+                                    >
+                                        <i class="fa fa-eye fs-28px"></i>
+                                    </div>
+                                    <h4>More visibility</h4>
+                                    <p class="fw-bold text-gray-600 mb-0">
+                                        Through our network you get instant
+                                        visibility to your contributors and
+                                        adopters
+                                    </p>
+                                </div>
+                            </div>
+                            <!-- END card -->
+                        </div>
+                    </div>
+                    <!-- End: Desc -->
+
+                    <div class="fw-bold text-gray-600 mb-0 text-center">
+                        Join us today and start building your career journey
+                    </div>
+                    <div class="d-flex justify-content-center mt-4">
+                        <a href="/contributors/github/login">
+                            <button type="button" class="btn btn-dark btn-lg">
+                                <span
+                                    ><i
+                                        class="fa-brands fa-github me-2"
+                                    ></i></span
+                                ><span>Signup with Github</span>
+                            </button>
+                        </a>
+                    </div>
                 </div>
             </div>
+
+            <!-- BEGIN section -->
+            <div class="section">
+                <!-- BEGIN container -->
+                <div class="container">
+                    <div class="section-subtitle">Recent Blogs</div>
+
+                    <!-- BEGIN row -->
+                    <div class="row gx-5 mb-5">
+                        <!-- BEGIN col-6 -->
+                        <div class="col-lg-6">
+                            <!-- BEGIN news -->
+                            <div
+                                class="news rounded-3 overflow-hidden shadow-lg mb-5 mb-lg-0"
+                            >
+                                <div class="news-media mb-0">
+                                    <div
+                                        class="news-media-img"
+                                        style="
+                                            background-image: url(/assets/home/img/corporate/img-6.jpg);
+                                        "
+                                    ></div>
+                                </div>
+                                <div class="news-content px-4 py-4">
+                                    <div class="news-label">
+                                        <span class="bg-teal-200 text-teal-800"
+                                            >Development process</span
+                                        >
+                                    </div>
+                                    <div class="news-title">
+                                        Our mission is building the system can
+                                        integrate with any environment.
+                                    </div>
+                                    <div class="news-date">
+                                        September 16, 2021
+                                    </div>
+                                </div>
+                                <a href="#" class="stretched-link"></a>
+                            </div>
+                            <!-- END news -->
+                        </div>
+                        <!-- END col-6 -->
+                        <!-- BEGIN col-6 -->
+                        <div class="col-lg-6">
+                            <div class="row h-100">
+                                <div
+                                    class="col-lg-12 h-50 mb-5 mb-lg-0 pb-lg-3"
+                                >
+                                    <!-- BEGIN news -->
+                                    <div
+                                        class="news rounded-3 overflow-hidden shadow-lg d-flex h-100 mb-0"
+                                    >
+                                        <div
+                                            class="news-content w-50 p-4 d-flex align-items-center"
+                                        >
+                                            <div>
+                                                <div class="news-label">
+                                                    <span
+                                                        class="bg-warning-200 text-warning-800"
+                                                        >Grand opening</span
+                                                    >
+                                                </div>
+                                                <div class="news-title">
+                                                    Opening an Office in Lagos,
+                                                    Nigeria
+                                                </div>
+                                                <div class="news-date">
+                                                    September 18, 2021
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="news-media w-50 h-100 mb-0">
+                                            <div
+                                                class="news-media-img h-100 pt-0"
+                                                style="
+                                                    background-image: url(/assets/home/img/corporate/img-7.jpg);
+                                                "
+                                            ></div>
+                                        </div>
+                                        <a href="#" class="stretched-link"></a>
+                                    </div>
+                                    <!-- END news -->
+                                </div>
+                                <div
+                                    class="col-lg-12 h-50 mb-5 mb-lg-0 pt-lg-3"
+                                >
+                                    <!-- BEGIN news -->
+                                    <div
+                                        class="news rounded-3 overflow-hidden shadow-lg d-flex h-100 mb-0"
+                                    >
+                                        <div class="news-media w-50 mb-0">
+                                            <div
+                                                class="news-media-img h-100 pt-0"
+                                                style="
+                                                    background-image: url(/assets/home/img/corporate/img-8.jpg);
+                                                "
+                                            ></div>
+                                        </div>
+                                        <div
+                                            class="news-content w-50 p-4 d-flex align-items-center"
+                                        >
+                                            <div>
+                                                <div class="news-label">
+                                                    <span
+                                                        class="bg-primary-200 text-theme-800"
+                                                        >Conference</span
+                                                    >
+                                                </div>
+                                                <div class="news-title">
+                                                    Global Tech Speaking with
+                                                    Asian Branch
+                                                </div>
+                                                <div class="news-date">
+                                                    May 27, 2021
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <a href="#" class="stretched-link"></a>
+                                    </div>
+                                    <!-- END news -->
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END col-6 -->
+                    </div>
+                    <!-- END row -->
+
+                    <div class="text-center pt-5 pt-lg-0">
+                        <a
+                            href="https://blogs.techpro.club"
+                            target="_blank"
+                            class="section-btn"
+                            ><i class="fa fa-arrow-right"></i> See More Company
+                            Stories</a
+                        >
+                    </div>
+                </div>
+                <!-- END container -->
+            </div>
+            <!-- END section -->
+
+            <!-- BEGIN footer -->
+            <div class="footer">
+                <div class="container">
+                    <div class="row gx-5">
+                        <div class="col-lg-3 mb-4 mb-lg-0">
+                            <div class="footer-logo">
+                                <img
+                                    src="/assets/img/logo_black.png"
+                                    alt="techrpo.club logo black"
+                                    height="30"
+                                />
+                            </div>
+                            <p class="footer-desc">
+                                Lets contribute to the open-source projects &
+                                help them find more contributors and adopters
+                                while we as a developer learn and build awesome
+                                portfolios.
+                            </p>
+                            <h4 class="footer-title">Follow Us</h4>
+                            <div class="footer-media-list mb-4">
+                                <a href="#" class="me-2"
+                                    ><i class="fab fa-lg fa-twitter fa-fw"></i
+                                ></a>
+                                <a href="#" class="me-2"
+                                    ><i class="fab fa-lg fa-youtube fa-fw"></i
+                                ></a>
+                                <a href="#" class="me-2"
+                                    ><i class="fab fa-lg fa-linkedin fa-fw"></i
+                                ></a>
+                                <a href="#" class="me-2"
+                                    ><i class="fab fa-lg fa-github fa-fw"></i
+                                ></a>
+                            </div>
+                            <!-- Sponsor us -->
+                            <h4 class="footer-title">Sponsor Us</h4>
+                            <a
+                                class="github-button"
+                                href="https://github.com/sponsors/ClubTechPro"
+                                data-color-scheme="no-preference: light; light: light; dark: dark;"
+                                data-icon="octicon-heart"
+                                data-size="large"
+                                aria-label="Sponsor @ClubTechPro on GitHub"
+                                >Sponsor</a
+                            >
+                        </div>
+                        <div class="col-lg-3 mb-4 mb-lg-0">
+                            <h4 class="footer-title">Company</h4>
+                            <ul class="footer-link-list">
+                                <li>
+                                    <a
+                                        href="https://blogs.techpro.club"
+                                        target="_blank"
+                                        >Blogs</a
+                                    >
+                                </li>
+                                <li><a href="/company">Company Info</a></li>
+                                <li><a href="/careers">Careers</a></li>
+                                <li><a href="/brand">Brand Resources</a></li>
+                            </ul>
+                            <hr class="my-4 text-gray-600" />
+                            <h4 class="footer-title">Policies</h4>
+                            <ul class="footer-link-list">
+                                <li><a href="#">Contributor Guidelines</a></li>
+                                <li><a href="#">Data Policy</a></li>
+                                <li><a href="#">Cookie Policy</a></li>
+                                <li><a href="#">Terms of Service</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-lg-3 mb-4 mb-lg-0">
+                            <h4 class="footer-title">FAQs</h4>
+                            <ul class="footer-link-list">
+                                <li><a href="#">Projects</a></li>
+                                <li><a href="#">Developers</a></li>
+                                <li><a href="#">Posting Jobs</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-lg-3 mb-4 mb-lg-0">
+                            <h4 class="footer-title">Help Center</h4>
+                            <ul class="footer-link-list">
+                                <li><a href="/contactus">Contact Form</a></li>
+                                <li><a href="#">Report bugs</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="footer-copyright">
+                        <div class="row">
+                            <div
+                                class="col-lg-6 text-center text-lg-start mb-3 mb-lg-0"
+                            >
+                                <div class="footer-copyright-text">
+                                    Techprpo.club © 2022. All rights reserved.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- END footer -->
         </div>
-        <!-- End: About -->
+        <!-- end page container -->
 
-        <!-- Start: Footer -->
-        <footer class="footer">
-            <div class="container-fluid">
-                <div class="footer-content">
-                    <div class="footer-item">
-                        <a href="https://techpro.club"
-                            ><img
-                                src="assets/logos/techpro-club-mini-logo.png"
-                                alt="techpro club mini logo"
-                        /></a> 
-                    </div>
-                    <div class="footer-item">
-                        <ul class="footer-menu">
-                            <li><a href="https://hashnode.com" target="_blank">Hashnode</a></li> 
-                            <li><a href="https://www.linode.com/?utm_source=hashnode&utm_medium=article&utm_campaign=hackathon_announcement" target="_blank">Build with Linode Hackathon June 2022</a></li>
-                            <li>
-                                <a href="mailto:hello@techpro.club">Email</a>
-                            </li>
-                            <li>
-                                <a
-                                    href="https://github.com/ClubTechPro/techpro.club"
-                                    target="_blank"
-                                    >Github</a
-                                >
-                            </li>
-                            <li>
-                                <a
-                                    href="https://twitter.com/ClubTechpro"
-                                    target="_blank"
-                                    >Twitter</a
-                                >
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </footer>
+        <!-- ================== BEGIN BASE JS ================== -->
+        <script src="/assets/home/js/corporate/vendor.min.js"></script>
+        <script src="/assets/home/js/corporate/app.min.js"></script>
 
-        <!-- End: Footer -->
+        <!-- ================== END BASE JS ================== -->
 
-        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-        <script src="assets/home/js/jquery.min.js"></script>
-        <!-- Include all compiled plugins (below), or include individual files as needed -->
-        <script src="assets/home/js/bootstrap.min.js"></script>
-        <script src="assets/home/js/jquery.easing.min.js"></script>
-        <script src="assets/home/js/scrolling-nav.js"></script>
-        <script src="assets/home/js/validator.js"></script>
-        <script src="assets/home/js/menu.js"></script>
+        <!-- ================== GITHUB STAR ================== -->
+        <script async defer src="https://buttons.github.io/buttons.js"></script>
     </body>
 </html>
