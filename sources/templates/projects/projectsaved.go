@@ -42,10 +42,10 @@ func ProjectSaved(w http.ResponseWriter, r *http.Request){
 	}
 	
 	tmpl, err := template.New("").ParseFiles("templates/app/projects/projectsaved.gohtml", "templates/app/projects/common/base.gohtml")
-		if err != nil {
-			fmt.Println(err.Error())
-		}else {
-			tmpl.ExecuteTemplate(w, "projectbase", userNameImage) 
-		}
+	if err != nil {
+		fmt.Println(err.Error())
+	}else {
+		tmpl.ExecuteTemplate(w, "projectbase", userNameImage) 
+	}
 	
 }
