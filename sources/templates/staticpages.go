@@ -31,7 +31,7 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	
-	tmpl := template.Must(template.ParseFiles("templates/home/index.html"))
+	tmpl := template.Must(template.ParseFiles("templates/home/index.gohtml"))
     tmpl.Execute(w, nil)
 }
 
@@ -45,7 +45,7 @@ func ContactUs(w http.ResponseWriter, r *http.Request) {
 
 	pageTitle := common.PageTitle{Title : "Contact Us"}
 
-	tmpl, err := template.New("").ParseFiles("templates/home/contactus.html", "templates/home/base.html")
+	tmpl, err := template.New("").ParseFiles("templates/home/contactus.gohtml", "templates/home/base.gohtml")
 	if err != nil {
 		fmt.Println(err.Error())
 	}else {
@@ -63,7 +63,7 @@ func Careers(w http.ResponseWriter, r *http.Request) {
 		
 	pageTitle := common.PageTitle{Title : "Careers"}
 
-	tmpl, err := template.New("").ParseFiles("templates/home/careers.html", "templates/home/base.html")
+	tmpl, err := template.New("").ParseFiles("templates/home/careers.gohtml", "templates/home/base.gohtml")
 	if err != nil {
 		fmt.Println(err.Error())
 	}else {
@@ -80,7 +80,7 @@ func Company(w http.ResponseWriter, r *http.Request) {
 		
 	pageTitle := common.PageTitle{Title : "About us"}
 
-	tmpl, err := template.New("").ParseFiles("templates/home/company.html", "templates/home/base.html")
+	tmpl, err := template.New("").ParseFiles("templates/home/company.gohtml", "templates/home/base.gohtml")
 	if err != nil {
 		fmt.Println(err.Error())
 	}else {
@@ -97,7 +97,7 @@ func Brand(w http.ResponseWriter, r *http.Request) {
 		
 	pageTitle := common.PageTitle{Title : "The Brand"}
 
-	tmpl, err := template.New("").ParseFiles("templates/home/brand.html", "templates/home/base.html")
+	tmpl, err := template.New("").ParseFiles("templates/home/brand.gohtml", "templates/home/base.gohtml")
 	if err != nil {
 		fmt.Println(err.Error())
 	}else {
