@@ -2,6 +2,11 @@ package common
 
 import "go.mongodb.org/mongo-driver/bson/primitive"
 
+// Page title struct
+type PageTitle struct {
+	Title string `json:"title"`
+}
+
 // Feeds struct
 type FeedStruct struct {
 	Id primitive.ObjectID `json:"id" bson:"_id,omitempty"`

@@ -1,0 +1,198 @@
+{{define "basehome"}}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Techpro.club | {{.Title}}</title>
+        <meta
+            content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+            name="viewport"
+        />
+        <meta content="" name="description" />
+        <meta content="" name="author" />
+
+        <!-- ================== BEGIN core-css ================== -->
+        <link
+            href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700"
+            rel="stylesheet"
+        />
+        <link
+            href="/assets/home/css/corporate/vendor.min.css"
+            rel="stylesheet"
+        />
+        <link href="/assets/home/css/corporate/app.min.css" rel="stylesheet" />
+        <!-- ================== END core-css ================== -->
+    </head>
+    <body>
+        <!-- begin #page-loader -->
+        <div id="page-loader" class="fade show">
+            <span class="spinner"></span>
+        </div>
+        <!-- end #page-loader -->
+
+        <!-- begin #page-container -->
+        <div id="page-container">
+            <!-- BEGIN header -->
+            <div class="header header-default">
+                <div class="container d-flex">
+                    <div class="header-logo">
+                        <a href="/" class="logo-link">
+                            <img
+                                src="assets/img/logo_blue.png"
+                                alt="Techpro.club logo white"
+                                height="40"
+                            />
+                        </a>
+                    </div>
+                    <div class="header-nav">
+                        <div class="container">
+                            <div class="header-nav-item">
+                                <a href="/company" class="header-nav-link"
+                                    >Who We Are</a
+                                >
+                            </div>
+
+                            <div class="header-nav-item">
+                                <a
+                                    href="https://blogs.techpro.club"
+                                    target="_blank"
+                                    class="header-nav-link"
+                                    >Blogs</a
+                                >
+                            </div>
+                            <div class="header-nav-item">
+                                <a href="/careers" class="header-nav-link"
+                                    >Careers</a
+                                >
+                            </div>
+                            <div class="header-nav-item">
+                                <a href="/contactus" class="header-nav-link"
+                                    >Contact Us</a
+                                >
+                            </div>
+                        </div>
+                    </div>
+
+                    <button
+                        class="header-mobile-nav-toggler"
+                        type="button"
+                        data-toggle="header-mobile-nav"
+                    >
+                        <span class="header-mobile-nav-toggler-icon"></span>
+                    </button>
+                </div>
+            </div>
+            <!-- END header -->
+
+            {{template "content" .}}
+
+            <!-- BEGIN footer -->
+            <div class="footer">
+                <div class="container">
+                    <div class="row gx-5">
+                        <div class="col-lg-3 mb-4 mb-lg-0">
+                            <div class="footer-logo">
+                                <img
+                                    src="/assets/img/logo_black.png"
+                                    alt="techrpo.club logo black"
+                                    height="30"
+                                />
+                            </div>
+                            <p class="footer-desc">
+                                Lets contribute to the open-source projects &
+                                help them find more contributors and adopters
+                                while we as a developer learn and build awesome
+                                portfolios.
+                            </p>
+                            <h4 class="footer-title">Follow Us</h4>
+                            <div class="footer-media-list mb-4">
+                                <a href="#" class="me-2"
+                                    ><i class="fab fa-lg fa-twitter fa-fw"></i
+                                ></a>
+                                <a href="#" class="me-2"
+                                    ><i class="fab fa-lg fa-youtube fa-fw"></i
+                                ></a>
+                                <a href="#" class="me-2"
+                                    ><i class="fab fa-lg fa-linkedin fa-fw"></i
+                                ></a>
+                                <a href="#" class="me-2"
+                                    ><i class="fab fa-lg fa-github fa-fw"></i
+                                ></a>
+                            </div>
+                            <!-- Sponsor us -->
+                            <h4 class="footer-title">Sponsor Us</h4>
+                            <a
+                                class="github-button"
+                                href="https://github.com/sponsors/ClubTechPro"
+                                data-color-scheme="no-preference: light; light: light; dark: dark;"
+                                data-icon="octicon-heart"
+                                data-size="large"
+                                aria-label="Sponsor @ClubTechPro on GitHub"
+                                >Sponsor</a
+                            >
+                        </div>
+                        <div class="col-lg-3 mb-4 mb-lg-0">
+                            <h4 class="footer-title">Company</h4>
+                            <ul class="footer-link-list">
+                                <li>
+                                    <a
+                                        href="https://blogs.techpro.club"
+                                        target="_blank"
+                                        >Blogs</a
+                                    >
+                                </li>
+                                <li><a href="/company">Company Info</a></li>
+                                <li><a href="/careers">Careers</a></li>
+                                <li><a href="/brand">Brand Resources</a></li>
+                            </ul>
+                            <hr class="my-4 text-gray-600" />
+                            <h4 class="footer-title">Policies</h4>
+                            <ul class="footer-link-list">
+                                <li><a href="#">Contributor Guidelines</a></li>
+                                <li><a href="#">Data Policy</a></li>
+                                <li><a href="#">Cookie Policy</a></li>
+                                <li><a href="#">Terms of Service</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-lg-3 mb-4 mb-lg-0">
+                            <h4 class="footer-title">FAQs</h4>
+                            <ul class="footer-link-list">
+                                <li><a href="#">Projects</a></li>
+                                <li><a href="#">Developers</a></li>
+                                <li><a href="#">Posting Jobs</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-lg-3 mb-4 mb-lg-0">
+                            <h4 class="footer-title">Help Center</h4>
+                            <ul class="footer-link-list">
+                                <li><a href="/contactus">Contact Form</a></li>
+                                <li><a href="#">Report bugs</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="footer-copyright">
+                        <div class="row">
+                            <div
+                                class="col-lg-6 text-center text-lg-start mb-3 mb-lg-0"
+                            >
+                                <div class="footer-copyright-text">
+                                    Techprpo.club © 2022. All rights reserved.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- END footer -->
+        </div>
+        <!-- end page container -->
+
+        <!-- ================== BEGIN BASE JS ================== -->
+        <script src="/assets/home/js/corporate/vendor.min.js"></script>
+        <script src="/assets/home/js/corporate/app.min.js"></script>
+
+        <!-- ================== GITHUB STAR ================== -->
+        <script async defer src="https://buttons.github.io/buttons.js"></script>
+    </body>
+</html>
+{{end}}

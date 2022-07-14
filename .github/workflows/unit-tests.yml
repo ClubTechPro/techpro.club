@@ -18,6 +18,8 @@ env:
     MO_HOST: ${{secrets.MO_HOST}}
     MO_USER: ${{secrets.MO_USER}}
     MO_PASS: ${{secrets.MO_PASS}}
+    MO_AUTH_METHOD: ${{secrets.MO_AUTH_METHOD}}
+    MO_AUTH_DB: ${{secrets.MO_AUTH_DB}}
 
 jobs:
     build:
@@ -32,6 +34,11 @@ jobs:
 
             - name: Setup mongodb
               uses: supercharge/mongodb-github-action@1.7.0
+              with:
+                  mongodb-version: ${{ matrix.mongodb-version }}
+                  mongodb-username: xxx
+                  mongodb-password: xxx
+                  mongodb-db: supercharge
 
             - name: Build
               run: go build -v ./...

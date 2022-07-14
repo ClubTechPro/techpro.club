@@ -27,7 +27,10 @@ func main() {
 
 	// Templates
 	http.HandleFunc("/", templates.IndexHandler)
-	http.HandleFunc("/projects", templates.ProjectIndexHandler)
+	http.HandleFunc("/contactus", templates.ContactUs)
+	http.HandleFunc("/careers", templates.Careers)
+	http.HandleFunc("/company", templates.Company)
+	http.HandleFunc("/brand", templates.Brand)
 
 	// Users
 	http.HandleFunc("/users/settings", templates.UserSettings)
