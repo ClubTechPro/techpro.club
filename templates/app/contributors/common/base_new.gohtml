@@ -1,17 +1,26 @@
+{{define "contributorbase"}}
 <!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8" />
-	<title>Color Admin | HTML Startup</title>
-	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
-	<meta content="" name="description" />
-	<meta content="" name="author" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta
+		name="description"
+		content="We help people build their career portfolios by encouraging them to contribute to open-source projects."
+	/>
+	<link rel="icon" type="image/x-icon" href="../assets/img/favicon.png" />
+	<meta name="author" content="Techpro Club" />
+	<title>Techpro.club - </title>
+	<meta
+		content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+		name="viewport"
+	/>
 	
 	<!-- ================== BEGIN core-css ================== -->
 	<link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet" />
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-	<link href="../assets/css/vendor.min.css" rel="stylesheet" />
-	<link href="../assets/css/google/app.min.css" rel="stylesheet" />
+	<link href="../assets/app/assets/css/vendor.min.css" rel="stylesheet" />
+	<link href="../assets/app/assets/css/google/app.min.css" rel="stylesheet" />
 	<!-- ================== END core-css ================== -->
 	
 </head>
@@ -24,25 +33,21 @@
 	<!-- BEGIN #app -->
 	<div id="app" class="app app-header-fixed app-sidebar-fixed app-with-wide-sidebar app-with-light-sidebar">
 		<!-- BEGIN #header -->
+		
 		<div id="header" class="app-header">
 			<!-- BEGIN navbar-header -->
 			<div class="navbar-header">
 				<button type="button" class="navbar-desktop-toggler" data-toggle="app-sidebar-minify">
-					<span class="icon-bar"></span>
+					<span class="icon-bar text-primary"></span>
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
 				<a href="index.html" class="navbar-brand">
-					<b class="me-1">Color</b> Admin
-					<span class="navbar-logo">
-						<span class="text-blue">G</span>
-						<span class="text-red">o</span>
-						<span class="text-orange">o</span>
-						<span class="text-blue">g</span>
-						<span class="text-green">l</span>
-						<span class="text-red">e</span>
-					</span>
-				</a>
+                        <img
+                            src="../assets/img/logo_blue.png"
+                            alt="techpro.club logo blue"
+                        />
+                    </a>
 				<button type="button" class="navbar-mobile-toggler" data-toggle="app-sidebar-mobile">
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
@@ -80,13 +85,8 @@
 						<span class="d-none d-md-inline">Adam Schwartz</span> <b class="caret ms-lg-2"></b>
 					</a>
 					<div class="dropdown-menu dropdown-menu-end me-1">
-						<a href="javascript:;" class="dropdown-item">Edit Profile</a>
-						<a href="javascript:;" class="dropdown-item d-flex align-items-center">
-							Inbox
-							<span class="badge bg-danger rounded-pill ms-auto pt-5px">2</span> 
-						</a>
-						<a href="javascript:;" class="dropdown-item">Calendar</a>
-						<a href="javascript:;" class="dropdown-item">Setting</a>
+						<a href="javascript:;" class="dropdown-item">View Profile</a>
+						<a href="javascript:;" class="dropdown-item">Settings</a>
 						<div class="dropdown-divider"></div>
 						<a href="javascript:;" class="dropdown-item">Log Out</a>
 					</div>
@@ -101,87 +101,91 @@
 			<div class="app-sidebar-content" data-scrollbar="true" data-height="100%">
 				<!-- BEGIN menu -->
 				<div class="menu">
-					<div class="menu-profile">
-						<a href="javascript:;" class="menu-profile-link" data-toggle="app-sidebar-profile" data-target="#appSidebarProfileMenu">
-							<div class="menu-profile-cover with-shadow"></div>
-							<div class="menu-profile-image menu-profile-image-icon bg-gray-900 text-gray-600">
-								<i class="fa fa-user fs-48px mb-n4"></i>
+					
+					<div class="menu-header">Viewing as Developer</div>
+					
+					<div class="menu-item active mt-2">
+						<a href="/projects/list" class="menu-link">
+							<div class="menu-icon">
+								<i class="material-icons">flip_camera_android</i>
 							</div>
-							<div class="menu-profile-info">
-								<div class="d-flex align-items-center">
-									<div class="flex-grow-1">
-										Sean Ngu
-									</div>
-									<div class="menu-caret ms-auto"></div>
-								</div>
-								<small>Front end developer</small>
-							</div>
+							<div class="menu-text">Switch to projects view</div>
 						</a>
 					</div>
-					<div id="appSidebarProfileMenu" class="collapse">
-						<div class="menu-item pt-5px">
-							<a href="javascript:;" class="menu-link">
-								<div class="menu-icon"><i class="fa fa-cog"></i></div>
-								<div class="menu-text">Settings</div>
-							</a>
-						</div>
-						<div class="menu-item">
-							<a href="javascript:;" class="menu-link">
-								<div class="menu-icon"><i class="fa fa-pencil-alt"></i></div>
-								<div class="menu-text"> Send Feedback</div>
-							</a>
-						</div>
-						<div class="menu-item pb-5px">
-							<a href="javascript:;" class="menu-link">
-								<div class="menu-icon"><i class="fa fa-question-circle"></i></div>
-								<div class="menu-text"> Helps</div>
-							</a>
-						</div>
-						<div class="menu-divider m-0"></div>
+					<div class="menu-item mt-4">
+						<a href="/contributors/feeds" class="menu-link">
+							<div class="menu-icon">
+								<i class="material-icons">featured_play_list</i>
+							</div>
+							<div class="menu-text">Feeds</div>
+						</a>
 					</div>
-					<div class="menu-header">Navigation</div>
-					<div class="menu-item active">
+
+					<div class="menu-item">
 						<a href="index.html" class="menu-link">
 							<div class="menu-icon">
-								<i class="material-icons">home</i>
+								<i class="material-icons">bookmark</i>
 							</div>
-							<div class="menu-text">Home</div>
+							<div class="menu-text">Bookmarks</div>
+						</a>
+					</div>
+
+					<div class="menu-item">
+						<a href="index.html" class="menu-link">
+							<div class="menu-icon">
+								<i class="material-icons">star</i>
+							</div>
+							<div class="menu-text">Stars</div>
+						</a>
+					</div>
+
+					<div class="menu-item">
+						<a href="/contributors/preferences" class="menu-link">
+							<div class="menu-icon">
+								<i class="material-icons">settings</i>
+							</div>
+							<div class="menu-text">Project preferences</div>
+						</a>
+					</div>
+
+					<div class="menu-header mt-4">Resources</div>
+
+					<div class="menu-item">
+						<a href="https://github.com/ClubTechPro/techpro.club" target="_blank" class="menu-link">
+							<div class="menu-icon">
+								<i class="fa-brands fa-github"></i>
+							</div>
+							<div class="menu-text">Github repository</div>
+						</a>
+					</div>
+
+					<div class="menu-item">
+						<a href="https://github.com/ClubTechPro/techpro.club/issues/new/choose" target="_blank" class="menu-link">
+							<div class="menu-icon">
+								<i class="material-icons">bug_report</i>
+							</div>
+							<div class="menu-text">Bug report</div>
+						</a>
+					</div>
+
+					<div class="menu-item">
+						<a href="https://blogs.techpro.club" target="_blank" class="menu-link">
+							<div class="menu-icon">
+								<i class="material-icons">rss_feed</i>
+							</div>
+							<div class="menu-text">Blogs</div>
+						</a>
+					</div>
+
+					<div class="menu-item">
+						<a href="index.html" class="menu-link">
+							<div class="menu-icon">
+								<i class="material-icons">play_arrow</i>
+							</div>
+							<div class="menu-text">Training Videos</div>
 						</a>
 					</div>
 					
-					<div class="menu-item has-sub">
-						<a href="javascript:;" class="menu-link">
-							<div class="menu-icon">
-								<i class="material-icons">list</i>
-							</div>
-							<div class="menu-text">Menu Level</div>
-							<div class="menu-caret"></div>
-						</a>
-						<div class="menu-submenu">
-							<div class="menu-item has-sub">
-								<a href="javascript:;" class="menu-link">
-									<div class="menu-text">Menu 1.1</div>
-									<div class="menu-caret"></div>
-								</a>
-								<div class="menu-submenu">
-									<div class="menu-item has-sub">
-										<a href="javascript:;" class="menu-link">
-											<div class="menu-text">Menu 2.1</div>
-											<div class="menu-caret"></div>
-										</a>
-										<div class="menu-submenu">
-											<div class="menu-item"><a href="javascript:;" class="menu-link"><div class="menu-text">Menu 3.1</div></a></div>
-											<div class="menu-item"><a href="javascript:;" class="menu-link"><div class="menu-text">Menu 3.2</div></a></div>
-										</div>
-									</div>
-									<div class="menu-item"><a href="javascript:;" class="menu-link"><div class="menu-text">Menu 2.2</div></a></div>
-									<div class="menu-item"><a href="javascript:;" class="menu-link"><div class="menu-text">Menu 2.3</div></a></div>
-								</div>
-							</div>
-							<div class="menu-item"><a href="javascript:;" class="menu-link"><div class="menu-text">Menu 1.2</div></a></div>
-							<div class="menu-item"><a href="javascript:;" class="menu-link"><div class="menu-text">Menu 1.3</div></a></div>
-						</div>
-					</div>
 					
 				</div>
 				<!-- END menu -->
@@ -194,33 +198,7 @@
 		
 		<!-- BEGIN #content -->
 		<div id="content" class="app-content">
-			<!-- BEGIN breadcrumb -->
-			<ol class="breadcrumb float-xl-end">
-				<li class="breadcrumb-item"><a href="javascript:;">Home</a></li>
-				<li class="breadcrumb-item"><a href="javascript:;">Library</a></li>
-				<li class="breadcrumb-item active">Data</li>
-			</ol>
-			<!-- END breadcrumb -->
-			<!-- BEGIN page-header -->
-			<h1 class="page-header">Page Header <small>header small text goes here...</small></h1>
-			<!-- END page-header -->
-			
-			<!-- BEGIN panel -->
-			<div class="panel panel-inverse">
-				<div class="panel-heading">
-					<h4 class="panel-title">Panel Title here</h4>
-					<div class="panel-heading-btn">
-						<a href="javascript:;" class="btn btn-xs btn-icon btn-default" data-toggle="panel-expand"><i class="fa fa-expand"></i></a>
-						<a href="javascript:;" class="btn btn-xs btn-icon btn-success" data-toggle="panel-reload"><i class="fa fa-redo"></i></a>
-						<a href="javascript:;" class="btn btn-xs btn-icon btn-warning" data-toggle="panel-collapse"><i class="fa fa-minus"></i></a>
-						<a href="javascript:;" class="btn btn-xs btn-icon btn-danger" data-toggle="panel-remove"><i class="fa fa-times"></i></a>
-					</div>
-				</div>
-				<div class="panel-body">
-					Panel Content Here
-				</div>
-			</div>
-			<!-- END panel -->
+			{{template "content" .}}
 		</div>
 		<!-- END #content -->
 		
@@ -231,9 +209,21 @@
 	<!-- END #app -->
 	
 	<!-- ================== BEGIN core-js ================== -->
-	<script src="../assets/js/vendor.min.js"></script>
-	<script src="../assets/js/app.min.js"></script>
+	<script src="../assets/app/assets/js/vendor.min.js"></script>
+	<script src="../assets/app/assets/js/app.min.js"></script>
 	<!-- ================== END core-js ================== -->
+
+
+	<!-- ================== GOOGLE TAG ================== -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-GH8ZTCTKD0"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+
+		gtag('config', 'G-GH8ZTCTKD0');
+	</script>
 	
 </body>
 </html>
+{{end}}
