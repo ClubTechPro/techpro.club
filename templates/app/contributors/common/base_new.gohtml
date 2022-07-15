@@ -79,10 +79,8 @@
 				</div>
 				<div class="navbar-item navbar-user dropdown">
 					<a href="#" class="navbar-link dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown">
-						<div class="image image-icon bg-gray-800 text-gray-600">
-							<i class="fa fa-user"></i>
-						</div>
-						<span class="d-none d-md-inline">Adam Schwartz</span> <b class="caret ms-lg-2"></b>
+						<img src="{{.UserNameImage.Image}}" alt="user avatar"/>
+						<span class="d-none d-md-inline">{{.UserNameImage.Username}}</span> <b class="caret ms-lg-2"></b>
 					</a>
 					<div class="dropdown-menu dropdown-menu-end me-1">
 						<a href="javascript:;" class="dropdown-item">View Profile</a>
