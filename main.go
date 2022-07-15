@@ -31,6 +31,8 @@ func main() {
 	http.HandleFunc("/careers", templates.Careers)
 	http.HandleFunc("/company", templates.Company)
 	http.HandleFunc("/brand", templates.Brand)
+	http.HandleFunc("/campus", templates.Campus)
+	http.HandleFunc("/campusonboard", templates.CampusOnboard)
 
 	// Users
 	http.HandleFunc("/users/settings", templates.UserSettings)
