@@ -24,12 +24,11 @@
 {{range .Projects}}
 {{$User := index .Userdetails 0}}
 
-<div class="panel panel-primary">
+<div class="panel panel-inverse">
     <div class="panel-heading">
-        <h4 class="panel-title">Flot Basic Line Chart</h4>
+        <h4 class="panel-title">{{.ProjectName}}</h4>
     </div>
     <div class="panel-body">
-        <h3 class="card-title">{{.ProjectName}}</h3>
         <h6 class="card-subtitle mb-2 text-muted">By {{$User.Name}}</h6>
         <p class="card-text">
             {{.ProjectDescription}}
