@@ -1,5 +1,7 @@
 {{define "content"}}
-<h3 class="panel-heading">Projects Feed</h3>
+<!-- BEGIN page-header -->
+<h1 class="page-header">Page Header</h1>
+<!-- END page-header -->
 {{if not .Projects}}
 <div class="panel panel-default">
     <div class="card-body">
@@ -22,8 +24,11 @@
 {{range .Projects}}
 {{$User := index .Userdetails 0}}
 
-<div class="panel panel-default">
-    <div class="card-body">
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h4 class="panel-title">Flot Basic Line Chart</h4>
+    </div>
+    <div class="panel-body">
         <h3 class="card-title">{{.ProjectName}}</h3>
         <h6 class="card-subtitle mb-2 text-muted">By {{$User.Name}}</h6>
         <p class="card-text">
@@ -42,6 +47,7 @@
         </div>
     </div>
 </div>
+
 {{end}}
 {{end}}
 <script async defer src="https://buttons.github.io/buttons.js"></script>
