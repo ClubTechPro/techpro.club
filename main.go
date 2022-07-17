@@ -6,6 +6,7 @@ import (
 
 	"techpro.club/sources/authentication"
 	"techpro.club/sources/common"
+	"techpro.club/sources/notifications"
 	"techpro.club/sources/templates"
 	"techpro.club/sources/templates/contributors"
 	"techpro.club/sources/templates/projects"
@@ -36,7 +37,7 @@ func main() {
 
 	// Users
 	http.HandleFunc("/users/settings", templates.UserSettings)
-	http.HandleFunc("/users/notifications", templates.Notifications)
+	http.HandleFunc("/users/notifications", notifications.Fetch)
 
 	// Templates/Contributors
 	http.HandleFunc("/contributors/feeds", contributors.Feeds)
