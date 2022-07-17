@@ -24,7 +24,7 @@ func Create(w http.ResponseWriter, r *http.Request) {
 
 	_, _, result := insert(oid, "contributor", "test subject", "test mesg", "https://link", false, false)
 
-	tmpl, err := template.New("").ParseFiles("templates/app/notifications.gohtml", "templates/app/projects/common/base.gohtml")
+	tmpl, err := template.New("").ParseFiles("templates/app/notifications.gohtml", "templates/app/contributors/common/base_new.gohtml")
 	if err != nil {
 		fmt.Println(err.Error())
 	} else {
@@ -39,7 +39,7 @@ func Fetch(w http.ResponseWriter, r *http.Request) {
 
 	_, _, result := FetchNotification()
 
-	tmpl, err := template.New("").ParseFiles("templates/app/notifications.gohtml", "templates/app/projects/common/base.gohtml")
+	tmpl, err := template.New("").ParseFiles("templates/app/notifications.gohtml", "templates/app/projects/common/base_new.gohtml")
 
 	fmt.Println("trying to execute")
 	if err != nil {
