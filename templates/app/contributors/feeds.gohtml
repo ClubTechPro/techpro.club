@@ -1,68 +1,97 @@
 {{define "content"}}
 <!-- BEGIN page-header -->
-<h1 class="page-header">Page Header</h1>
-<!-- END page-header -->
+<h1 class="page-header">My Feed</h1>
+
+<!-- BEGIN Search feeds -->
+<!--
+<div class="mb-3">
+    <div class="row">
+        <div class="col-md-8">
+            <input class="form-control" type="text" placeholder="Search project name"/>
+        </div>
+        <div class="col-md-3">
+            <select class="form-select">
+            <option>Filter</option>
+            </select>
+        </div>
+        <div class="col-md-1">
+            <button class="btn btn-primary">Search</button>
+        </div>
+    </div>
+</div>
+-->
+<!-- END Search feeds -->
+
 {{if not .Projects}}
-<div class="panel panel-default">
-    <div class="card-body">
-        <h3 class="card-title">Project list coming soon</h3>
-        <h6 class="card-subtitle mb-2 text-muted">By Techpro.Club</h6>
+<div class="panel shadow bg-body rounded">
+    <div class="panel-body">
+        <h6 class="card-subtitle mb-2">Project list coming soon</h6>
+        <small>By Techpro.Club</small>
+        
         <p class="card-text">
             Soon amazing projects will be listed here. While we are
             collaborating with project owners, do checkout this space for more.
             <br />
             In the meanwhile, checkout our Github and follow us on Twitter
         </p>
+
         <div class="social-buttons">
             <a class="github-button" href="https://github.com/ClubTechPro/techpro.club" data-color-scheme="no-preference: dark; light: light; dark: dark;" data-size="large" aria-label="Star ClubTechPro/techpro.club on GitHub">Star</a>
             <a href="https://twitter.com/ClubTechpro?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false" data-size="large" data-show-screen-name="false">Follow @ClubTechpro</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
         </div>
-        <span class="label label-pill label-success">News</span>
+        <span class="badge bg-light text-primary">News</span>
     </div>
 </div>
 {{else}}
 {{range .Projects}}
 {{$User := index .Userdetails 0}}
 
-<div id="app" class="app app-with-two-sidebar app-sidebar-end-toggled">
-<div class="panel ">
-   
+
+<div class="panel shadow bg-body rounded">
     <div class="panel-body">
         <div class="row">
             <div class="col-md-10">
-                <img src="{{$User.ImageLink}}" height="30" alt="User avatar" class="me-1"/> {{$User.Name}} - 4h
+                <img src="{{$User.ImageLink}}" height="30" alt="User avatar" class="me-1"/> 
+                {{$User.Name}} 
+                <small class="text-muted me-2">- 4h</small>
+                
             </div>
             <div class="col-md-2">
                 <div class="text-end">
-                    <button class="btn btn-default btn-xs"><i class="fa-regular fa-star"></i></button>
+                    <button class="btn btn-default btn-xs"><i class="fa-regular fa-heart"></i></button>
                     <button class="btn btn-default btn-xs"><i class="fa-regular fa-bookmark"></i></button>
-                    <button class="btn btn-default btn-xs"><i class="fa-brands fa-github"></i></button>
                 </div>
             </div>
         </div>
-        <p class="align-bottom">
-            
-        </p>
-        <h6 class="card-subtitle mb-2">{{.ProjectName}}</h6>
-        
+
+        <h6 class="card-subtitle mb-2 mt-2">{{.ProjectName}}</h6>
         
         <p class="card-text">
             {{.ProjectDescription}}
         </p>
-        <div class="social-buttons">
-            {{ range .Languages }}
-            <span class="badge bg-light text-primary">{{.}}</span>
-            {{ end }}
-            {{ range .OtherLanguages }}
-            <span class="badge bg-light text-warning">{{.}}</span>
-            {{ end }}
-            {{ range .Allied }}
-            <span class="badge bg-light text-dark">{{.}}</span>
-            {{ end }}
+
+        <div class="row">
+            <div class="col-md-1">
+                <i class="fa-solid fa-heart me-2 text-danger"></i><small>201</small>
+            </div>
+            <div class="col-md-11">
+                <div class="social-buttons">
+                    {{ range .Languages }}
+                    <span class="badge bg-light text-primary">{{.}}</span>
+                    {{ end }}
+                    {{ range .OtherLanguages }}
+                    <span class="badge bg-light text-warning">{{.}}</span>
+                    {{ end }}
+                    {{ range .Allied }}
+                    <span class="badge bg-light text-dark">{{.}}</span>
+                    {{ end }}
+                </div>
+            </div>
         </div>
+        
     </div>
 </div>
-</div>
+
 
 {{end}}
 {{end}}

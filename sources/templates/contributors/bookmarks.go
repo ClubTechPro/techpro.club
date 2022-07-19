@@ -52,7 +52,7 @@ func Bookmarks(w http.ResponseWriter, r *http.Request){
 	finalOutStruct = FinalProjectBookmarkListOutStruct{results, userNameImage}
 	
 
-	tmpl, err := template.New("").ParseFiles("templates/app/projects/projectlist.gohtml", "templates/app/projects/common/base.gohtml")
+	tmpl, err := template.New("").ParseFiles("templates/app/projects/projectlist.gohtml", "templates/app/projects/common/base_new.gohtml")
 	if err != nil {
 		fmt.Println(err.Error())
 	}else {

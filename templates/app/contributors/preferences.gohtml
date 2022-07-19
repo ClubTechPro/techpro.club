@@ -1,40 +1,47 @@
 {{define "content"}}
-<h3 class="panel-heading">Contributor Preferences</h3>
-<div class="panel panel-default">
-    <form method="post" content-type="x-www-form-urlencoded">
-        <h5>Preferred programming language(s)</h5>
+<h3 class="panel-heading">Project Preferences</h3>
 
-        <div class="row border border-primary">
+<form method="post" content-type="x-www-form-urlencoded">
+
+
+<div class="panel shadow bg-body rounded">
+    <div class="panel-body">
+    
+        <h6 class="card-subtitle mb-3 mt-2">Preferred programming language(s)</h6>
+        <div class="row">
             {{$Languages := .ContributorPreferences.Languages}}
             {{range $key, $value := .ProgrammingLanguages}}
                 {{if contains $Languages $key}}
                 
-                    <div class="col col-md-3 col-sm-6">
+                    <div class="col col-md-6 mt-2">
                         <input
                             type="checkbox"
+                            class="form-check-input"
                             id="{{ $key }}"
                             name="language"
                             value="{{ $key }}"
                             checked
                         />
-                        <label for="{{ $key }}">{{ $value }}</label><br />
+                        <label class="form-check-label" for="{{ $key }}">{{ $value }}</label><br />
                     </div>
                 {{else}}
-                    <div class="col col-md-3 col-sm-6">
+                    <div class="col col-md-3 col-sm-6 mt-2">
                         <input
                             type="checkbox"
+                            class="form-check-input"
                             id="{{ $key }}"
                             name="language"
                             value="{{ $key }}"
                         />
-                        <label for="{{ $key }}">{{ $value }}</label><br />
+                        <label class="form-check-label" for="{{ $key }}">{{ $value }}</label><br />
                     </div>
                 {{ end }}
             {{ end }}
 
-            <div class="col col-md-3 col-sm-6">
+            <div class="col col-md-3 col-sm-6 mt-2">
                 <input
                     type="text"
+                    class="form-control form-control-sm"
                     id="otherLanguages"
                     name="otherLanguages"
                     class="form-control"
@@ -44,16 +51,21 @@
             </div>
             
         </div>
+    </div>
+</div>
+        
+<div class="panel shadow bg-body rounded">
+    <div class="panel-body">
+        <h6 class="card-subtitle mb-3 mt-2">Allied Service(s)</h6>
 
-        <h5>Allied Service(s)</h5>
-
-        <div class="row border border-primary">
+        <div class="row">
         {{$Allied := .ContributorPreferences.Allied}}
         {{range $key, $value := .AlliedServices}}
             {{if contains $Allied $key}}
                 <div class="col col-md-3 col-sm-6">
                     <input
                         type="checkbox"
+                        class="form-check-input"
                         id="{{$key}}"
                         name="allied"
                         value="{{$key}}"
@@ -66,6 +78,7 @@
                 <div class="col col-md-3 col-sm-6">
                     <input
                         type="checkbox"
+                        class="form-check-input"
                         id="{{$key}}"
                         name="allied"
                         value="{{$key}}"
@@ -76,15 +89,16 @@
         {{end}}
         </div>
 
-        <h5>Preferred project type</h5>
+        <h6 class="card-subtitle mb-2 mt-4">Preferred project type</h6>
 
-        <div class="row border border-primary">
+        <div class="row">
             {{$ProjectTypeSlice := .ContributorPreferences.ProjectType}}
             {{range $key, $value := .ProjectType}}
                 {{if contains $ProjectTypeSlice $key}}
-                    <div class="col col-md-3 col-sm-6">
+                    <div class="col col-md-3 col-sm-6 mt-2">
                         <input
                             type="checkbox"
+                            class="form-check-input"
                             id="{{$key}}"
                             name="pType"
                             value="{{$key}}"
@@ -93,9 +107,10 @@
                         <label for="{{$key}}">{{$value}}</label><br />
                     </div>
                 {{else}}
-                    <div class="col col-md-3 col-sm-6">
+                    <div class="col col-md-3 col-sm-6 mt-2">
                         <input
                             type="checkbox"
+                            class="form-check-input"
                             id="{{$key}}"
                             name="pType"
                             value="{{$key}}"
@@ -107,12 +122,12 @@
 
         </div>
 
-        <h5>Current project contributors</h5>
+        <h6 class="card-subtitle mb-3 mt-4">Current project contributors</h6>
 
         <select
             name="contributorCount"
             id="contributorCount"
-            class="form-control"
+            class="form-select form-select-sm"
         >
             {{$Contributor := .ContributorPreferences.ContributorCount}}
             {{range $key, $value := .Contributors}}
@@ -128,106 +143,161 @@
             posting.</small
         >
 
-        <h5>Highest qualification</h5>
-
-        <input
-            type="radio"
-            id="qMasters"
-            name="qualification"
-            value="Masters Degree"
-            class="form-check-input"
-            {{if eq .ContributorPreferences.Qualification "Masters Degree"}} checked {{end}} 
-        />
-        <label for="pQualification">Masters Degree</label><br />
-
-        <input
-            type="radio"
-            id="qGraduate"
-            name="qualification"
-            value="Graduate"
-            {{if eq .ContributorPreferences.Qualification "Graduate"}} checked {{end}} 
-        />
-        <label for="qGraduate">Graduate</label><br />
-
-        <input
-            type="radio"
-            id="qHighSchool"
-            name="qualification"
-            value="High School"
-            {{if eq .ContributorPreferences.Qualification "High School"}} checked {{end}} 
-        />
-        <label for="qHighSchool">High School</label><br />
-
-        <input type="radio" id="qOthers" name="qualification" value="Others" {{if eq .ContributorPreferences.Qualification "Others"}} checked {{end}} />
-        <label for="qOthers">Others</label><br />
-
-        <h5>Are you open for relocation?</h5>
-
-        <input
-            type="radio"
-            id="relocationY"
-            name="relocation"
-            value="true"
-            {{if eq .ContributorPreferences.Relocation "true"}} checked {{end}}
-        />
-        <label for="relocationY">Yes</label><br />
-
-        <input type="radio" id="relocationN" name="relocation" value="false" {{if eq .ContributorPreferences.Relocation "false"}} checked {{end}}/>
-        <label for="relocationN">No</label><br />
-
-        <h5>
-            Would you prefer to receive notification/email for a paid job from
-            us?
-        </h5>
-
-        <input type="radio" id="paidJobY" name="paidJob" value="true" {{if eq .ContributorPreferences.PaidJob "true"}} checked {{end}}/>
-        <label for="paidJobY">Yes</label><br />
-
-        <input type="radio" id="paidJobN" name="paidJob" value="false" {{if eq .ContributorPreferences.PaidJob "false"}} checked {{end}}/>
-        <label for="paidJobN">No</label><br />
-
-        <h5>Preferred email frequency when matching projects found</h5>
-        <input
-            type="radio"
-            id="eAny"
-            name="emailFrequency"
-            value="Any"
-            {{if eq .ContributorPreferences.NotificationFrequency "Any"}} checked {{end}}
-        />
-        <label for="eAny">Anytime I have a match</label><br />
-
-        <input type="radio" id="eWeekly" name="emailFrequency" value="Weekly" {{if eq .ContributorPreferences.NotificationFrequency "Weekly"}} checked {{end}}/>
-        <label for="eWeekly">Weekly</label><br />
-
-        <input
-            type="radio"
-            id="eMonthly"
-            name="emailFrequency"
-            value="Monthly"
-            {{if eq .ContributorPreferences.NotificationFrequency "Monthly"}} checked {{end}}
-        />
-        <label for="eMonthly">Monthly</label><br />
-
-        <input type="radio" id="eNever" name="emailFrequency" value="Never" {{if eq .ContributorPreferences.NotificationFrequency "Never"}} checked {{end}}/>
-        <label for="eNever">Never</label><br />
-
-        <h5>Note</h5>
-        <ul>
-            <li>All our communication will be in English only</li>
-            <li>
-                If opted "yes" for a paid job, there might be other Employer
-                conditions before you can start contributing on the project
-            </li>
-        </ul>
-
-        <br />
-        <input
-            type="submit"
-            id="preferencesBtn"
-            value="Save Preferences"
-            class="btn btn-success"
-        />
-    </form>
+    </div>
 </div>
-<div class="before-footer-spacing"></div>
+
+
+<div class="panel shadow bg-body rounded">
+    <div class="panel-body">
+        <h5>Job Preferences</h5>
+        <h6 class="card-subtitle mb-3 mt-4">Highest qualification</h6>
+
+        <div class="col col-md-12 mt-2">
+            <input
+                type="radio"
+                class="form-check-input" 
+                id="qMasters"
+                name="qualification"
+                value="Masters Degree"
+                class="form-check-input"
+                {{if eq .ContributorPreferences.Qualification "Masters Degree"}} checked {{end}} 
+            />
+            <label class="form-check-label" for="pQualification">Masters Degree</label>
+        </div>
+
+        <div class="col col-md-12 mt-2">
+            <input
+                type="radio"
+                class="form-check-input" 
+                id="qGraduate"
+                name="qualification"
+                value="Graduate"
+                {{if eq .ContributorPreferences.Qualification "Graduate"}} checked {{end}} 
+            />
+            <label class="form-check-label" for="qGraduate">Graduate</label>
+        </div>
+
+        <div class="col col-md-12 mt-2">
+            <input
+                type="radio"
+                class="form-check-input" 
+                id="qHighSchool"
+                name="qualification"
+                value="High School"
+                {{if eq .ContributorPreferences.Qualification "High School"}} checked {{end}} 
+            />
+            <label class="form-check-label" for="qHighSchool">High School</label>
+        </div>
+
+        <div class="col col-md-12 mt-2">
+            <input type="radio" 
+                class="form-check-input"  
+                id="qOthers" 
+                name="qualification" 
+                value="Others" 
+                {{if eq .ContributorPreferences.Qualification "Others"}} checked {{end}} 
+            />
+            <label class="form-check-label" for="qOthers">Others</label><br />
+        </div>
+
+        <h6 class="card-subtitle mb-3 mt-4">Are you open for relocation?</h6>
+
+        <div class="col col-md-12 mt-2">
+            <input
+                type="radio"
+                class="form-check-input"  
+                id="relocationY"
+                name="relocation"
+                value="true"
+                {{if eq .ContributorPreferences.Relocation "true"}} checked {{end}}
+            />
+            <label for="relocationY">Yes</label>
+        </div>
+
+        <div class="col col-md-12 mt-2">
+            <input 
+                type="radio" 
+                class="form-check-input"  
+                id="relocationN" 
+                name="relocation" 
+                value="false" 
+                {{if eq .ContributorPreferences.Relocation "false"}} checked {{end}}
+            />
+            <label for="relocationN">No</label>
+        </div>
+    </div>
+</div>
+
+<div class="panel shadow bg-body rounded">
+    <div class="panel-body">
+
+        <h5>Email Preferences</h5>
+        <h6 class="card-subtitle mb-3 mt-4">Would you prefer to receive notification/email for a paid job from
+            us?</h6>
+
+
+        <div class="col col-md-12 mt-2">
+            <input type="radio" class="form-check-input" id="paidJobY" name="paidJob" value="true" {{if eq .ContributorPreferences.PaidJob "true"}} checked {{end}}/>
+            <label for="paidJobY">Yes</label>
+        </div>
+        <div class="col col-md-12 mt-2">
+            <input type="radio" class="form-check-input" id="paidJobN" name="paidJob" value="false" {{if eq .ContributorPreferences.PaidJob "false"}} checked {{end}}/>
+            <label for="paidJobN">No</label>
+        </div>
+
+        <h6 class="card-subtitle mb-3 mt-4">Preferred email frequency when matching projects found</h6>
+        <div class="col col-md-12 mt-2">
+            <input
+                type="radio"
+                class="form-check-input"
+                id="eAny"
+                name="emailFrequency"
+                value="Any"
+                {{if eq .ContributorPreferences.NotificationFrequency "Any"}} checked {{end}}
+            />
+            <label for="eAny">Anytime I have a match</label>
+        </div>
+
+        <div class="col col-md-12 mt-2">
+            <input type="radio" class="form-check-input" id="eWeekly" name="emailFrequency" value="Weekly" {{if eq .ContributorPreferences.NotificationFrequency "Weekly"}} checked {{end}}/>
+            <label for="eWeekly">Weekly</label>
+        </div>
+
+        <div class="col col-md-12 mt-2">
+            <input
+                type="radio"
+                class="form-check-input"
+                id="eMonthly"
+                name="emailFrequency"
+                value="Monthly"
+                {{if eq .ContributorPreferences.NotificationFrequency "Monthly"}} checked {{end}}
+            />
+            <label for="eMonthly">Monthly</label>
+        </div>
+
+        <div class="col col-md-12 mt-2">
+            <input type="radio" class="form-check-input" id="eNever" name="emailFrequency" value="Never" {{if eq .ContributorPreferences.NotificationFrequency "Never"}} checked {{end}}/>
+            <label for="eNever">Never</label>
+        </div>
+    </div>
+</div>
+
+<h5>Note</h5>
+<ul>
+    <li>All our communication will be in English only</li>
+    <li>
+        If opted "yes" for a paid job, there might be other Employer
+        conditions before you can start contributing on the project
+    </li>
+</ul>
+
+<input
+    type="submit"
+    id="preferencesBtn"
+    value="Save Preferences"
+    class="btn btn-primary"
+/>
+    
+
+</form>
 {{end}}
