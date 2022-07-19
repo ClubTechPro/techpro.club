@@ -5,7 +5,7 @@
     <div class="col col-md-10">
         <h1 class="page-header">Project details</h1>
     </div>
-    <div class="col col-md-2">
+    <div class="col col-md-2 text-end">
         <a href="/projects/edit?projectid={{.ProjectPreview.Id.Hex}}"><button class="btn btn-primary btn-sm"><i class="fa-regular fa-pen-to-square"></i></button></a>
         <a href="/projects/delete?projectid={{.ProjectPreview.Id.Hex}}"><button class="btn btn-danger btn-sm"><i class="fa-regular fa-trash-can"></i></button></a>
     </div>
@@ -16,17 +16,29 @@
 <div class="panel shadow bg-body rounded">
 <div class="panel-body">
     <div class="row rowspacing">
-        <div class="col col-md-6"><small>Name</small></div>
-        <div class="col col-md-12 col-sm-6">
-            <b>{{.ProjectPreview.ProjectName}}</b>
-            <small class="text-muted">( {{if .ProjectPreview.Public}}<i class="fa-solid fa-lock-open me-1"></i>Public{{else}}<i class="fa-solid fa-lock me-1"></i>Private{{end}} )</small>
+        <div class="col col-md-10">
+            <div class="row"><small>Name</small></div>
+            <div class="row"><b>{{.ProjectPreview.ProjectName}}</b></div>
+        </div>
+        <div class="col col-md-2 text-end">
+            <button class="btn btn-default btn-xs"><i class="fa-regular fa-heart"></i></button>
+            <button class="btn btn-default btn-xs"><i class="fa-regular fa-bookmark"></i></button>
         </div>
     </div>
 
-    <div class="row rowspacing mt-3">
-        <div class="col col-md-12 col-sm-6"><small>Description</small></div>
-        <div class="col col-md-12 col-sm-6">{{.ProjectPreview.ProjectDescription}}</div>
+    <div class="text-muted mt-2">
+        {{if .ProjectPreview.Public}}<i class="fa-solid fa-lock-open me-1"></i>Public{{else}}<i class="fa-solid fa-lock me-1"></i>Private{{end}} 
+        <i class="fa-solid fa-heart ms-2 me-1 text-danger"></i><small>201</small>
     </div>
+
+    <div class="row rowspacing mt-3">
+    
+        <div class="col col-md-12">
+            <div class="row"><small>Description</small></div>
+            <div class="row">{{.ProjectPreview.ProjectDescription}}</div>
+        </div>
+    </div>
+
 
     <div class="row rowspacing mt-2">
         <div class="col col-md-12 col-sm-6">
