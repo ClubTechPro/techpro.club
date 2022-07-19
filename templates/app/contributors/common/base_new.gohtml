@@ -59,7 +59,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a href="index.html" class="navbar-brand">
+                    <a href="/" class="navbar-brand">
                         <img
                             src="../assets/img/logo_blue.png"
                             alt="techpro.club logo blue"
@@ -118,7 +118,8 @@
                                 src="{{.UserNameImage.Image}}"
                                 alt="user avatar"
                             />
-                            <span class="d-none d-md-inline"
+                            <span
+                                class="d-none d-md-inline"
                                 >{{.UserNameImage.Username}}</span
                             >
                             <b class="caret ms-lg-2"></b>
@@ -310,14 +311,6 @@
         <script src="../assets/app/assets/js/app.min.js"></script>
         <!-- ================== END core-js ================== -->
 
-        <!-- ================== BEGIN page-js ================== -->
-        <script src="../assets/plugins/@highlightjs/cdn-assets/highlight.min.js"></script>
-        <script src="../assets/js/demo/render.highlight.js"></script>
-        <script src="../assets/plugins/jquery-sparkline/jquery.sparkline.min.js"></script>
-        <script src="../assets/plugins/jquery-knob/dist/jquery.knob.min.js"></script>
-        <script src="../assets/js/demo/page-with-two-sidebar.demo.js"></script>
-        <!-- ================== END page-js ================== -->
-
         <!-- ================== GOOGLE TAG ================== -->
         <script
             async
@@ -334,4 +327,4 @@
         </script>
     </body>
 </html>
-{{end}}
+{{ end }}

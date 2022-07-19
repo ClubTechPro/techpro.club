@@ -25,24 +25,39 @@
 {{$User := index .Userdetails 0}}
 
 <div id="app" class="app app-with-two-sidebar app-sidebar-end-toggled">
-<div class="panel panel-inverse">
-    <div class="panel-heading">
-        <h4 class="panel-title">{{.ProjectName}}</h4>
-    </div>
+<div class="panel ">
+   
     <div class="panel-body">
-        <h6 class="card-subtitle mb-2 text-muted">By {{$User.Name}}</h6>
+        <div class="row">
+            <div class="col-md-10">
+                <img src="{{$User.ImageLink}}" height="30" alt="User avatar"/> {{$User.Name}}
+            </div>
+            <div class="col-md-2">
+                <div class="text-end">
+                    <button class="btn btn-default btn-xs"><i class="fa-regular fa-star"></i></button>
+                    <button class="btn btn-default btn-xs"><i class="fa-regular fa-bookmark"></i></button>
+                    <button class="btn btn-default btn-xs"><i class="fa-brands fa-github"></i></button>
+                </div>
+            </div>
+        </div>
+        <p class="align-bottom">
+            
+        </p>
+        <h6 class="card-subtitle mb-2">{{.ProjectName}}</h6>
+        
+        
         <p class="card-text">
             {{.ProjectDescription}}
         </p>
         <div class="social-buttons">
             {{ range .Languages }}
-            <span class="label label-pill label-success">{{.}}</span>
+            <span class="badge bg-light text-primary">{{.}}</span>
             {{ end }}
             {{ range .OtherLanguages }}
-            <span class="label label-pill label-success">{{.}}</span>
+            <span class="badge bg-light text-warning">{{.}}</span>
             {{ end }}
             {{ range .Allied }}
-            <span class="label label-pill label-default">{{.}}</span>
+            <span class="badge bg-light text-dark">{{.}}</span>
             {{ end }}
         </div>
     </div>
