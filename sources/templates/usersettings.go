@@ -17,6 +17,7 @@ import (
 type SettingsStruct struct{
 	UserProfile common.FetchUserStruct `json:"userprofile"`
 	UserSocials common.FetchSocialStruct `json:"socials"`
+	UserNameImage common.UsernameImageStruct `json:"usernameImage"`
 }
 
 // Display and edit user profile
@@ -48,6 +49,17 @@ func UserSettings(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 	} 
 
+	var userNameImage common.UsernameImageStruct
+
+	// Fetch user name and image from saved browser cookies
+	status, msg, userName, image := FetchUsernameImage(w, r)
+
+	if(!status){
+		log.Println(msg)
+	} else {
+		userNameImage  = common.UsernameImageStruct{userName,image}
+	}
+
 
 	if r.Method == "POST"{
 		// Update user profile
@@ -77,9 +89,9 @@ func UserSettings(w http.ResponseWriter, r *http.Request) {
 	_, _, userprofile := fetchUserProfile(userID)
 	_, _, socials := fetchSocials(userID)
 
-	userSettingsStruct := SettingsStruct{userprofile, socials}
+	userSettingsStruct := SettingsStruct{userprofile, socials, userNameImage}
 
-	tmpl, err := template.New("").ParseFiles("templates/app/settings.gohtml", "templates/app/contributors/common/base.gohtml")
+	tmpl, err := template.New("").ParseFiles("templates/app/settings.gohtml", "templates/app/contributors/common/base_new.gohtml")
 	if err != nil {
 		fmt.Println(err.Error())
 	}else {

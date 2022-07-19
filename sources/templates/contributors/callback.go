@@ -29,7 +29,7 @@ func CallBack(w http.ResponseWriter, r *http.Request){
 		userNameImage  = common.UsernameImageStruct{userName,image}
 	}
 
-	tmpl, err := template.New("").ParseFiles("templates/app/contributors/callback.gohtml", "templates/app/contributors/common/base.gohtml")
+	tmpl, err := template.New("").ParseFiles("templates/app/contributors/callback.gohtml", "templates/app/contributors/common/base_new.gohtml")
 
 	if err != nil {
 		fmt.Println(err.Error())
