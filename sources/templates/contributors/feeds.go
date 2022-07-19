@@ -56,7 +56,7 @@ func Feeds(w http.ResponseWriter, r *http.Request){
 
 	output := FinalFeedsOutputStruct{results, userNameImage}
 
-	tmpl, err := template.New("").ParseFiles("templates/app/contributors/feeds.gohtml", "templates/app/contributors/common/base_new.gohtml")
+	tmpl, err := template.New("").ParseFiles("templates/app/contributors/feeds.gohtml", "templates/app/contributors/common/base_new2.html")
 
 	if err != nil {
 		fmt.Println(err.Error())

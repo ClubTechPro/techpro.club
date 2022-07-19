@@ -24,6 +24,7 @@
 {{range .Projects}}
 {{$User := index .Userdetails 0}}
 
+<div id="app" class="app app-with-two-sidebar app-sidebar-end-toggled">
 <div class="panel panel-inverse">
     <div class="panel-heading">
         <h4 class="panel-title">{{.ProjectName}}</h4>
@@ -45,6 +46,7 @@
             {{ end }}
         </div>
     </div>
+</div>
 </div>
 
 {{end}}
