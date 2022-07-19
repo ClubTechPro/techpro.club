@@ -1,81 +1,79 @@
 {{define "content"}}
-<h3 class="panel-heading">Project details <a href="/projects/edit?projectid={{.ProjectPreview.Id.Hex}}"><button class="btn btn-xs">Edit project</button></a></h3>
-<div class="panel panel-default">
+
+<!-- BEGIN page-header -->
+<div class="row">
+    <div class="col col-md-10">
+        <h1 class="page-header">Project details</h1>
+    </div>
+    <div class="col col-md-2">
+        <a href="/projects/edit?projectid={{.ProjectPreview.Id.Hex}}"><button class="btn btn-primary btn-sm"><i class="fa-regular fa-pen-to-square"></i></button></a>
+        <a href="/projects/delete?projectid={{.ProjectPreview.Id.Hex}}"><button class="btn btn-danger btn-sm"><i class="fa-regular fa-trash-can"></i></button></a>
+    </div>
+</div>
+
+<!-- END page-header -->
+
+<div class="panel shadow bg-body rounded">
+<div class="panel-body">
     <div class="row rowspacing">
-        <div class="col col-md-12 col-sm-6"><b>Name</b></div>
-        <div class="col col-md-12 col-sm-6">{{.ProjectPreview.ProjectName}}</div>
+        <div class="col col-md-6"><small>Name</small></div>
+        <div class="col col-md-12 col-sm-6">
+            <b>{{.ProjectPreview.ProjectName}}</b>
+            <small class="text-muted">( {{if .ProjectPreview.Public}}<i class="fa-solid fa-lock-open me-1"></i>Public{{else}}<i class="fa-solid fa-lock me-1"></i>Private{{end}} )</small>
+        </div>
     </div>
 
-    <div class="row rowspacing">
-        <div class="col col-md-12 col-sm-6"><b>Description</b></div>
+    <div class="row rowspacing mt-3">
+        <div class="col col-md-12 col-sm-6"><small>Description</small></div>
         <div class="col col-md-12 col-sm-6">{{.ProjectPreview.ProjectDescription}}</div>
     </div>
 
-    <div class="row rowspacing">
-        <div class="col col-md-12 col-sm-6"><b>Languages</b></div>
+    <div class="row rowspacing mt-2">
         <div class="col col-md-12 col-sm-6">
-            {{range .ProjectPreview.Languages}}<span>{{.}},</span>{{end}}
+            {{range .ProjectPreview.Languages}}<span class="badge bg-light text-primary me-1">{{.}}</span>{{end}}
+            {{range .ProjectPreview.OtherLanguages}}<span class="badge bg-light text-warning me-1">{{.}}</span>{{end}}
+            {{range .ProjectPreview.Allied}}<span class="badge bg-light text-dark me-1">{{.}}</span>{{end}}
         </div>
     </div>
 
-    <div class="row rowspacing">
-        <div class="col col-md-12 col-sm-6"><b>Other Languages</b></div>
-        <div class="col col-md-12 col-sm-6">
-            {{range .ProjectPreview.OtherLanguages}}<span>{{.}},</span>{{end}}
-        </div>
-    </div>
 
-    <div class="row rowspacing">
-        <div class="col col-md-12 col-sm-6"><b>Allied Services</b></div>
-        <div class="col col-md-12 col-sm-6">
-            {{range .ProjectPreview.Allied}}<span>{{.}},</span>{{end}}
-        </div>
-    </div>
-
-    <div class="row rowspacing">
-        <div class="col col-md-12 col-sm-6"><b>Project Type</b></div>
+    <div class="row rowspacing mt-3">
+        <div class="col col-md-12 col-sm-6"><small>Project Type</small></div>
         <div class="col col-md-12 col-sm-6">
             {{range .ProjectPreview.ProjectType}}<span>{{.}},</span>{{end}}
         </div>
     </div>
 
-    <div class="row rowspacing">
+    <div class="row rowspacing mt-3">
         <div class="col col-md-12 col-sm-6">
-            <b>Current Project Contributors</b>
+            <small>Current Project Contributors</small>
         </div>
         <div class="col col-md-12 col-sm-6">{{.ProjectPreview.ContributorCount}}</div>
     </div>
 
-    <div class="row rowspacing">
-        <div class="col col-md-12 col-sm-6">
-            <b>Documentation Link</b>
-        </div>
-        <div class="col col-md-12 col-sm-6">
-            <a href="{{.ProjectPreview.Documentation}}">{{.ProjectPreview.Documentation}}</a>
-        </div>
-    </div>
-
-    <div class="row rowspacing">
+    <div class="row rowspacing mt-3">
         <div class="col col-md-12 col-sm-6">
             <b>Other Details</b>
         </div>
     </div>
 
-    <div class="row rowspacing">
+    <div class="row rowspacing mt-3">
+
         <div class="col col-md-4 col-sm-6">
-            <h6>Repository type</h6>
-            {{if .ProjectPreview.Public}}Public Repository{{else}} Private Repository {{end}}
-        </div>
-        <div class="col col-md-4 col-sm-6">
-            <h6>Company</h6>
-            {{if .ProjectPreview.Company}}{{.ProjectPreview.CompanyName}}{{end}}
+            <div class="row"><small>Documentation</small></div>
+            <div class="row"><a href="{{.ProjectPreview.Documentation}}">{{.ProjectPreview.Documentation}}</a></div>
         </div>
 
         <div class="col col-md-4 col-sm-6">
-            <h6>Funded</h6>
-            {{if eq .ProjectPreview.Funded "true"}}Yes {{else}} No{{end}}
+            <div class="row"><small>Company</small></div>
+            <div class="row">{{if .ProjectPreview.Company}}{{.ProjectPreview.CompanyName}}{{end}}</div>
+        </div>
+
+        <div class="col col-md-4 col-sm-6">
+            <div class="row"><small>Funded</small></div>
+            <div class="row">{{if eq .ProjectPreview.Funded "true"}}Yes {{else}} No{{end}}</div>
         </div>
     </div>
+    </div>
 </div>
-<div class="before-footer-spacing"></div>
 {{end}}
