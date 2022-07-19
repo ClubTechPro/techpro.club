@@ -1,24 +1,42 @@
 {{define "content"}}
-<div class="panel-heading">
-    <a href="/projects/create"><button class="btn-success panel-heading-button">Create project</button></a>
+
+<!-- BEGIN page-header -->
+<div class="row">
+    <div class="col col-md-10">
+        <h1 class="page-header">My Projects</h1>
+    </div>
+    <div class="col col-md-2">
+        <a href="/projects/create"><button class="btn btn-primary">Create project</button></a>
+    </div>
+</div>
+
+<!-- END page-header -->
+
+{{if not .ProjectsList}}
+<div class="panel panel-default">
     
 </div>
 
-<br />
-{{if not .ProjectsList}}
-<div class="panel panel-default">
-    You don't have any projects listing yet. Create your free project listing <a href="/projects/create">here</a>.
+<div class="panel shadow bg-body rounded">
+    <div class="panel-body">
+        <h6 class="card-subtitle mb-2">Project list empty</h6>
+        <small>By Techpro.Club</small>
+        
+        <p class="card-text">
+            You don't have any projects listing yet. Create your free project listing <a href="/projects/create">here</a>.
+        </p>
+
+        <span class="badge bg-light text-primary">Info</span>
+    </div>
 </div>
 {{else}}{{range .ProjectsList}}
-<div class="panel panel-default">
+<div class="panel shadow bg-body rounded">
+    <div class="panel-body">
+
+    <h6 class="card-subtitle mb-2 mt-2"><a href="/projects/view?projectid={{.Id.Hex}}">{{.ProjectName}}</a></h6>
+
     <div class="row">
         <div class="col col-md-12 col-sm-6">
-            <h4>
-                {{.ProjectName}}
-                <small>
-                    <a href="/projects/view?projectid={{.Id.Hex}}"><button class="btn btn-xs">View</button></a>
-                </small>
-            </h4>
             <small class="text-muted">
                 {{if eq .IsActive 1}}
                 Active
@@ -34,20 +52,28 @@
                 ></small
             >
             <p>{{.ProjectDescription}}</p>
-            <p>
-                {{ range.Languages }}
-                <span class="label label-pill label-success">{{.}}</span>
-                {{ end }}
-                {{ range.OtherLanguages }}
-                <span class="label label-pill label-success">{{.}}</span>
-                {{ end }}
-                {{ range.Allied }}
-                <span class="label label-pill label-default">{{.}}</span>
-                {{ end }}
-                
-            </p>
+
+
+            <div class="row">
+                <div class="col-md-1">
+                    <i class="fa-solid fa-heart me-2 text-danger"></i><small>201</small>
+                </div>
+                <div class="col-md-11">
+                    <div class="social-buttons">
+                        {{ range .Languages }}
+                        <span class="badge bg-light text-primary">{{.}}</span>
+                        {{ end }}
+                        {{ range .OtherLanguages }}
+                        <span class="badge bg-light text-warning">{{.}}</span>
+                        {{ end }}
+                        {{ range .Allied }}
+                        <span class="badge bg-light text-dark">{{.}}</span>
+                        {{ end }}
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
-<div class="before-footer-spacing"></div>
+</div>
 {{ end }}{{ end }} {{ end }}
