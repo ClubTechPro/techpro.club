@@ -126,7 +126,14 @@ func Videos(w http.ResponseWriter, r *http.Request) {
 func ErrorHandler(w http.ResponseWriter, r *http.Request, status int) {
 	w.WriteHeader(status)
 	if status == http.StatusNotFound {
-		fmt.Fprint(w, "404. Page not found")
+		pageTitle := common.PageTitle{Title : "Page not found"}
+
+		tmpl, err := template.New("").ParseFiles("templates/home/404.gohtml", "templates/home/base.gohtml")
+		if err != nil {
+			fmt.Println(err.Error())
+		}else {
+			tmpl.ExecuteTemplate(w, "basehome", pageTitle) 
+		}
 	}
 }
 
