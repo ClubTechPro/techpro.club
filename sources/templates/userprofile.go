@@ -14,14 +14,14 @@ import (
 	"techpro.club/sources/users"
 )
 
-type SettingsStruct struct{
+type ProfileStruct struct{
 	UserProfile common.FetchUserStruct `json:"userprofile"`
 	UserSocials common.FetchSocialStruct `json:"socials"`
 	UserNameImage common.UsernameImageStruct `json:"usernameImage"`
 }
 
-// Display and edit user profile
-func UserSettings(w http.ResponseWriter, r *http.Request) {
+// Display user profile
+func Profile(w http.ResponseWriter, r *http.Request) {
 
 	// Check if the path is ok
 	// Check if the session is ok
@@ -33,7 +33,58 @@ func UserSettings(w http.ResponseWriter, r *http.Request) {
 
 	
 	
-	if r.URL.Path != "/users/settings" {
+	if r.URL.Path != "/users/profile" {
+        ErrorHandler(w, r, http.StatusNotFound)
+        return
+    }
+	
+	// Session check
+	sessionOk, _ := users.ValidateDbSession(w, r)
+	if(!sessionOk){
+		
+		// Delete cookies
+		users.DeleteSessionCookie(w, r)
+		users.DeleteUserCookie(w, r)
+
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+	} 
+
+	// var userNameImage common.UsernameImageStruct
+
+	// // Fetch user name and image from saved browser cookies
+	// status, msg, userName, image := FetchUsernameImage(w, r)
+
+	// if(!status){
+	// 	log.Println(msg)
+	// } else {
+	// 	userNameImage  = common.UsernameImageStruct{userName,image}
+	// }
+
+
+	
+	tmpl, err := template.New("").ParseFiles("templates/app/profile.gohtml", "templates/app/contributors/common/base_new.gohtml")
+	if err != nil {
+		fmt.Println(err.Error())
+	}else {
+		tmpl.ExecuteTemplate(w, "contributorbase", nil) 
+	}
+}
+
+
+// Display and edit user profile
+func UserEdit(w http.ResponseWriter, r *http.Request) {
+
+	// Check if the path is ok
+	// Check if the session is ok
+
+	// Fetch name and image from cookies
+	// Fetch email, _id, location,repourl from database
+	// Display the user's profile
+	// Display the user's settings
+
+	
+	
+	if r.URL.Path != "/users/editprofile" {
         ErrorHandler(w, r, http.StatusNotFound)
         return
     }
@@ -89,9 +140,9 @@ func UserSettings(w http.ResponseWriter, r *http.Request) {
 	_, _, userprofile := fetchUserProfile(userID)
 	_, _, socials := fetchSocials(userID)
 
-	userSettingsStruct := SettingsStruct{userprofile, socials, userNameImage}
+	userSettingsStruct := ProfileStruct{userprofile, socials, userNameImage}
 
-	tmpl, err := template.New("").ParseFiles("templates/app/settings.gohtml", "templates/app/contributors/common/base_new.gohtml")
+	tmpl, err := template.New("").ParseFiles("templates/app/profileedit.gohtml", "templates/app/contributors/common/base_new.gohtml")
 	if err != nil {
 		fmt.Println(err.Error())
 	}else {
