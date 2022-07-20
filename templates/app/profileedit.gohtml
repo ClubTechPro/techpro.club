@@ -10,11 +10,16 @@
 <div class="panel shadow bg-body rounded">
     <div class="panel-body">
         <form method="post" content-type="x-www-form-urlencoded">
-            <img
-                src="{{.UserProfile.ImageLink}}"
-                height="100"
-                alt="profile image"
-            />
+            <div class="row">
+                <div class="col col-md-10">
+                    <img
+                        src="{{.UserProfile.ImageLink}}"
+                        height="100"
+                        alt="profile image"
+                    />
+                </div>
+                <div class="col col-md-2 text-end"><a href="/users/profile" role="button" class="btn btn-default btn-sm"><i class="fa-regular fa-eye me-1"></i>Preview</a></div>
+            </div>
 
             <div class="col-md-6 mt-3">
                 <label class="mb-2">Name</label>

@@ -37,7 +37,8 @@ func main() {
 	http.HandleFunc("/videos", templates.Videos)
 
 	// Users
-	http.HandleFunc("/users/settings", templates.UserSettings)
+	http.HandleFunc("/users/editprofile", templates.UserEdit)
+	http.HandleFunc("/users/profile", templates.Profile)
 	http.HandleFunc("/users/notifications", notifications.Fetch)
 
 	// Templates/Contributors
