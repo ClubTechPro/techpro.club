@@ -105,11 +105,35 @@ func Brand(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// Handles Videos page
+func Videos(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path != "/videos" {
+        ErrorHandler(w, r, http.StatusNotFound)
+        return
+    }	
+		
+	pageTitle := common.PageTitle{Title : "Training Videos"}
+
+	tmpl, err := template.New("").ParseFiles("templates/home/videos.gohtml", "templates/home/base.gohtml")
+	if err != nil {
+		fmt.Println(err.Error())
+	}else {
+		tmpl.ExecuteTemplate(w, "basehome", pageTitle) 
+	}
+}
+
 // Page not found. 404 handler
 func ErrorHandler(w http.ResponseWriter, r *http.Request, status int) {
 	w.WriteHeader(status)
 	if status == http.StatusNotFound {
-		fmt.Fprint(w, "404. Page not found")
+		pageTitle := common.PageTitle{Title : "Page not found"}
+
+		tmpl, err := template.New("").ParseFiles("templates/home/404.gohtml", "templates/home/base.gohtml")
+		if err != nil {
+			fmt.Println(err.Error())
+		}else {
+			tmpl.ExecuteTemplate(w, "basehome", pageTitle) 
+		}
 	}
 }
 
