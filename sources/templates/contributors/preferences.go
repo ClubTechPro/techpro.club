@@ -172,14 +172,25 @@ func fetchPreferences(userID primitive.ObjectID) (status bool, msg string, prefe
 
 	dbName := common.GetMoDb()
 	fetchPreferences := client.Database(dbName).Collection(common.CONST_MO_CONTRIBUTOR_PREFERENCES)
-	err := fetchPreferences.FindOne(context.TODO(),  bson.M{"userid": userID}, options.FindOne().SetProjection(bson.M{"_id": 0})).Decode(&preferences)
+	results, err := fetchPreferences.Find(context.TODO(),  bson.M{"userid": userID}, options.Find().SetProjection(bson.M{"_id": 0}))
 
 	if err != nil {
 		msg = err.Error()
 		status = false
 	} else {
-		msg= "Success"
-		status = true
+	
+		for results.Next(context.TODO()) {
+
+			errDecode := results.Decode(&preferences)
+
+			if errDecode != nil {
+				msg = errDecode.Error()
+				status = false
+			} else {
+				msg= "Success"
+				status = true
+			}
+		}
 	}
 
 	return status, msg, preferences
@@ -189,6 +200,7 @@ func fetchPreferences(userID primitive.ObjectID) (status bool, msg string, prefe
 func savePreferences(w http.ResponseWriter, r *http.Request, userID primitive.ObjectID) (status bool, msg string){
 	status = false
 	msg = ""
+
 
 	errParse := r.ParseForm()
 	if errParse != nil {
@@ -203,6 +215,7 @@ func savePreferences(w http.ResponseWriter, r *http.Request, userID primitive.Ob
 		paidJob :=  r.Form.Get("paidJob")
 		relocation := r.Form.Get("relocation")
 		qualification := r.Form.Get("qualification")
+
 
 		otherLanguagesSplit := strings.Split(otherLanguages, ",")
 
