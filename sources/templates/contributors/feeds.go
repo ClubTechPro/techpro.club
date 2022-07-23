@@ -53,8 +53,8 @@ func Feeds(w http.ResponseWriter, r *http.Request){
 	// TEST CONDITIONS
 	// This has to come from the actual frontend
 	pageid := int64(0)
-	tags := []string{"cpp"}
-	keyword := "Go"
+	tags := []string{}
+	keyword := ""
 
 	_, _, results := filterActiveProjects(pageid, tags, keyword)
 
@@ -74,6 +74,7 @@ func Feeds(w http.ResponseWriter, r *http.Request){
 // Filter all active projects from the database according to filters
 func filterActiveProjects(pageid int64, tags []string, keyword string)(status bool, msg string, results []common.FeedStruct){
 
+
 	status = false
 	msg = ""
 
@@ -87,16 +88,24 @@ func filterActiveProjects(pageid int64, tags []string, keyword string)(status bo
 	dbName := common.GetMoDb()
 	fetchProjects := client.Database(dbName).Collection(common.CONST_MO_PROJECTS)
 
-	// Filter where conditions
-	orConditions = append(orConditions, bson.M{"languages": bson.M{"$in": tags}})
-	orConditions = append(orConditions, bson.M{"otherlanguages": bson.M{"$in": tags}})
-	orConditions = append(orConditions, bson.M{"allied": bson.M{"$in": tags}})
-	
 	finalConditions = append(finalConditions, bson.M{"isactive": bson.M{"$eq": common.CONST_ACTIVE}})
-	finalConditions = append(finalConditions, bson.M{"projectname" : bson.M{"$regex": keyword}})
-	finalConditions = append(finalConditions, bson.M{"$or" : orConditions})
+
+	if len(keyword) > 0 {
+		finalConditions = append(finalConditions, bson.M{"projectname" : bson.M{"$regex": keyword}})
+	}
+
+	// Filter where conditions
+	if len(tags) > 0 {
+		orConditions = append(orConditions, bson.M{"languages": bson.M{"$in": tags}})
+		orConditions = append(orConditions, bson.M{"otherlanguages": bson.M{"$in": tags}})
+		orConditions = append(orConditions, bson.M{"allied": bson.M{"$in": tags}})
+
+		finalConditions = append(finalConditions, bson.M{"$or" : orConditions})
+	}
+	
 
 	aggCondition := bson.M{"$match": bson.M{"$and" : finalConditions}}
+
 
 	// Filter joins
 	aggLookup := bson.M{"$lookup": bson.M{
