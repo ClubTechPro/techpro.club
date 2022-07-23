@@ -45,6 +45,10 @@ func Feeds(w http.ResponseWriter, r *http.Request){
 	} else {
 		userNameImage  = common.UsernameImageStruct{userName,image}
 	}
+
+	var functions = template.FuncMap{
+		"objectIdToString" : templates.ObjectIDToString,
+	}
 	
 	// TEST CONDITIONS
 	// This has to come from the actual frontend
@@ -56,7 +60,7 @@ func Feeds(w http.ResponseWriter, r *http.Request){
 
 	output := FinalFeedsOutputStruct{results, userNameImage}
 
-	tmpl, err := template.New("").ParseFiles("templates/app/contributors/feeds.gohtml", "templates/app/contributors/common/base_new.gohtml")
+	tmpl, err := template.New("").Funcs(functions).ParseFiles("templates/app/contributors/feeds.gohtml", "templates/app/contributors/common/base_new.gohtml")
 
 	if err != nil {
 		fmt.Println(err.Error())
