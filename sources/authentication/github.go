@@ -39,6 +39,7 @@ func GithubLoggedinHandler(w http.ResponseWriter, r *http.Request, githubData, a
 	var jsonMap map[string]interface{}
 	json.Unmarshal([]byte(githubData), &jsonMap)
 
+	login := fmt.Sprintf("%s", jsonMap["login"])
 	email := fmt.Sprintf("%s", jsonMap["email"])
 	name := fmt.Sprintf("%s", jsonMap["name"])
 	location := fmt.Sprintf("%s", jsonMap["location"])
@@ -46,7 +47,9 @@ func GithubLoggedinHandler(w http.ResponseWriter, r *http.Request, githubData, a
 	repoUrl := fmt.Sprintf("%s", jsonMap["html_url"])
 
 	// Github sends "%!s(<nil>)", if nil found
+	fmt.Println("ACCESS", accessToken)
 	if email == "%!s(<nil>)"{
+		
 		email = GetUserEmail(accessToken)
 	} 
 
@@ -54,10 +57,10 @@ func GithubLoggedinHandler(w http.ResponseWriter, r *http.Request, githubData, a
 
 	if (ok && userType == common.CONST_USER_CONTRIBUTOR) {
 		// Save user session and redirect to feeds page
-		users.SaveUser(w, r, email, name, location, imageLink, repoUrl, common.CONST_GITHUB, userType)
+		users.SaveUser(w, r, login,email, name, location, imageLink, repoUrl, common.CONST_GITHUB, userType)
 	} else if (ok && userType == common.CONST_USER_PROJECT) {
 		// Save user session and redirect to projects list page
-		users.SaveUser(w, r, email, name, location, imageLink, repoUrl, common.CONST_GITHUB, userType)
+		users.SaveUser(w, r, login, email, name, location, imageLink, repoUrl, common.CONST_GITHUB, userType)
 	} else {
 
 		// Callback pages for contributors and projects
@@ -68,7 +71,7 @@ func GithubLoggedinHandler(w http.ResponseWriter, r *http.Request, githubData, a
 			projects.CallBack(w,r)
 		}
 		
-		status, msg, _ := users.SaveUser(w, r, email, name, location, imageLink, repoUrl, common.CONST_GITHUB, userType)
+		status, msg, _ := users.SaveUser(w, r, login, email, name, location, imageLink, repoUrl, common.CONST_GITHUB, userType)
 		if(!status){
 			fmt.Println(msg)
 		} 
@@ -151,6 +154,7 @@ func GetUserEmail(accessToken string)(primaryEmail string){
 		fmt.Println("API Request creation failed")
 	}
 
+	fmt.Println("accessToken", accessToken)
 	authorizationHeaderValue := fmt.Sprintf("token %s", accessToken)
 	req.Header.Set("Authorization", authorizationHeaderValue)
 
