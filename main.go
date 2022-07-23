@@ -28,6 +28,7 @@ func main() {
 
 	// APIs
 	http.HandleFunc("/api/managereaction", templates.ManageReactions)
+	http.HandleFunc("/api/deleteuser", templates.DeleteUser)
 
 	// Templates
 	http.HandleFunc("/", templates.IndexHandler)
@@ -43,6 +44,7 @@ func main() {
 	http.HandleFunc("/users/editprofile", templates.UserEdit)
 	http.HandleFunc("/users/profile", templates.Profile)
 	http.HandleFunc("/users/notifications", notifications.Fetch)
+	http.HandleFunc("/users/settings", templates.UserSettings)
 
 	// Templates/Contributors
 	http.HandleFunc("/contributors/feeds", contributors.Feeds)
