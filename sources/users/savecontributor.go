@@ -15,6 +15,7 @@ import (
 )
 
 type UserStruct struct {
+	Login 		string `json:"login"`
 	Email 		string `json:"email"`
 	Name 		string `json:"name"`
 	Location 	string `json:"location"`
@@ -25,7 +26,7 @@ type UserStruct struct {
 }
 
 // Save a user to database and send a welcome email for first time users
-func SaveUser(w http.ResponseWriter, r *http.Request, email, name, location, imageLink, repoUrl, source, userType string )(status bool, msg string, userIdObject interface{}){
+func SaveUser(w http.ResponseWriter, r *http.Request, login, email, name, location, imageLink, repoUrl, source, userType string )(status bool, msg string, userIdObject interface{}){
 	
 	_, _, client := common.Mongoconnect()
 	defer client.Disconnect(context.TODO())
@@ -43,7 +44,7 @@ func SaveUser(w http.ResponseWriter, r *http.Request, email, name, location, ima
 		if (countUsers == 0){
 			
 			timestamp := time.Now()
-			user := UserStruct{email, name, location, imageLink, repoUrl, source, timestamp.Format("2006-01-02 15:04:05")}
+			user := UserStruct{login, email, name, location, imageLink, repoUrl, source, timestamp.Format("2006-01-02 15:04:05")}
 			insert, err := userCollection.InsertOne(context.TODO(), user)
 			if err != nil{
 				status = false
