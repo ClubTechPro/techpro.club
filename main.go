@@ -26,6 +26,9 @@ func main() {
     fs := http.FileServer(http.Dir("assets"))
 	http.Handle("/assets/", http.StripPrefix("/assets", fs))
 
+	// APIs
+	http.HandleFunc("/api/managereaction", templates.ManageReactions)
+
 	// Templates
 	http.HandleFunc("/", templates.IndexHandler)
 	http.HandleFunc("/contactus", templates.ContactUs)

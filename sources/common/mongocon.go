@@ -2,6 +2,8 @@ package common
 
 import (
 	"context"
+	"log"
+	"time"
 
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -13,26 +15,25 @@ func Mongoconnect() (status bool, msg string, client *mongo.Client) {
 	msg = ""
 
 	Mohost := GetMoHost()
-	Moport := GetMoPort()
 	Mouser := GetMoUser()
 	Mopass := GetMoPass()
-	MoAuthMethod := GetMoAuthMethod()
-	MoAuthDb := GetMoAuthDb()
 
-	credentials := options.Credential{
-		Username: Mouser,
-		Password: Mopass,
-		AuthMechanism:MoAuthMethod,
-		AuthSource: MoAuthDb,
+
+	serverAPIOptions := options.ServerAPI(options.ServerAPIVersion1)
+
+	// Set client options
+	clientOptions := options.Client().
+		ApplyURI("mongodb+srv://" + Mouser + ":" + Mopass + "@" + Mohost + "?retryWrites=true&w=majority").
+		SetServerAPIOptions(serverAPIOptions)
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	// Connect to MongoDB
+	client, err := mongo.Connect(ctx, clientOptions)
+	if err != nil {
+		log.Fatal(err)
 	}
 	
-	// Set client options
-	clientOptions := options.Client().ApplyURI(Mohost + Moport).SetAuth(credentials)
-
-	
-	// Connect to MongoDB
-	client, err := mongo.Connect(context.TODO(), clientOptions)
-
 	if err != nil {
 		msg = err.Error()
 	} else {
