@@ -1,0 +1,71 @@
+{{define "content"}}
+
+<tr>
+  <td>
+    <a
+      href="#modal-message"
+      class="btn btn-sm btn-default w-100px"
+      data-bs-toggle="modal"
+      >Delete profile</a
+    >
+  </td>
+</tr>
+
+<div class="modal modal-message fade" id="modal-message">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Do you want to delete your account.</h4>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-hidden="true"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <p>This will delete all your information on this website.</p>
+        <p>
+          Enter your email
+          <span style="font-weight: 500">{{.UserProfile.Email}}</span> to
+          continue.
+        </p>
+        <input id="useremail" type="email" />
+      </div>
+      <div class="modal-footer">
+        <a href="javascript:;" class="btn btn-white" data-bs-dismiss="modal"
+          >Cancel</a
+        >
+        <a onclick="checkEmailBeforeDelete()" class="btn btn-danger">Delete</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function checkEmailBeforeDelete() {
+    const email = document.getElementById("useremail").value;
+    console.log(email);
+    if (email == "{{.UserProfile.Email}}") {
+      console.log("deleted");
+
+      const request = new Request("/api/deleteuser", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json;charset=utf-8",
+        },
+        body: JSON.stringify({ useremail: email }),
+      });
+
+      fetch(request).then(
+        (data) => {
+          window.location.href = "/";
+        },
+        (err) => {
+          console.warn("Unable to delete user.");
+        }
+      );
+    }
+  }
+</script>
+{{ end }}
