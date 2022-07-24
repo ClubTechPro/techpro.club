@@ -39,7 +39,7 @@ func Profile(w http.ResponseWriter, r *http.Request) {
     }
 	
 	// Session check
-	sessionOk, _ := users.ValidateDbSession(w, r)
+	sessionOk, userID := users.ValidateDbSession(w, r)
 	if(!sessionOk){
 		
 		// Delete cookies
@@ -48,25 +48,29 @@ func Profile(w http.ResponseWriter, r *http.Request) {
 
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 	} 
+	
 
-	// var userNameImage common.UsernameImageStruct
+	var userNameImage common.UsernameImageStruct
 
-	// // Fetch user name and image from saved browser cookies
-	// status, msg, userName, image := FetchUsernameImage(w, r)
+	// Fetch user name and image from saved browser cookies
+	status, msg, userName, image := FetchUsernameImage(w, r)
 
-	// if(!status){
-	// 	log.Println(msg)
-	// } else {
-	// 	userNameImage  = common.UsernameImageStruct{userName,image}
-	// }
+	if(!status){
+		log.Println(msg)
+	} else {
+		userNameImage  = common.UsernameImageStruct{userName,image}
+	}
 
+	_, _, userprofile := fetchUserProfile(userID)
+	_, _, socials := fetchSocials(userID)
 
+	userSettingsStruct := ProfileStruct{userprofile, socials, userNameImage}
 	
 	tmpl, err := template.New("").ParseFiles("templates/app/profile.gohtml", "templates/app/contributors/common/base_new.gohtml")
 	if err != nil {
 		fmt.Println(err.Error())
 	}else {
-		tmpl.ExecuteTemplate(w, "contributorbase", nil) 
+		tmpl.ExecuteTemplate(w, "contributorbase", userSettingsStruct) 
 	}
 }
 

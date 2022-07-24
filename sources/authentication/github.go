@@ -47,7 +47,6 @@ func GithubLoggedinHandler(w http.ResponseWriter, r *http.Request, githubData, a
 	repoUrl := fmt.Sprintf("%s", jsonMap["html_url"])
 
 	// Github sends "%!s(<nil>)", if nil found
-	fmt.Println("ACCESS", accessToken)
 	if email == "%!s(<nil>)"{
 		
 		email = GetUserEmail(accessToken)
@@ -154,7 +153,6 @@ func GetUserEmail(accessToken string)(primaryEmail string){
 		fmt.Println("API Request creation failed")
 	}
 
-	fmt.Println("accessToken", accessToken)
 	authorizationHeaderValue := fmt.Sprintf("token %s", accessToken)
 	req.Header.Set("Authorization", authorizationHeaderValue)
 
