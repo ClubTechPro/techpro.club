@@ -12,6 +12,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"techpro.club/sources/common"
+	"techpro.club/sources/users"
 )
 
 // Fetch user name and image from saved browser cookies
@@ -128,11 +129,13 @@ func ManageReactions(w http.ResponseWriter, r *http.Request){
 	status := false
 	msg := ""
 
-	type Test struct{
+	type InputStruct struct{
 		ProjectId primitive.ObjectID `json:"projectid"`
 	}
 
-	var inputJSON Test
+	var inputJSON InputStruct
+
+	_, userID := users.ValidateDbSession(w, r)
 
 	readData, errRead := ioutil.ReadAll(r.Body)
 	if errRead != nil {
@@ -151,17 +154,45 @@ func ManageReactions(w http.ResponseWriter, r *http.Request){
 		defer client.Disconnect(context.TODO())
 
 		dbName := common.GetMoDb()
-		fetchProject := client.Database(dbName).Collection(common.CONST_MO_REACTIONS)
-		_, err := fetchProject.UpdateOne(context.TODO(), bson.M{"_id": inputJSON.ProjectId}, bson.M{"$addToSet": bson.M{"reactions": 1}})
+
+		var projectIdList []primitive.ObjectID
+		projectIdList = append(projectIdList, inputJSON.ProjectId)
+
+		fetchUserProjectReactions := client.Database(dbName).Collection(common.CONST_MO_USER_PROJECT_REACTIONS)
+		result, err := fetchUserProjectReactions.CountDocuments(context.TODO(), bson.M{"userid" : userID, "projectids" : bson.M{"$in" : projectIdList}})
 
 		if err != nil {
 			msg = err.Error()
 		}  else {
-			status = true
-			msg = "Success"
+
+			// If it contains the project, then delete it
+			// Else insert it
+			if(result > 0){
+				_, err := fetchUserProjectReactions.DeleteMany(context.TODO(), bson.M{"userid" : userID, "projectids" : bson.M{"$in" : projectIdList}})
+				if err != nil {
+					msg = err.Error()
+				}  else {
+					status = true
+					msg = "Success"
+				}
+			} else {
+				var userProjectReactions common.SaveUserProjectReactionStruct
+				userProjectReactions.UserId = userID
+				userProjectReactions.ProjectIds = projectIdList
+
+				_, err := fetchUserProjectReactions.InsertOne(context.TODO(), userProjectReactions)
+				if err != nil {
+					msg = err.Error()
+				}  else {
+					status = true
+					msg = "Success"
+				}
+			}
+
+			
 		}
 		
-		fmt.Println(status, msg)
+		fmt.Println(status, msg, "MSG")
 		
 	}
 	w.Write(nil)
