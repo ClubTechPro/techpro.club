@@ -7,6 +7,45 @@ type PageTitle struct {
 	Title string `json:"title"`
 }
 
+// FetchUserProjectBookmarkStruct struct
+type FetchUserProjectBookmarkStruct struct {
+	Id primitive.ObjectID `json:"id" bson:"_id,omitempty"`
+	UserId primitive.ObjectID `json:"userId"`
+	ProjectIds []primitive.ObjectID `json:"projectIds"`
+}
+
+// SaveUserProjectBookmarkStruct struct
+type SaveUserProjectBookmarkStruct struct {
+	UserId primitive.ObjectID `json:"userId" bson:"_id,omitempty"`
+	ProjectIds []primitive.ObjectID `json:"projectIds"`
+}
+
+// FetchUserProjectReactionStruct struct
+type FetchUserProjectReactionStruct struct {
+	Id primitive.ObjectID `json:"id" bson:"_id,omitempty"`
+	UserId primitive.ObjectID `json:"userId"`
+	ProjectIds []primitive.ObjectID `json:"projectIds"`
+}
+
+// SaveUserProjectReactionStruct struct
+type SaveUserProjectReactionStruct struct {
+	UserId primitive.ObjectID `json:"userId"`
+	ProjectIds []primitive.ObjectID `json:"projectIds"`
+}
+
+// FetchProjectReactionStruct struct
+type FetchProjectStarStruct struct {
+	Id primitive.ObjectID `json:"id" bson:"_id,omitempty"`
+	ProjectId primitive.ObjectID `json:"projectId"`
+	ReactionsCount int `json:"reactionsCount"`
+}
+
+// SaveProjectReactionStruct struct
+type SaveProjectReactionStruct struct {
+	ProjectId primitive.ObjectID `json:"projectId"`
+	ReactionsCount int `json:"reactionsCount"`
+}
+
 // Feeds struct
 type FeedStruct struct {
 	Id primitive.ObjectID `json:"id" bson:"_id,omitempty"`

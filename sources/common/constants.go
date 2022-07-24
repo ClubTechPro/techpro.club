@@ -29,5 +29,6 @@ const(
 	CONST_MO_CONTRIBUTOR_NOTIFICATIONS = "contributor_notifications"
 	CONST_MO_PROJECT_NOTIFICATIONS = "project_notifications"
 	CONST_MO_BOOKMARKS = "bookmarks"
-	CONST_MO_REACTIONS = "reactions"
+	CONST_MO_USER_PROJECT_REACTIONS = "user_project_reactions"
+	CONST_MO_PROJECT_REACTIONS = "project_reactions"
 )
