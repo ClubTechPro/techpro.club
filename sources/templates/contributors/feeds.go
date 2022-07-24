@@ -110,9 +110,9 @@ func filterActiveProjects(pageid int64, tags []string, keyword string)(status bo
 	// Filter joins
 	aggLookup := bson.M{"$lookup": bson.M{
 		"from":         common.CONST_MO_USERS,    // the collection name
-		"localField":   "projects.userid", 	      // the field on the child struct
-		"foreignField": "users._id",       		  // the field on the parent struct
-		"as":           "userdetails",    			  // the field to populate into
+		"localField":   "userid", 	      		  // the field on the child struct
+		"foreignField": "_id",       		  	  // the field on the parent struct
+		"as":           "userdetails",    		  // the field to populate into
 	}}
 
 	// Set projections
