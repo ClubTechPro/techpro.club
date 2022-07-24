@@ -62,8 +62,7 @@ Our core services to the open source projects will be free forever. Feel free to
 -   [Golang](https://go.dev/)
 -   [Mongodb](https://www.mongodb.com/)
 -   [Bootstrap](https://getbootstrap.com)
--   [JQuery](https://jquery.com)
-<!-- -   [AWS SES](https://aws.amazon.com/ses/) -->
+-   [AWS SES](https://aws.amazon.com/ses/)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -133,22 +132,21 @@ The above steps are before you unlock the sending limits in SES. Read https://do
     -   [ ] Profile management - avatar, delete account, etc.
     -   [ ] Project feeds
     -   [ ] Feed filters
--   [ ] **v 0.3**
     -   [ ] Notification for contributors
     -   [ ] Notification for projects
--   [ ] **v 0.4**
+-   [ ] **v 0.3**
     -   [ ] Project invite members
     -   [ ] Project manage members
     -   [ ] Share on social media
--   [ ] **v 0.5**
+-   [ ] **v 0.4**
     -   [ ] Project analytics
--   [ ] **v 0.6**
+-   [ ] **v 0.5**
     -   [ ] Badges
--   [ ] **v 0.7**
+-   [ ] **v 0.6**
     -   [ ] Integration with Gitlab
--   [ ] **v 0.8**
+-   [ ] **v 0.7**
     -   [ ] Integration with Bitbucket
--   [ ] **v 0.9**
+-   [ ] **v 0.8**
     -   [ ] Integration with Azure
 
 More to follow. Perhaps, once these are done, we will move it to some other section for better tracking.
@@ -202,8 +200,6 @@ Links -
 
 -   [Best Readme Template](https://github.com/othneildrew/Best-README-Template)
 -   [Meetup website template](https://onepagelove.com/meetup)
--   [Build with Linode Hackathon — June 2022](https://www.linode.com/?utm_source=hashnode&utm_medium=article&utm_campaign=hackathon_announcement)
--   [Hashnode](https://hashnode.com/)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
