@@ -42,7 +42,7 @@ func PreferencesSaved(w http.ResponseWriter, r *http.Request){
 	}
 
 
-	tmpl, err := template.New("").ParseFiles("templates/app/contributors/preferencessaved.gohtml", "templates/app/contributors/common/base_new.gohtml")
+	tmpl, err := template.New("").ParseFiles("templates/app/contributors/preferencessaved.gohtml", "templates/app/contributors/common/base.gohtml")
 	if err != nil {
 		fmt.Println(err.Error())
 	}else {

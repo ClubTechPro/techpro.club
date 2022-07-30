@@ -145,7 +145,7 @@ func Preferences(w http.ResponseWriter, r *http.Request){
 			userNameImage,
 		}
 
-		tmpl, err := template.New("").Funcs(functions).ParseFiles("templates/app/contributors/preferences.gohtml", "templates/app/contributors/common/base_new.gohtml")
+		tmpl, err := template.New("").Funcs(functions).ParseFiles("templates/app/contributors/preferences.gohtml", "templates/app/contributors/common/base.gohtml")
 		if err != nil {
 			fmt.Println(err.Error())
 		}else {
