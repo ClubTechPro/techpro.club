@@ -28,6 +28,7 @@ func main() {
 
 	// APIs
 	http.HandleFunc("/api/managereaction", pages.ManageReactions)
+	http.HandleFunc("/api/managebookmark", pages.ManageBookmarks)
 	http.HandleFunc("/api/deleteuser", pages.DeleteUser)
 
 	// Templates
@@ -51,6 +52,7 @@ func main() {
 	http.HandleFunc("/contributors/preferences", contributors.Preferences)
 	http.HandleFunc("/contributors/thankyou", contributors.PreferencesSaved)
 	http.HandleFunc("/contributors/reactions", contributors.FetchReactions)
+	http.HandleFunc("/contributors/bookmarks", contributors.FetchBookmarks)
 	
 
 	// Templates/Contributors
