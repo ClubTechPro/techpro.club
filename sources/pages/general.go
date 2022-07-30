@@ -126,8 +126,9 @@ func NotificationsCount(userID primitive.ObjectID)(status bool, msg string, coun
 
 // Manage reaction to a project
 func ManageReactions(w http.ResponseWriter, r *http.Request){
-	status := false
+
 	msg := ""
+	status := false
 
 	type InputStruct struct{
 		ProjectId primitive.ObjectID `json:"projectid"`
@@ -207,13 +208,18 @@ func ManageReactions(w http.ResponseWriter, r *http.Request){
 					status = true
 					msg = "Success"
 				}
-			}
-
-			
+			}	
 		}
 				
 	}
-	w.Write(nil)
+
+	output := common.JsonOutput{
+		Status: status,
+		Msg: msg,
+	}
+
+	out, _ := json.Marshal(output)
+	w.Write(out)
 }
 
 // Convert primitive.ObjectID to string
