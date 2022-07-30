@@ -157,7 +157,7 @@ func Preferences(w http.ResponseWriter, r *http.Request){
 		if !status{
 			fmt.Println(msg)
 		} else {
-			http.Redirect(w, r, "/contributors/thankyou", http.StatusSeeOther)
+			http.Redirect(w, r, "/contributors/thankyou", http.StatusOK)
 		}
 	}
 }
