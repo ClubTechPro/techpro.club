@@ -57,7 +57,7 @@ func FetchReactions(w http.ResponseWriter, r *http.Request) {
 
 	// Fetch all reacted projects
 	// Also fetch project details where the user reacted
-	status, msg, results := fetchReactedProjectsList(int64(pageid), userID)
+	_, _, results := fetchReactedProjectsList(int64(pageid), userID)
 
 	output := FinalFeedsOutputStruct{results, userNameImage}
 

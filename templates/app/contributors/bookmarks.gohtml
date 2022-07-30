@@ -1,0 +1,105 @@
+{{define "content"}}
+<!-- BEGIN page-header -->
+<h1 class="page-header">My Bookmarks</h1>
+<!-- END page-header -->
+
+<!-- BEGIN Search feeds -->
+
+
+{{if not .Projects}}
+<div class="panel shadow bg-body rounded">
+    <div class="panel-body">
+        <h6 class="card-subtitle mb-2">No bookmarked projects</h6>
+        
+        <p class="card-text">
+            You have not bookmarked any projects yet. You can bookmark a project to work on it later.
+        </p>
+
+    </div>
+</div>
+{{else}}
+{{range .Projects}}
+{{$User := index .Userdetails 0}}
+
+
+<div class="panel shadow bg-body rounded">
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-10">
+                <img src="{{$User.ImageLink}}" height="30" alt="User avatar" class="me-1"/> 
+                {{$User.Name}} 
+                <small class="text-muted me-2">- 4h</small>
+                
+            </div>
+            <div class="col-md-2">
+                <div class="text-end">
+                    <button class="btn btn-default btn-xs" id="heart-btn" onClick=react()><i class="fa-regular fa-heart"></i></button>
+                    <button class="btn btn-default btn-xs" id="bookmark-btn" onClick=bookmark()><i class="fa-regular fa-bookmark"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <h6 class="card-subtitle mb-2 mt-2">{{.ProjectName}}</h6>
+        <div id="projectId" class="d-none">{{objectIdToString .Id}}</div>
+        
+        <p class="card-text">
+            {{.ProjectDescription}}
+        </p>
+
+        <div class="row">
+            <div class="col-md-6">
+                <i class="fa-solid fa-lock me-3"></i>
+                <i class="fa-solid fa-heart me-2 text-danger"></i><small>201</small>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-md-12">
+                <div class="social-buttons">
+                    {{ range .Languages }}
+                    <span class="badge bg-light text-primary">{{.}}</span>
+                    {{ end }}
+                    {{ range .OtherLanguages }}
+                    <span class="badge bg-light text-warning">{{.}}</span>
+                    {{ end }}
+                    {{ range .Allied }}
+                    <span class="badge bg-light text-dark">{{.}}</span>
+                    {{ end }}
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+
+{{end}}
+{{end}}
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+
+<script>
+function react(){
+
+    let heartBtn = document.getElementById("heart-btn").innerHTML;
+    let projectId = document.getElementById("projectId").innerHTML;
+
+    console.log(heartBtn, projectId)
+
+    const request = new Request("/api/managereaction", {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify({"projectId": projectId})
+    });
+    console.log(request)
+
+    fetch(request)
+
+}
+
+function bookmark(){
+    let x = document.getElementById("bookmark-btn").innerHTML;
+    console.log(x)
+}
+</script>
+{{end}}

@@ -51,6 +51,7 @@ func main() {
 	http.HandleFunc("/contributors/preferences", contributors.Preferences)
 	http.HandleFunc("/contributors/thankyou", contributors.PreferencesSaved)
 	http.HandleFunc("/contributors/reactions", contributors.FetchReactions)
+	http.HandleFunc("/contributors/bookmarks", contributors.FetchBookmarks)
 	
 
 	// Templates/Contributors
