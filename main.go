@@ -7,9 +7,9 @@ import (
 	"techpro.club/sources/authentication"
 	"techpro.club/sources/common"
 	"techpro.club/sources/notifications"
-	"techpro.club/sources/templates"
-	"techpro.club/sources/templates/contributors"
-	"techpro.club/sources/templates/projects"
+	"techpro.club/sources/pages"
+	"techpro.club/sources/pages/contributors"
+	"techpro.club/sources/pages/projects"
 
 	"github.com/joho/godotenv"
 )
@@ -27,24 +27,24 @@ func main() {
 	http.Handle("/assets/", http.StripPrefix("/assets", fs))
 
 	// APIs
-	http.HandleFunc("/api/managereaction", templates.ManageReactions)
-	http.HandleFunc("/api/deleteuser", templates.DeleteUser)
+	http.HandleFunc("/api/managereaction", pages.ManageReactions)
+	http.HandleFunc("/api/deleteuser", pages.DeleteUser)
 
 	// Templates
-	http.HandleFunc("/", templates.IndexHandler)
-	http.HandleFunc("/contactus", templates.ContactUs)
-	http.HandleFunc("/careers", templates.Careers)
-	http.HandleFunc("/company", templates.Company)
-	http.HandleFunc("/brand", templates.Brand)
-	http.HandleFunc("/campus", templates.Campus)
-	http.HandleFunc("/campusonboard", templates.CampusOnboard)
-	http.HandleFunc("/videos", templates.Videos)
+	http.HandleFunc("/", pages.IndexHandler)
+	http.HandleFunc("/contactus", pages.ContactUs)
+	http.HandleFunc("/careers", pages.Careers)
+	http.HandleFunc("/company", pages.Company)
+	http.HandleFunc("/brand", pages.Brand)
+	http.HandleFunc("/campus", pages.Campus)
+	http.HandleFunc("/campusonboard", pages.CampusOnboard)
+	http.HandleFunc("/videos", pages.Videos)
 
 	// Users
-	http.HandleFunc("/users/editprofile", templates.UserEdit)
-	http.HandleFunc("/users/profile", templates.Profile)
+	http.HandleFunc("/users/editprofile", pages.UserEdit)
+	http.HandleFunc("/users/profile", pages.Profile)
 	http.HandleFunc("/users/notifications", notifications.Fetch)
-	http.HandleFunc("/users/settings", templates.UserSettings)
+	http.HandleFunc("/users/settings", pages.UserSettings)
 
 	// Templates/Contributors
 	http.HandleFunc("/contributors/feeds", contributors.Feeds)
@@ -73,7 +73,7 @@ func main() {
 		authentication.GithubLoggedinHandler(w, r, "", "", "")
 	})
 
-	http.HandleFunc("/logout", templates.Logout)
+	http.HandleFunc("/logout", pages.Logout)
 
 	// Start the web server
     http.ListenAndServe(common.CONST_APP_PORT, nil)

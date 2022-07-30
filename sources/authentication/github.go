@@ -8,8 +8,8 @@ import (
 	"net/http"
 
 	"techpro.club/sources/common"
-	"techpro.club/sources/templates/contributors"
-	"techpro.club/sources/templates/projects"
+	"techpro.club/sources/pages/contributors"
+	"techpro.club/sources/pages/projects"
 	"techpro.club/sources/users"
 )
 

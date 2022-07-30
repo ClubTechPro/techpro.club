@@ -9,7 +9,7 @@ import (
 
 	"go.mongodb.org/mongo-driver/bson"
 	"techpro.club/sources/common"
-	"techpro.club/sources/templates"
+	"techpro.club/sources/pages"
 	"techpro.club/sources/users"
 )
 type FinalFeedsOutputStruct struct{
@@ -19,7 +19,7 @@ type FinalFeedsOutputStruct struct{
 
 func Feeds(w http.ResponseWriter, r *http.Request){
 	if r.URL.Path != "/contributors/feeds" {
-        templates.ErrorHandler(w, r, http.StatusNotFound)
+        pages.ErrorHandler(w, r, http.StatusNotFound)
         return
     }
 
@@ -38,7 +38,7 @@ func Feeds(w http.ResponseWriter, r *http.Request){
 	var userNameImage common.UsernameImageStruct
 
 	// Fetch user name and image from saved browser cookies
-	status, msg, userName, image := templates.FetchUsernameImage(w, r)
+	status, msg, userName, image := pages.FetchUsernameImage(w, r)
 
 	if(!status){
 		log.Println(msg)
@@ -47,7 +47,7 @@ func Feeds(w http.ResponseWriter, r *http.Request){
 	}
 
 	var functions = template.FuncMap{
-		"objectIdToString" : templates.ObjectIDToString,
+		"objectIdToString" : pages.ObjectIDToString,
 	}
 	
 	// TEST CONDITIONS

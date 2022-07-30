@@ -1,4 +1,4 @@
-package templates
+package pages
 
 import (
 	"context"

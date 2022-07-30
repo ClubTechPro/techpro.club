@@ -7,7 +7,7 @@ import (
 	"net/http"
 
 	"techpro.club/sources/common"
-	"techpro.club/sources/templates"
+	"techpro.club/sources/pages"
 	"techpro.club/sources/users"
 )
 
@@ -18,7 +18,7 @@ type FinalProjectPreviewOutStruct struct{
 
 func ProjectPreview(w http.ResponseWriter, r *http.Request){
 	if r.URL.Path != "/projects/view" {
-        templates.ErrorHandler(w, r, http.StatusNotFound)
+        pages.ErrorHandler(w, r, http.StatusNotFound)
         return
     }
 
@@ -37,7 +37,7 @@ func ProjectPreview(w http.ResponseWriter, r *http.Request){
 	var userNameImage common.UsernameImageStruct
 
 	// Fetch user name and image from saved browser cookies
-	status, msg, userName, image := templates.FetchUsernameImage(w, r)
+	status, msg, userName, image := pages.FetchUsernameImage(w, r)
 
 	if(!status){
 		log.Println(msg)
@@ -46,7 +46,7 @@ func ProjectPreview(w http.ResponseWriter, r *http.Request){
 	}
 
 	projectID := r.URL.Query().Get("projectid")
-	_, _, result := templates.FetchProjectDetails(projectID, userID)
+	_, _, result := pages.FetchProjectDetails(projectID, userID)
 
 	finalOutStruct = FinalProjectPreviewOutStruct{result, userNameImage}
 	
