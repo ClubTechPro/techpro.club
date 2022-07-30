@@ -5,14 +5,14 @@ import (
 	"html/template"
 	"net/http"
 
-	"techpro.club/sources/templates"
+	"techpro.club/sources/pages"
 )
 
 
 func CallBack(w http.ResponseWriter, r *http.Request){
 	
 	if r.URL.Path != "/contributors/github/callback" {
-        templates.ErrorHandler(w, r, http.StatusNotFound)
+        pages.ErrorHandler(w, r, http.StatusNotFound)
         return
     }
 

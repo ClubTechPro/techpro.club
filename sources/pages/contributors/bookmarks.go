@@ -10,7 +10,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"techpro.club/sources/common"
-	"techpro.club/sources/templates"
+	"techpro.club/sources/pages"
 	"techpro.club/sources/users"
 )
 
@@ -21,7 +21,7 @@ type FinalProjectBookmarkListOutStruct struct{
 
 func Bookmarks(w http.ResponseWriter, r *http.Request){
 	if r.URL.Path != "/contributors/bookmarks" {
-        templates.ErrorHandler(w, r, http.StatusNotFound)
+        pages.ErrorHandler(w, r, http.StatusNotFound)
         return
     }
 
@@ -40,7 +40,7 @@ func Bookmarks(w http.ResponseWriter, r *http.Request){
 	var userNameImage common.UsernameImageStruct
 
 	// Fetch user name and image from saved browser cookies
-	status, msg, userName, image := templates.FetchUsernameImage(w, r)
+	status, msg, userName, image := pages.FetchUsernameImage(w, r)
 
 	if(!status){
 		log.Println(msg)

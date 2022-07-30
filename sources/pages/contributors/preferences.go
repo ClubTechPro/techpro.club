@@ -12,7 +12,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"techpro.club/sources/common"
-	"techpro.club/sources/templates"
+	"techpro.club/sources/pages"
 	"techpro.club/sources/users"
 )
 type FinalPreferencesOutStruct struct{
@@ -27,7 +27,7 @@ type FinalPreferencesOutStruct struct{
 func Preferences(w http.ResponseWriter, r *http.Request){
 	
 	if r.URL.Path != "/contributors/preferences" {
-        templates.ErrorHandler(w, r, http.StatusNotFound)
+        pages.ErrorHandler(w, r, http.StatusNotFound)
         return
     }
 
@@ -43,8 +43,8 @@ func Preferences(w http.ResponseWriter, r *http.Request){
 	}
 
 	var functions = template.FuncMap{
-		"contains" : templates.Contains,
-		"sliceToCsv" : templates.SliceToCsv,
+		"contains" : pages.Contains,
+		"sliceToCsv" : pages.SliceToCsv,
 	}
 
 	ProgrammingLanguages := map[string]string{
@@ -124,7 +124,7 @@ func Preferences(w http.ResponseWriter, r *http.Request){
 	var userNameImage common.UsernameImageStruct
 
 	// Fetch user name and image from saved browser cookies
-	status, msg, userName, image := templates.FetchUsernameImage(w, r)
+	status, msg, userName, image := pages.FetchUsernameImage(w, r)
 
 	if(!status){
 		log.Println(msg)
