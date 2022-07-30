@@ -28,6 +28,7 @@ func main() {
 
 	// APIs
 	http.HandleFunc("/api/managereaction", pages.ManageReactions)
+	http.HandleFunc("/api/managebookmark", pages.ManageBookmarks)
 	http.HandleFunc("/api/deleteuser", pages.DeleteUser)
 
 	// Templates
