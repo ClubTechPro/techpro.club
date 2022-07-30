@@ -51,7 +51,7 @@ func ProjectPreview(w http.ResponseWriter, r *http.Request){
 	finalOutStruct = FinalProjectPreviewOutStruct{result, userNameImage}
 	
 
-	tmpl, err := template.New("").ParseFiles("templates/app/projects/projectpreview.gohtml", "templates/app/projects/common/base_new.gohtml")
+	tmpl, err := template.New("").ParseFiles("templates/app/projects/projectpreview.gohtml", "templates/app/projects/common/base.gohtml")
 	if err != nil {
 		fmt.Println(err.Error())
 	}else {

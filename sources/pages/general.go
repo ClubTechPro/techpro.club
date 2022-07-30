@@ -159,7 +159,7 @@ func ManageReactions(w http.ResponseWriter, r *http.Request){
 		projectIdList = append(projectIdList, inputJSON.ProjectId)
 
 		fetchUserProjectReactions := client.Database(dbName).Collection(common.CONST_MO_USER_PROJECT_REACTIONS)
-		result, err := fetchUserProjectReactions.CountDocuments(context.TODO(), bson.M{"userid" : userID, "projectids" : bson.M{"$in" : projectIdList}})
+		result, err := fetchUserProjectReactions.CountDocuments(context.TODO(), bson.M{"userid" : userID})
 
 		if err != nil {
 			msg = err.Error()
@@ -168,13 +168,33 @@ func ManageReactions(w http.ResponseWriter, r *http.Request){
 			// If it contains the project, then delete it
 			// Else insert it
 			if(result > 0){
-				_, err := fetchUserProjectReactions.DeleteMany(context.TODO(), bson.M{"userid" : userID, "projectids" : bson.M{"$in" : projectIdList}})
-				if err != nil {
-					msg = err.Error()
-				}  else {
-					status = true
-					msg = "Success"
+
+				resultCountProjects, errCountProjects := fetchUserProjectReactions.CountDocuments(context.TODO(), bson.M{"userid" : userID, "projectids" : bson.M{"$in" : projectIdList}})
+
+				if errCountProjects != nil {
+					msg = errCountProjects.Error()
+				} else {
+
+					if (resultCountProjects > 0){
+						_, err := fetchUserProjectReactions.UpdateOne(context.TODO(), bson.M{"userid": userID}, bson.M{"$pull" : bson.M{"projectids" : inputJSON.ProjectId}})
+						if err != nil {
+							msg = err.Error()
+						}  else {
+							status = true
+							msg = "Success"
+						}
+					} else {
+						_, err := fetchUserProjectReactions.UpdateOne(context.TODO(), bson.M{"userid": userID}, bson.M{"$push" : bson.M{"projectids" : inputJSON.ProjectId}})
+						if err != nil {
+							msg = err.Error()
+						}  else {
+							status = true
+							msg = "Success"
+						}
+					}
+					
 				}
+				
 			} else {
 				var userProjectReactions common.SaveUserProjectReactionStruct
 				userProjectReactions.UserId = userID
@@ -191,9 +211,7 @@ func ManageReactions(w http.ResponseWriter, r *http.Request){
 
 			
 		}
-		
-		fmt.Println(status, msg, "MSG")
-		
+				
 	}
 	w.Write(nil)
 }

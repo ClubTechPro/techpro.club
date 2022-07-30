@@ -1,4 +1,4 @@
-package projects
+package contributors
 
 import (
 	"fmt"
@@ -11,13 +11,13 @@ import (
 	"techpro.club/sources/users"
 )
 
+// Fetched reacted projects
 
-func ProjectSaved(w http.ResponseWriter, r *http.Request){
-
-	if r.URL.Path != "/projects/thankyou" {
-        pages.ErrorHandler(w, r, http.StatusNotFound)
-        return
-    }
+func FetchReactions(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path != "/contributors/reactions" {
+		pages.ErrorHandler(w, r, http.StatusNotFound)
+		return
+	}
 
 	// Session check
 	sessionOk, _ := users.ValidateDbSession(w, r)
@@ -27,8 +27,8 @@ func ProjectSaved(w http.ResponseWriter, r *http.Request){
 		users.DeleteSessionCookie(w, r)
 		users.DeleteUserCookie(w, r)
 
-		http.Redirect(w, r, "/projects", http.StatusSeeOther)
-	}
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+	} 
 
 	var userNameImage common.UsernameImageStruct
 
@@ -40,12 +40,17 @@ func ProjectSaved(w http.ResponseWriter, r *http.Request){
 	} else {
 		userNameImage  = common.UsernameImageStruct{userName,image}
 	}
-	
-	tmpl, err := template.New("").ParseFiles("templates/app/projects/projectsaved.gohtml", "templates/app/projects/common/base.gohtml")
+
+	fmt.Println(userNameImage)
+
+
+	tmpl, err := template.ParseFiles("templates/app/contributors/common/base.gohtml", "templates/app/contributors/reactions.gohtml")
 	if err != nil {
 		fmt.Println(err.Error())
 	}else {
-		tmpl.ExecuteTemplate(w, "projectbase", userNameImage) 
+		tmpl.ExecuteTemplate(w, "contributorbase", nil) 
 	}
-	
 }
+
+// Fetch all reacted projects
+// func fetchReactedProjects(userID primitive.ObjectID){}
