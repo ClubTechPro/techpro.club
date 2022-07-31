@@ -1,121 +1,126 @@
 {{define "content"}}
 <!-- BEGIN page-header -->
 <div class="row">
-    <div class="col col-md-12">
-        <h1 class="page-header">User Profile</h1>
-    </div>
+  <div class="col col-md-12">
+    <h1 class="page-header">User Profile</h1>
+  </div>
 </div>
 <!-- END page-header -->
 
 <div class="panel shadow bg-body rounded">
-    <div class="panel-body">
-        <form method="post" content-type="x-www-form-urlencoded">
-            <div class="row">
-                <div class="col col-md-10">
-                    <img
-                        src="{{.UserProfile.ImageLink}}"
-                        height="100"
-                        alt="profile image"
-                    />
-                </div>
-                <div class="col col-md-2 text-end"><a href="/users/profile" role="button" class="btn btn-default btn-sm"><i class="fa-regular fa-eye me-1"></i>Preview</a></div>
-            </div>
+  <div class="panel-body">
+    <form method="post" content-type="x-www-form-urlencoded" id="profileform">
+      <div class="row">
+        <div class="col col-md-10">
+          <img
+            src="{{.UserProfile.ImageLink}}"
+            height="100"
+            alt="profile image"
+          />
+        </div>
+        <div class="col col-md-2 text-end">
+          <a href="/users/profile" role="button" class="btn btn-default btn-sm"
+            ><i class="fa-regular fa-eye me-1"></i>Preview</a
+          >
+        </div>
+      </div>
 
-            <div class="col-md-6 mt-3">
-                <label class="mb-2">Name</label>
-                <input
-                    type="text"
-                    class="form-control form-control-sm"
-                    id="name"
-                    name="name"
-                    value="{{.UserProfile.Name}}"
-                />
-            </div>
-            <div class="col-md-6 mt-2">
-                <label>Email</label>
-                <input
-                    type="text"
-                    class="form-control form-control-sm"
-                    id="email"
-                    name="email"
-                    disabled
-                    value="{{.UserProfile.Email}}"
-                />
-            </div>
+      <div class="col-md-6 mt-3">
+        <label class="mb-2">Name</label>
+        <input
+          type="text"
+          class="form-control form-control-sm"
+          id="name"
+          name="name"
+          value="{{.UserProfile.Name}}"
+        />
+      </div>
+      <div class="col-md-6 mt-2">
+        <label>Email</label>
+        <input
+          type="text"
+          class="form-control form-control-sm"
+          id="email"
+          name="email"
+          disabled
+          value="{{.UserProfile.Email}}"
+        />
+      </div>
 
-            <div class="col col-md-6 mt-2">
-                <label>Github</label>
-                <input
-                    type="text"
-                    class="form-control form-control-sm"
-                    id="repourl"
-                    name="repourl"
-                    value="{{.UserProfile.RepoUrl}}"
-                />
-            </div>
+      <div class="col col-md-6 mt-2">
+        <label>Github</label>
+        <input
+          type="text"
+          class="form-control form-control-sm"
+          id="repourl"
+          name="repourl"
+          value="{{.UserProfile.RepoUrl}}"
+        />
+      </div>
 
-            <div class="col col-md-6 mt-2">
-                <label>Facebook</label>
-                <input
-                    type="text"
-                    class="form-control form-control-sm"
-                    id="facebook"
-                    name="facebook"
-                    placeholder="Facebook"
-                    value="{{.UserSocials.Facebook}}"
-                />
-            </div>
+      <div class="col col-md-6 mt-2">
+        <label>Facebook</label>
+        <input
+          type="text"
+          class="form-control form-control-sm"
+          id="facebook"
+          name="facebook"
+          placeholder="Facebook"
+          value="{{.UserSocials.Facebook}}"
+        />
+      </div>
 
-            <div class="col col-md-6 mt-2">
-                <label>Twitter</label>
-                <input
-                    type="text"
-                    class="form-control form-control-sm"
-                    id="twitter"
-                    name="twitter"
-                    placeholder="Twitter"
-                    value="{{.UserSocials.Twitter}}"
-                />
-            </div>
+      <div class="col col-md-6 mt-2">
+        <label>Twitter</label>
+        <input
+          type="text"
+          class="form-control form-control-sm"
+          id="twitter"
+          name="twitter"
+          placeholder="Twitter"
+          value="{{.UserSocials.Twitter}}"
+        />
+      </div>
 
-            <div class="col col-md-6 mt-2">
-                <label>LinkedIn</label>
-                <input
-                    type="text"
-                    class="form-control form-control-sm"
-                    id="linkedin"
-                    name="linkedin"
-                    placeholder="Linkedin"
-                    value="{{.UserSocials.LinkedIn}}"
-                />
-            </div>
+      <div class="col col-md-6 mt-2">
+        <label>LinkedIn</label>
+        <input
+          type="text"
+          class="form-control form-control-sm"
+          id="linkedin"
+          name="linkedin"
+          placeholder="Linkedin"
+          value="{{.UserSocials.LinkedIn}}"
+        />
+      </div>
 
-            <div class="col col-6 mt-2">
-                <label>Stackoverflow</label>
-                <input
-                    type="text"
-                    class="form-control form-control-sm"
-                    id="stackoverflow"
-                    name="stackoverflow"
-                    placeholder="Stackoverflow"
-                    value="{{.UserSocials.Stackoverflow}}"
-                />
-            </div>
+      <div class="col col-6 mt-2">
+        <label>Stackoverflow</label>
+        <input
+          type="text"
+          class="form-control form-control-sm"
+          id="stackoverflow"
+          name="stackoverflow"
+          placeholder="Stackoverflow"
+          value="{{.UserSocials.Stackoverflow}}"
+        />
+      </div>
 
-            <div class="col col-6 mt-2">
-                <label>About</label>
-                <textarea class="form-control form-control-sm"></textarea>
-            </div>
+      <div class="col col-6 mt-2">
+        <label>About</label>
+        <textarea id="about" name="about" class="form-control form-control-sm">{{.UserProfile.About}}</textarea>
+      </div>
 
-            <br />
-            <input
-                type="submit"
-                id="saveSettingsBtn"
-                value="Save"
-                class="btn btn-primary"
-            />
-        </form>
-    </div>
+      <br />
+      <input
+        type="submit"
+        id="saveSettingsBtn"
+        value="Save"
+        class="btn btn-primary"
+      />
+
+    </form>
+  </div>
 </div>
 <div class="before-footer-spacing"></div>
 {{ end }}
