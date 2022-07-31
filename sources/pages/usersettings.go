@@ -1,4 +1,4 @@
-package templates
+package pages
 
 import (
 	"context"
@@ -62,7 +62,7 @@ func UserSettings(w http.ResponseWriter, r *http.Request) {
 
 	userSettingData := UserSettingsStruct{userprofile, userNameImage}
 
-	tmpl, err := template.New("").ParseFiles("templates/app/contributors/settings.gohtml", "templates/app/contributors/common/base_new.gohtml")
+	tmpl, err := template.New("").ParseFiles("templates/app/contributors/settings.gohtml", "templates/app/contributors/common/base.gohtml")
 	if err != nil {
 		fmt.Println(err.Error())
 	} else {

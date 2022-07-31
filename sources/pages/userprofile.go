@@ -1,4 +1,4 @@
-package templates
+package pages
 
 import (
 	"context"
@@ -62,8 +62,8 @@ func Profile(w http.ResponseWriter, r *http.Request) {
 	_, _, socials := fetchSocials(userID)
 
 	userSettingsStruct := ProfileStruct{userprofile, socials, userNameImage}
-
-	tmpl, err := template.New("").ParseFiles("templates/app/profile.gohtml", "templates/app/contributors/common/base_new.gohtml")
+	
+	tmpl, err := template.New("").ParseFiles("templates/app/profile.gohtml", "templates/app/contributors/common/base.gohtml")
 	if err != nil {
 		fmt.Println(err.Error())
 	} else {
@@ -140,7 +140,7 @@ func UserEdit(w http.ResponseWriter, r *http.Request) {
 
 	userSettingsStruct := ProfileStruct{userprofile, socials, userNameImage}
 
-	tmpl, err := template.New("").ParseFiles("templates/app/profileedit.gohtml", "templates/app/contributors/common/base_new.gohtml")
+	tmpl, err := template.New("").ParseFiles("templates/app/profileedit.gohtml", "templates/app/contributors/common/base.gohtml")
 	if err != nil {
 		fmt.Println(err.Error())
 	} else {

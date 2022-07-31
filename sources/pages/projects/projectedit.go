@@ -9,23 +9,25 @@ import (
 	"strings"
 	"time"
 
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"techpro.club/sources/common"
-	"techpro.club/sources/templates"
+	"techpro.club/sources/pages"
 	"techpro.club/sources/users"
 )
 
-type FinalOutStruct struct{
+type FinalProjectOutStruct struct{
 	ProgrammingLanguages map[string]string `json:"programmingLanguages"`
 	AlliedServices map[string]string `json:"alliedServices"`
 	ProjectType map[string]string `json:"projectType"`
 	Contributors map[string]string `json:"contributors"`
+	ProjectStruct common.FetchProjectStruct `json:"projectStruct"`
 	UserNameImage common.UsernameImageStruct `json:"userNameImage"`
 }
 
-func ProjectCreate(w http.ResponseWriter, r *http.Request){
-
-	if r.URL.Path != "/projects/create" {
-        templates.ErrorHandler(w, r, http.StatusNotFound)
+func ProjectEdit(w http.ResponseWriter, r *http.Request){
+	if r.URL.Path != "/projects/edit" {
+        pages.ErrorHandler(w, r, http.StatusNotFound)
         return
     }
 	
@@ -38,38 +40,49 @@ func ProjectCreate(w http.ResponseWriter, r *http.Request){
 		users.DeleteUserCookie(w, r)
 
 		http.Redirect(w, r, "/projects", http.StatusSeeOther)
-	} 
+	}
 
+	var functions = template.FuncMap{
+		"contains" : pages.Contains,
+		"sliceToCsv" : pages.SliceToCsv,
+	}
 
 	var userNameImage common.UsernameImageStruct
 
 	// Fetch user name and image from saved browser cookies
-	status, msg, userName, image := templates.FetchUsernameImage(w, r)
+	status, msg, userName, image := pages.FetchUsernameImage(w, r)
 
 	if(!status){
 		log.Println(msg)
 	} else {
 		userNameImage  = common.UsernameImageStruct{userName,image}
 	}
-	
+
 	if r.Method == "GET"{
 
-		output := FinalOutStruct{
+		projectID := r.URL.Query().Get("projectid")
+
+		_, _, result := pages.FetchProjectDetails(projectID, userID)
+
+		constantLists := FinalProjectOutStruct{
 			common.ProgrammingLanguages,
 			common.AlliedServices,
 			common.ProjectType,
 			common.Contributors,
+			result,
 			userNameImage,
 		}
+		
 
-		tmpl, err := template.New("").ParseFiles("templates/app/projects/projectcreate.gohtml", "templates/app/projects/common/base_new.gohtml")
+		tmpl, err := template.New("").Funcs(functions).ParseFiles("templates/app/projects/projectedit.gohtml", "templates/app/projects/common/base.gohtml")
 		if err != nil {
 			fmt.Println(err.Error())
 		}else {
-			tmpl.ExecuteTemplate(w, "projectbase", output) 
+			tmpl.ExecuteTemplate(w, "projectbase", constantLists) 
 		}
-
 	} else {
+		projectID := r.URL.Query().Get("projectid")
+
 		errParse := r.ParseForm()
 		if errParse != nil {
 			fmt.Println(errParse.Error())
@@ -97,31 +110,33 @@ func ProjectCreate(w http.ResponseWriter, r *http.Request){
 
 			if submit == "Save as draft" {
 				result = common.SaveProjectStruct{userID, projectName, projectDescription, repoLink, language, otherLanguagesSplit, allied, projectType, contributorCount, documentation, public, company, companyName ,funded, dt, "", "", common.CONST_INACTIVE}
-				saveProject(w, r, result)
+				updateProject(w, r, projectID, result)
 			} else {
 				result = common.SaveProjectStruct{userID, projectName, projectDescription, repoLink, language, otherLanguagesSplit, allied, projectType, contributorCount, documentation, public, company, companyName ,funded, dt, dt, "", common.CONST_ACTIVE}
-				saveProject(w, r, result)
-			}	
-
+				updateProject(w, r, projectID, result)
+			}
+			
 			http.Redirect(w, r, "/projects/thankyou", http.StatusSeeOther)
 		}
 	}
 }
 
-
-func saveProject(w http.ResponseWriter, r *http.Request, newProjectStruct common.SaveProjectStruct)(status bool, msg string){
+// Update project function
+func updateProject(w http.ResponseWriter, r *http.Request, projectID string, newProjectStruct common.SaveProjectStruct)(status bool, msg string){
 	status = false
 	msg = ""
 
-	_, _, client:= common.Mongoconnect()
+	_, _, client := common.Mongoconnect()
 	defer client.Disconnect(context.TODO())
 
 	dbName := common.GetMoDb()
 	saveProject := client.Database(dbName).Collection(common.CONST_MO_PROJECTS)
 
-	_, err := saveProject.InsertOne(context.TODO(), newProjectStruct)
+	projectIdHex, _ := primitive.ObjectIDFromHex(projectID)
+	_, err := saveProject.UpdateOne(context.TODO(), bson.M{"_id": projectIdHex}, bson.M{"$set": newProjectStruct})
 
 	if err != nil {
+		fmt.Println(err)
 		msg = err.Error()
 	} else {
 		status = true
@@ -129,4 +144,6 @@ func saveProject(w http.ResponseWriter, r *http.Request, newProjectStruct common
 	}
 
 	return status, msg
+
+	
 }

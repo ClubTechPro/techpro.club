@@ -1,46 +1,20 @@
 {{define "content"}}
 <!-- BEGIN page-header -->
-<h1 class="page-header">My Feed</h1>
+<h1 class="page-header">My Bookmarks</h1>
 <!-- END page-header -->
 
 <!-- BEGIN Search feeds -->
-<!--
-<div class="mb-3">
-    <div class="row">
-        <div class="col-md-8">
-            <input class="form-control" type="text" placeholder="Search project name"/>
-        </div>
-        <div class="col-md-3">
-            <select class="form-select">
-            <option>Filter</option>
-            </select>
-        </div>
-        <div class="col-md-1">
-            <button class="btn btn-primary">Search</button>
-        </div>
-    </div>
-</div>
--->
-<!-- END Search feeds -->
+
 
 {{if not .Projects}}
 <div class="panel shadow bg-body rounded">
     <div class="panel-body">
-        <h6 class="card-subtitle mb-2">Project list coming soon</h6>
-        <small>By Techpro.Club</small>
+        <h6 class="card-subtitle mb-2">No bookmarked projects</h6>
         
         <p class="card-text">
-            Soon amazing projects will be listed here. While we are
-            collaborating with project owners, do checkout this space for more.
-            <br />
-            In the meanwhile, checkout our Github and follow us on Twitter
+            You have not bookmarked any projects yet. You can bookmark a project to work on it later.
         </p>
 
-        <div class="social-buttons">
-            <a class="github-button" href="https://github.com/ClubTechPro/techpro.club" data-color-scheme="no-preference: dark; light: light; dark: dark;" data-size="large" aria-label="Star ClubTechPro/techpro.club on GitHub">Star</a>
-            <a href="https://twitter.com/ClubTechpro?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false" data-size="large" data-show-screen-name="false">Follow @ClubTechpro</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-        </div>
-        <span class="badge bg-light text-primary">News</span>
     </div>
 </div>
 {{else}}
@@ -107,6 +81,8 @@ function react(){
 
     let heartBtn = document.getElementById("heart-btn").innerHTML;
     let projectId = document.getElementById("projectId").innerHTML;
+
+    console.log(heartBtn, projectId)
 
     const request = new Request("/api/managereaction", {
         method: "POST",

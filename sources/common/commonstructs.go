@@ -7,6 +7,12 @@ type PageTitle struct {
 	Title string `json:"title"`
 }
 
+// Json output struct
+type JsonOutput struct {
+	Status bool   `json:"status"`
+	Msg    string `json:"msg"`
+}
+
 // FetchUserProjectBookmarkStruct struct
 type FetchUserProjectBookmarkStruct struct {
 	Id primitive.ObjectID `json:"id" bson:"_id,omitempty"`

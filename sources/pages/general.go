@@ -1,4 +1,4 @@
-package templates
+package pages
 
 import (
 	"context"
@@ -126,8 +126,9 @@ func NotificationsCount(userID primitive.ObjectID)(status bool, msg string, coun
 
 // Manage reaction to a project
 func ManageReactions(w http.ResponseWriter, r *http.Request){
-	status := false
+
 	msg := ""
+	status := false
 
 	type InputStruct struct{
 		ProjectId primitive.ObjectID `json:"projectid"`
@@ -159,7 +160,7 @@ func ManageReactions(w http.ResponseWriter, r *http.Request){
 		projectIdList = append(projectIdList, inputJSON.ProjectId)
 
 		fetchUserProjectReactions := client.Database(dbName).Collection(common.CONST_MO_USER_PROJECT_REACTIONS)
-		result, err := fetchUserProjectReactions.CountDocuments(context.TODO(), bson.M{"userid" : userID, "projectids" : bson.M{"$in" : projectIdList}})
+		result, err := fetchUserProjectReactions.CountDocuments(context.TODO(), bson.M{"userid" : userID})
 
 		if err != nil {
 			msg = err.Error()
@@ -168,13 +169,33 @@ func ManageReactions(w http.ResponseWriter, r *http.Request){
 			// If it contains the project, then delete it
 			// Else insert it
 			if(result > 0){
-				_, err := fetchUserProjectReactions.DeleteMany(context.TODO(), bson.M{"userid" : userID, "projectids" : bson.M{"$in" : projectIdList}})
-				if err != nil {
-					msg = err.Error()
-				}  else {
-					status = true
-					msg = "Success"
+
+				resultCountProjects, errCountProjects := fetchUserProjectReactions.CountDocuments(context.TODO(), bson.M{"userid" : userID, "projectids" : bson.M{"$in" : projectIdList}})
+
+				if errCountProjects != nil {
+					msg = errCountProjects.Error()
+				} else {
+
+					if (resultCountProjects > 0){
+						_, err := fetchUserProjectReactions.UpdateOne(context.TODO(), bson.M{"userid": userID}, bson.M{"$pull" : bson.M{"projectids" : inputJSON.ProjectId}})
+						if err != nil {
+							msg = err.Error()
+						}  else {
+							status = true
+							msg = "Success"
+						}
+					} else {
+						_, err := fetchUserProjectReactions.UpdateOne(context.TODO(), bson.M{"userid": userID}, bson.M{"$push" : bson.M{"projectids" : inputJSON.ProjectId}})
+						if err != nil {
+							msg = err.Error()
+						}  else {
+							status = true
+							msg = "Success"
+						}
+					}
+					
 				}
+				
 			} else {
 				var userProjectReactions common.SaveUserProjectReactionStruct
 				userProjectReactions.UserId = userID
@@ -187,15 +208,116 @@ func ManageReactions(w http.ResponseWriter, r *http.Request){
 					status = true
 					msg = "Success"
 				}
-			}
-
-			
+			}	
 		}
-		
-		fmt.Println(status, msg, "MSG")
-		
+				
 	}
-	w.Write(nil)
+
+	output := common.JsonOutput{
+		Status: status,
+		Msg: msg,
+	}
+
+	out, _ := json.Marshal(output)
+	w.Write(out)
+}
+
+// Manage bookmarks to a project
+func ManageBookmarks(w http.ResponseWriter, r *http.Request){
+
+	msg := ""
+	status := false
+
+	type InputStruct struct{
+		ProjectId primitive.ObjectID `json:"projectid"`
+	}
+
+	var inputJSON InputStruct
+
+	_, userID := users.ValidateDbSession(w, r)
+
+	readData, errRead := ioutil.ReadAll(r.Body)
+	if errRead != nil {
+		log.Println("Err1", errRead)
+	}
+
+	errParse := json.Unmarshal(readData, &inputJSON)
+	if errParse != nil {
+		log.Println("Err2", errParse)
+
+	} 
+
+	if(inputJSON.ProjectId != primitive.NilObjectID){
+
+		_, _, client := common.Mongoconnect()
+		defer client.Disconnect(context.TODO())
+
+		dbName := common.GetMoDb()
+
+		var projectIdList []primitive.ObjectID
+		projectIdList = append(projectIdList, inputJSON.ProjectId)
+
+		fetchUserProjectBookmarks := client.Database(dbName).Collection(common.CONST_MO_BOOKMARKS)
+		result, err := fetchUserProjectBookmarks.CountDocuments(context.TODO(), bson.M{"userid" : userID})
+
+		if err != nil {
+			msg = err.Error()
+		}  else {
+
+			// If it contains the project, then delete it
+			// Else insert it
+			if(result > 0){
+
+				resultCountProjects, errCountProjects := fetchUserProjectBookmarks.CountDocuments(context.TODO(), bson.M{"userid" : userID, "projectids" : bson.M{"$in" : projectIdList}})
+
+				if errCountProjects != nil {
+					msg = errCountProjects.Error()
+				} else {
+
+					if (resultCountProjects > 0){
+						_, err := fetchUserProjectBookmarks.UpdateOne(context.TODO(), bson.M{"userid": userID}, bson.M{"$pull" : bson.M{"projectids" : inputJSON.ProjectId}})
+						if err != nil {
+							msg = err.Error()
+						}  else {
+							status = true
+							msg = "Success"
+						}
+					} else {
+						_, err := fetchUserProjectBookmarks.UpdateOne(context.TODO(), bson.M{"userid": userID}, bson.M{"$push" : bson.M{"projectids" : inputJSON.ProjectId}})
+						if err != nil {
+							msg = err.Error()
+						}  else {
+							status = true
+							msg = "Success"
+						}
+					}
+					
+				}
+				
+			} else {
+				var userProjectReactions common.SaveUserProjectReactionStruct
+				userProjectReactions.UserId = userID
+				userProjectReactions.ProjectIds = projectIdList
+
+				_, err := fetchUserProjectBookmarks.InsertOne(context.TODO(), userProjectReactions)
+				if err != nil {
+					msg = err.Error()
+				}  else {
+					status = true
+					msg = "Success"
+				}
+			}	
+		}
+				
+	}
+
+	output := common.JsonOutput{
+		Status: status,
+		Msg: msg,
+	}
+
+	out, _ := json.Marshal(output)
+	w.Write(out)
 }
 
 // Convert primitive.ObjectID to string
