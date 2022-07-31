@@ -8,6 +8,7 @@ import (
 	"net/http"
 
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"techpro.club/sources/common"
 	"techpro.club/sources/pages"
 	"techpro.club/sources/users"
@@ -15,6 +16,8 @@ import (
 type FinalFeedsOutputStruct struct{
 	Projects []common.FeedStruct `json:"projects"`
 	UserNameImage common.UsernameImageStruct `json:"usernameImage"`
+	MyBookmarks []primitive.ObjectID `json:"myBookmarks"`
+	MyReactions []primitive.ObjectID `json:"myReactions"`
 }
 
 func Feeds(w http.ResponseWriter, r *http.Request){
@@ -24,7 +27,7 @@ func Feeds(w http.ResponseWriter, r *http.Request){
     }
 
 	// Session check
-	sessionOk, _ := users.ValidateDbSession(w, r)
+	sessionOk, userID := users.ValidateDbSession(w, r)
 	if(!sessionOk){
 		
 		// Delete cookies
@@ -48,6 +51,7 @@ func Feeds(w http.ResponseWriter, r *http.Request){
 
 	var functions = template.FuncMap{
 		"objectIdToString" : pages.ObjectIDToString,
+		"containsObjectId" : pages.ContainsObjectID,
 	}
 	
 	// TEST CONDITIONS
@@ -57,8 +61,9 @@ func Feeds(w http.ResponseWriter, r *http.Request){
 	keyword := ""
 
 	_, _, results := filterActiveProjects(pageid, tags, keyword)
+	_, _, bookmarks, reactions := pages.FetchMyBookmarksAndReactions(userID)
 
-	output := FinalFeedsOutputStruct{results, userNameImage}
+	output := FinalFeedsOutputStruct{results, userNameImage, bookmarks, reactions}
 
 	tmpl, err := template.New("").Funcs(functions).ParseFiles("templates/app/contributors/feeds.gohtml", "templates/app/contributors/common/base.gohtml")
 
@@ -126,6 +131,8 @@ func filterActiveProjects(pageid int64, tags []string, keyword string)(status bo
 		"company" : 1, 
 		"companyname": 1, 
 		"createddate": 1,
+		"reactionscount": 1,
+		"public" : 1,
 		"userdetails" : bson.M{ "_id" : 1, "name": 1, "imagelink" :1},
 	}}
 
