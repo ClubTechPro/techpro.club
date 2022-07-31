@@ -11,6 +11,7 @@ import (
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo/options"
 	"techpro.club/sources/common"
 	"techpro.club/sources/users"
 )
@@ -53,6 +54,16 @@ func FetchUsernameImage(w http.ResponseWriter, r *http.Request) (status bool, ms
 // Check if a string exists in a slice.
 func Contains(s []string, e string) (status bool) {
     for _, a := range s {
+        if a == e {
+            return true
+        }
+    }
+    return false
+}
+
+// Check if a primitive.ObjectID exists in a slice.
+func ContainsObjectID(o []primitive.ObjectID, e primitive.ObjectID) (status bool) {
+    for _, a := range o {
         if a == e {
             return true
         }
@@ -323,6 +334,69 @@ func ManageBookmarks(w http.ResponseWriter, r *http.Request){
 
 	out, _ := json.Marshal(output)
 	w.Write(out)
+}
+
+// Fetch my bookmarks and reactions from database
+func FetchMyBookmarksAndReactions(userID primitive.ObjectID)(status bool, msg string, bookmarks []primitive.ObjectID, reactions []primitive.ObjectID){
+
+	var bookmarksDecode common.FetchUserProjectBookmarkStruct
+	var reactionsDecode common.FetchUserProjectReactionStruct
+
+	reactionStatus := false
+	bookmarkStatus := false
+	reactionMsg := ""
+	bookmarkMsg := ""
+
+	_, _, client := common.Mongoconnect()
+	defer client.Disconnect(context.TODO())
+
+	dbName := common.GetMoDb()
+
+	fetchUserProjectBookmarks := client.Database(dbName).Collection(common.CONST_MO_BOOKMARKS)
+	resultBookmarks, errBookmarks := fetchUserProjectBookmarks.Find(context.TODO(), bson.M{"userid" : userID}, options.Find().SetProjection(bson.M{"projectids": 1}))
+
+	if errBookmarks != nil {
+		bookmarkMsg = errBookmarks.Error()
+	} else {
+		for resultBookmarks.Next(context.TODO()) {
+			err := resultBookmarks.Decode(&bookmarksDecode)
+			if err != nil {
+				bookmarkMsg = err.Error()
+			} else {
+				bookmarkStatus = true
+				bookmarks = bookmarksDecode.ProjectIds
+			}
+		}
+	}
+
+	fetchUserProjectReactions := client.Database(dbName).Collection(common.CONST_MO_USER_PROJECT_REACTIONS)
+	resultReactions, errReactions := fetchUserProjectReactions.Find(context.TODO(), bson.M{"userid" : userID}, options.Find().SetProjection(bson.M{"projectids" : 1}))
+
+	if errReactions != nil {
+		reactionMsg = errReactions.Error()
+	} else {
+		for resultReactions.Next(context.TODO()) {
+			err := resultReactions.Decode(&reactionsDecode)
+			if err != nil {
+				reactionMsg = err.Error()
+			} else {
+				reactionStatus = true
+				reactions = reactionsDecode.ProjectIds
+			}
+		}
+	}
+
+
+	if bookmarkStatus && reactionStatus {
+		status = true
+		msg = "Success"
+	} else {
+		status = false
+		msg = "Failed." + bookmarkMsg + " " + reactionMsg
+	}
+
+	fmt.Println(status, msg, bookmarks, reactions)
+	return status, msg, bookmarks, reactions
 }
 
 // Convert primitive.ObjectID to string

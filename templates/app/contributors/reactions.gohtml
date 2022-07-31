@@ -23,51 +23,52 @@
 
 
 <div class="panel shadow bg-body rounded">
-    <div class="panel-body">
-        <div class="row">
-            <div class="col-md-10">
-                <img src="{{$User.ImageLink}}" height="30" alt="User avatar" class="me-1"/> 
-                {{$User.Name}} 
-                <small class="text-muted me-2">- 4h</small>
-                
-            </div>
-            <div class="col-md-2">
-                <div class="text-end">
-                    <button class="btn btn-default btn-xs text-danger" id="heart-btn" onClick=react()><i class="fa-solid fa-heart"></i></button>
-                    <button class="btn btn-default btn-xs" id="bookmark-btn" onClick=bookmark()><i class="fa-regular fa-bookmark"></i></button>
+    <div id="projectId" class="{{objectIdToString .Id}}">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-10">
+                    <img src="{{$User.ImageLink}}" height="30" alt="User avatar" class="me-1"/> 
+                    {{$User.Name}} 
+                    <small class="text-muted me-2">- 4h</small>
+                    
+                </div>
+                <div class="col-md-2">
+                    <div class="text-end">
+                        <button class="btn btn-default btn-xs text-danger" id="heart-btn" onClick=react()><i class="fa-solid fa-heart"></i></button>
+                        <button class="btn btn-default btn-xs" id="bookmark-btn" onClick=bookmark()><i class="fa-solid fa-bookmark"></i></button>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <h6 class="card-subtitle mb-2 mt-2">{{.ProjectName}}</h6>
-        <div id="projectId" class="d-none">{{objectIdToString .Id}}</div>
-        
-        <p class="card-text">
-            {{.ProjectDescription}}
-        </p>
+            <h6 class="card-subtitle mb-2 mt-2">{{.ProjectName}}</h6>
+            <div id="projectId" class="d-none">{{objectIdToString .Id}}</div>
+            
+            <p class="card-text">
+                {{.ProjectDescription}}
+            </p>
 
-        <div class="row">
-            <div class="col-md-6">
-                {{if eq .Public "false"}}<i class="fa-solid fa-lock me-3" title="Private project"></i>{{else}}<i class="fa-solid fa-lock-open me-3" title="Public project"></i>{{end}}
-                <i class="fa-solid fa-heart me-2 text-danger" title="Reactions"></i><small>{{.ReactionsCount}}</small>
-            </div>
-        </div>
-        <div class="row mt-2">
-            <div class="col-md-12">
-                <div class="social-buttons">
-                    {{ range .Languages }}
-                    <span class="badge bg-light text-primary">{{.}}</span>
-                    {{ end }}
-                    {{ range .OtherLanguages }}
-                    <span class="badge bg-light text-warning">{{.}}</span>
-                    {{ end }}
-                    {{ range .Allied }}
-                    <span class="badge bg-light text-dark">{{.}}</span>
-                    {{ end }}
+            <div class="row">
+                <div class="col-md-6">
+                    {{if eq .Public "false"}}<i class="fa-solid fa-lock me-3" title="Private project"></i>{{else}}<i class="fa-solid fa-lock-open me-3" title="Public project"></i>{{end}}
+                    <i class="fa-solid fa-heart me-2 text-danger" title="Reactions"></i><small>{{.ReactionsCount}}</small>
                 </div>
             </div>
+            <div class="row mt-2">
+                <div class="col-md-12">
+                    <div class="social-buttons">
+                        {{ range .Languages }}
+                        <span class="badge bg-light text-primary">{{.}}</span>
+                        {{ end }}
+                        {{ range .OtherLanguages }}
+                        <span class="badge bg-light text-warning">{{.}}</span>
+                        {{ end }}
+                        {{ range .Allied }}
+                        <span class="badge bg-light text-dark">{{.}}</span>
+                        {{ end }}
+                    </div>
+                </div>
+            </div> 
         </div>
-        
     </div>
 </div>
 
@@ -79,10 +80,10 @@
 <script>
 function react(){
 
-    let heartBtn = document.getElementById("heart-btn").innerHTML;
+    let heartBtn = document.getElementById("heart-btn");
     let projectId = document.getElementById("projectId").innerHTML;
 
-    console.log(heartBtn, projectId)
+    heartBtn.classList.contains("text-danger") ? heartBtn.classList.remove("text-danger") : heartBtn.classList.add("text-danger");
 
     const request = new Request("/api/managereaction", {
         method: "POST",
@@ -98,8 +99,10 @@ function react(){
 }
 
 function bookmark(){
-    let bookmarkBtn = document.getElementById("bookmark-btn").innerHTML;
+    let bookmarkBtn = document.getElementById("bookmark-btn");
     let projectId = document.getElementById("projectId").innerHTML;
+
+    bookmarkBtn.classList.contains("text-primary") ? bookmarkBtn.classList.remove("text-primary") : bookmarkBtn.classList.add("text-primary");
 
     const request = new Request("/api/managebookmark", {
         method: "POST",
