@@ -126,6 +126,8 @@ func filterActiveProjects(pageid int64, tags []string, keyword string)(status bo
 		"company" : 1, 
 		"companyname": 1, 
 		"createddate": 1,
+		"reactionscount": 1,
+		"public" : 1,
 		"userdetails" : bson.M{ "_id" : 1, "name": 1, "imagelink" :1},
 	}}
 

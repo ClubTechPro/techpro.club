@@ -72,10 +72,11 @@
             {{.ProjectDescription}}
         </p>
 
+
         <div class="row">
             <div class="col-md-6">
-                <i class="fa-solid fa-lock me-3"></i>
-                <i class="fa-solid fa-heart me-2 text-danger"></i><small>201</small>
+                {{if eq .Public "false"}}<i class="fa-solid fa-lock me-3" title="Private project"></i>{{else}}<i class="fa-solid fa-lock-open me-3" title="Public project"></i>{{end}}
+                <i class="fa-solid fa-heart me-2 text-danger" title="Reactions"></i><small>{{.ReactionsCount}}</small>
             </div>
         </div>
         <div class="row mt-2">

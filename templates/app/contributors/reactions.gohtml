@@ -33,7 +33,7 @@
             </div>
             <div class="col-md-2">
                 <div class="text-end">
-                    <button class="btn btn-default btn-xs" id="heart-btn" onClick=react()><i class="fa-regular fa-heart"></i></button>
+                    <button class="btn btn-default btn-xs text-danger" id="heart-btn" onClick=react()><i class="fa-solid fa-heart"></i></button>
                     <button class="btn btn-default btn-xs" id="bookmark-btn" onClick=bookmark()><i class="fa-regular fa-bookmark"></i></button>
                 </div>
             </div>
@@ -48,8 +48,8 @@
 
         <div class="row">
             <div class="col-md-6">
-                <i class="fa-solid fa-lock me-3"></i>
-                <i class="fa-solid fa-heart me-2 text-danger"></i><small>201</small>
+                {{if eq .Public "false"}}<i class="fa-solid fa-lock me-3" title="Private project"></i>{{else}}<i class="fa-solid fa-lock-open me-3" title="Public project"></i>{{end}}
+                <i class="fa-solid fa-heart me-2 text-danger" title="Reactions"></i><small>{{.ReactionsCount}}</small>
             </div>
         </div>
         <div class="row mt-2">

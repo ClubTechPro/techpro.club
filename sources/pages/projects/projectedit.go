@@ -106,13 +106,13 @@ func ProjectEdit(w http.ResponseWriter, r *http.Request){
 
 			timeNow := time.Now()
 			dt := timeNow.Format(time.UnixDate)
-			var result common.SaveProjectStruct
+			var result common.UpdateProjectStruct
 
 			if submit == "Save as draft" {
-				result = common.SaveProjectStruct{userID, projectName, projectDescription, repoLink, language, otherLanguagesSplit, allied, projectType, contributorCount, documentation, public, company, companyName ,funded, dt, "", "", common.CONST_INACTIVE}
+				result = common.UpdateProjectStruct{userID, projectName, projectDescription, repoLink, language, otherLanguagesSplit, allied, projectType, contributorCount, documentation, public, company, companyName ,funded, dt, "", "", common.CONST_INACTIVE}
 				updateProject(w, r, projectID, result)
 			} else {
-				result = common.SaveProjectStruct{userID, projectName, projectDescription, repoLink, language, otherLanguagesSplit, allied, projectType, contributorCount, documentation, public, company, companyName ,funded, dt, dt, "", common.CONST_ACTIVE}
+				result = common.UpdateProjectStruct{userID, projectName, projectDescription, repoLink, language, otherLanguagesSplit, allied, projectType, contributorCount, documentation, public, company, companyName ,funded, dt, dt, "", common.CONST_ACTIVE}
 				updateProject(w, r, projectID, result)
 			}
 			
@@ -122,7 +122,7 @@ func ProjectEdit(w http.ResponseWriter, r *http.Request){
 }
 
 // Update project function
-func updateProject(w http.ResponseWriter, r *http.Request, projectID string, newProjectStruct common.SaveProjectStruct)(status bool, msg string){
+func updateProject(w http.ResponseWriter, r *http.Request, projectID string, newProjectStruct common.UpdateProjectStruct)(status bool, msg string){
 	status = false
 	msg = ""
 
@@ -144,6 +144,4 @@ func updateProject(w http.ResponseWriter, r *http.Request, projectID string, new
 	}
 
 	return status, msg
-
-	
 }

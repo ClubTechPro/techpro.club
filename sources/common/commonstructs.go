@@ -39,25 +39,14 @@ type SaveUserProjectReactionStruct struct {
 	ProjectIds []primitive.ObjectID `json:"projectIds"`
 }
 
-// FetchProjectReactionStruct struct
-type FetchProjectStarStruct struct {
-	Id primitive.ObjectID `json:"id" bson:"_id,omitempty"`
-	ProjectId primitive.ObjectID `json:"projectId"`
-	ReactionsCount int `json:"reactionsCount"`
-}
-
-// SaveProjectReactionStruct struct
-type SaveProjectReactionStruct struct {
-	ProjectId primitive.ObjectID `json:"projectId"`
-	ReactionsCount int `json:"reactionsCount"`
-}
-
 // Feeds struct
 type FeedStruct struct {
 	Id primitive.ObjectID `json:"id" bson:"_id,omitempty"`
 	ProjectName string `json:"projectName"`
 	ProjectDescription string `json:"projectDescription"`
 	RepoLink string `json:"repoLink"`
+	Public string `json:"public"`
+	ReactionsCount int `json:"reactionsCount"`
 	Languages []string `json:"languages"`
 	OtherLanguages []string `json:"otherLanguages"`
 	Allied []string `json:"allied"`
@@ -120,10 +109,34 @@ type FetchProjectStruct struct{
 	PublishedDate string `json:"publishedDate"`
 	ClosedDate string `json:"closedDate"`
 	IsActive int `json:"isActive"`
+	ReactionsCount int `json:"reactionsCount"`
 }
 
 // Save projects collection struct
 type SaveProjectStruct struct{
+	UserID primitive.ObjectID `json:"userId"`
+	ProjectName string `json:"projectName"`
+	ProjectDescription string `json:"projectDescription"`
+	RepoLink string `json:"repoLink"`
+	Languages []string `json:"languages"`
+	OtherLanguages []string `json:"otherLanguages"`
+	Allied []string `json:"allied"`
+	ProjectType []string `json:"projectType"`
+	ContributorCount string `json:"contributorCount"`
+	Documentation string `json:"documentation"`
+	Public string `json:"public"`
+	Company string `json:"company"`
+	CompanyName string `json:"companyName"`
+	Funded string `json:"funded"`
+	CreatedDate string `json:"createdDate"`
+	PublishedDate string `json:"publishedDate"`
+	ClosedDate string `json:"closedDate"`
+	IsActive int `json:"isActive"`
+	ReactionsCount int `json:"reactionsCount"`
+}
+
+// Save projects collection struct
+type UpdateProjectStruct struct{
 	UserID primitive.ObjectID `json:"userId"`
 	ProjectName string `json:"projectName"`
 	ProjectDescription string `json:"projectDescription"`

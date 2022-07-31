@@ -155,6 +155,8 @@ func fetchBookmarkedProjectsList(pageid int64, userID primitive.ObjectID)(status
 				"company" : 1, 
 				"companyname": 1, 
 				"createddate": 1,
+				"public" : 1,
+				"reactionscount": 1,
 				"userdetails" : bson.M{ "_id" : 1, "name": 1, "imagelink" :1},
 			}}
 		

@@ -159,6 +159,8 @@ func ManageReactions(w http.ResponseWriter, r *http.Request){
 		var projectIdList []primitive.ObjectID
 		projectIdList = append(projectIdList, inputJSON.ProjectId)
 
+		fetchProjectReactions := client.Database(dbName).Collection(common.CONST_MO_PROJECTS)
+
 		fetchUserProjectReactions := client.Database(dbName).Collection(common.CONST_MO_USER_PROJECT_REACTIONS)
 		result, err := fetchUserProjectReactions.CountDocuments(context.TODO(), bson.M{"userid" : userID})
 
@@ -177,17 +179,19 @@ func ManageReactions(w http.ResponseWriter, r *http.Request){
 				} else {
 
 					if (resultCountProjects > 0){
+						_, errProjectReactions := fetchProjectReactions.UpdateOne(context.TODO(), bson.M{"_id": inputJSON.ProjectId}, bson.M{"$inc" : bson.M{"reactionscount" : -1}})
 						_, err := fetchUserProjectReactions.UpdateOne(context.TODO(), bson.M{"userid": userID}, bson.M{"$pull" : bson.M{"projectids" : inputJSON.ProjectId}})
-						if err != nil {
-							msg = err.Error()
+						if err != nil || errProjectReactions != nil {
+							msg = err.Error() + ". " + errProjectReactions.Error()
 						}  else {
 							status = true
 							msg = "Success"
 						}
 					} else {
+						_, errProjectReactions := fetchProjectReactions.UpdateOne(context.TODO(), bson.M{"_id": inputJSON.ProjectId}, bson.M{"$inc" : bson.M{"reactionscount" : 1}})
 						_, err := fetchUserProjectReactions.UpdateOne(context.TODO(), bson.M{"userid": userID}, bson.M{"$push" : bson.M{"projectids" : inputJSON.ProjectId}})
-						if err != nil {
-							msg = err.Error()
+						if err != nil  || errProjectReactions != nil {
+							msg = err.Error() + ". " + errProjectReactions.Error()
 						}  else {
 							status = true
 							msg = "Success"
@@ -197,13 +201,14 @@ func ManageReactions(w http.ResponseWriter, r *http.Request){
 				}
 				
 			} else {
+
 				var userProjectReactions common.SaveUserProjectReactionStruct
 				userProjectReactions.UserId = userID
 				userProjectReactions.ProjectIds = projectIdList
 
-				_, err := fetchUserProjectReactions.InsertOne(context.TODO(), userProjectReactions)
-				if err != nil {
-					msg = err.Error()
+				_, errUserProjectReactions := fetchUserProjectReactions.InsertOne(context.TODO(), userProjectReactions)
+				if  errUserProjectReactions != nil {
+					msg =  errUserProjectReactions.Error()
 				}  else {
 					status = true
 					msg = "Success"
