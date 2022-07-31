@@ -395,7 +395,6 @@ func FetchMyBookmarksAndReactions(userID primitive.ObjectID)(status bool, msg st
 		msg = "Failed." + bookmarkMsg + " " + reactionMsg
 	}
 
-	fmt.Println(status, msg, bookmarks, reactions)
 	return status, msg, bookmarks, reactions
 }
 

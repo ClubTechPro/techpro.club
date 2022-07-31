@@ -18,8 +18,13 @@
     </div>
 </div>
 {{else}}
+{{$myBookmarks := .MyBookmarks }}
+{{$ifBookmarked := ""}}
+
 {{range .Projects}}
 {{$User := index .Userdetails 0}}
+
+{{if containsObjectId $myBookmarks .Id}}{{$ifBookmarked = "text-primary"}}{{else}}{{$ifBookmarked = ""}}{{end}}
 
 
 <div class="panel shadow bg-body rounded">
@@ -35,7 +40,7 @@
                 <div class="col-md-2">
                     <div class="text-end">
                         <button class="btn btn-default btn-xs text-danger" id="heart-btn" onClick=react()><i class="fa-solid fa-heart"></i></button>
-                        <button class="btn btn-default btn-xs" id="bookmark-btn" onClick=bookmark()><i class="fa-solid fa-bookmark"></i></button>
+                        <button class="btn btn-default btn-xs {{$ifBookmarked}}" id="bookmark-btn" onClick=bookmark()><i class="fa-solid fa-bookmark"></i></button>
                     </div>
                 </div>
             </div>
@@ -81,7 +86,7 @@
 function react(){
 
     let heartBtn = document.getElementById("heart-btn");
-    let projectId = document.getElementById("projectId").innerHTML;
+    let projectId = document.getElementById("projectId").className;
 
     heartBtn.classList.contains("text-danger") ? heartBtn.classList.remove("text-danger") : heartBtn.classList.add("text-danger");
 
@@ -92,15 +97,16 @@ function react(){
         },
         body: JSON.stringify({"projectId": projectId})
     });
-    console.log(request)
 
     fetch(request)
+        .then((response) => response.json())
+        .then((data) => console.log(data));
 
 }
 
 function bookmark(){
     let bookmarkBtn = document.getElementById("bookmark-btn");
-    let projectId = document.getElementById("projectId").innerHTML;
+    let projectId = document.getElementById("projectId").className;
 
     bookmarkBtn.classList.contains("text-primary") ? bookmarkBtn.classList.remove("text-primary") : bookmarkBtn.classList.add("text-primary");
 
@@ -111,9 +117,10 @@ function bookmark(){
         },
         body: JSON.stringify({"projectId": projectId})
     });
-    console.log(request)
 
     fetch(request)
+        .then((response) => response.json())
+        .then((data) => console.log(data));
 }
 </script>
 {{end}}

@@ -17,6 +17,7 @@ import (
 type FinalReactionsOutputStruct struct{
 	Projects []common.FeedStruct `json:"projects"`
 	UserNameImage common.UsernameImageStruct `json:"usernameImage"`
+	MyBookmarks []primitive.ObjectID `json:"myBookmarks"`
 }
 
 // Fetched reacted projects
@@ -50,6 +51,7 @@ func FetchReactions(w http.ResponseWriter, r *http.Request) {
 
 	var functions = template.FuncMap{
 		"objectIdToString" : pages.ObjectIDToString,
+		"containsObjectId" : pages.ContainsObjectID,
 	}
 
 	// constants for check
@@ -58,8 +60,10 @@ func FetchReactions(w http.ResponseWriter, r *http.Request) {
 	// Fetch all reacted projects
 	// Also fetch project details where the user reacted
 	_, _, results := fetchReactedProjectsList(int64(pageid), userID)
+	_, _, bookmarks, _ := pages.FetchMyBookmarksAndReactions(userID)
+	
 
-	output := FinalFeedsOutputStruct{results, userNameImage}
+	output := FinalReactionsOutputStruct{results, userNameImage, bookmarks}
 
 	tmpl, err := template.New("").Funcs(functions).ParseFiles("templates/app/contributors/common/base.gohtml", "templates/app/contributors/reactions.gohtml")
 	if err != nil {

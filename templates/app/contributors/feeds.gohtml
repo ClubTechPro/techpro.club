@@ -44,8 +44,17 @@
     </div>
 </div>
 {{else}}
+{{$myBookmarks := .MyBookmarks }}
+{{$myReactions := .MyReactions }}
+{{$ifBookmarked := ""}}
+{{$ifReacted := ""}}
+
+
 {{range .Projects}}
 {{$User := index .Userdetails 0}}
+
+{{if containsObjectId $myBookmarks .Id}}{{$ifBookmarked = "text-primary"}}{{else}}{{$ifBookmarked = ""}}{{end}}
+{{if containsObjectId $myReactions .Id}}{{$ifReacted = "text-danger"}}{{else}}{{$ifReacted = ""}}{{end}}
 
 
 <div class="panel shadow bg-body rounded">
@@ -60,8 +69,8 @@
                 </div>
                 <div class="col-md-2">
                     <div class="text-end">
-                        <button class="btn btn-default btn-xs" id="heart-btn" onClick=react()><i class="fa-solid fa-heart"></i></button>
-                        <button class="btn btn-default btn-xs" id="bookmark-btn" onClick=bookmark()><i class="fa-solid fa-bookmark"></i></button>
+                        <button class="btn btn-default btn-xs {{$ifReacted}}" id="heart-btn" onClick=react()><i class="fa-solid fa-heart"></i></button>
+                        <button class="btn btn-default btn-xs {{$ifBookmarked}}" id="bookmark-btn" onClick=bookmark()><i class="fa-solid fa-bookmark"></i></button>
                     </div>
                 </div>
             </div>

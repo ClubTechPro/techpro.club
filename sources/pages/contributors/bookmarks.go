@@ -17,6 +17,7 @@ import (
 type FinalBookmarksOutputStruct struct{
 	Projects []common.FeedStruct `json:"projects"`
 	UserNameImage common.UsernameImageStruct `json:"usernameImage"`
+	MyReactions []primitive.ObjectID `json:"myReactions"`
 }
 
 // Fetched bookmarked projects
@@ -50,6 +51,7 @@ func FetchBookmarks(w http.ResponseWriter, r *http.Request) {
 
 	var functions = template.FuncMap{
 		"objectIdToString" : pages.ObjectIDToString,
+		"containsObjectId" : pages.ContainsObjectID,
 	}
 
 	// constants for check
@@ -58,8 +60,9 @@ func FetchBookmarks(w http.ResponseWriter, r *http.Request) {
 	// Fetch all bookmarked projects
 	// Also fetch project details where the user bookmarked
 	_, _, results := fetchBookmarkedProjectsList(int64(pageid), userID)
+	_, _, _, reactions := pages.FetchMyBookmarksAndReactions(userID)
 
-	output := FinalFeedsOutputStruct{results, userNameImage}
+	output := FinalBookmarksOutputStruct{results, userNameImage, reactions}
 
 	tmpl, err := template.New("").Funcs(functions).ParseFiles("templates/app/contributors/common/base.gohtml", "templates/app/contributors/bookmarks.gohtml")
 	if err != nil {
