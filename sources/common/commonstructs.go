@@ -167,6 +167,7 @@ type FetchUserStruct struct {
 	RepoUrl 	string `json:"repoUrl"`
 	Source 		string `json:"source"`
 	CreatedDate string `json:"createdDate"`
+	About       string `json:"about"`
 }
 
 // Save users struct

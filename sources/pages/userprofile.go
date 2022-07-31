@@ -14,9 +14,9 @@ import (
 	"techpro.club/sources/users"
 )
 
-type ProfileStruct struct{
-	UserProfile common.FetchUserStruct `json:"userprofile"`
-	UserSocials common.FetchSocialStruct `json:"socials"`
+type ProfileStruct struct {
+	UserProfile   common.FetchUserStruct     `json:"userprofile"`
+	UserSocials   common.FetchSocialStruct   `json:"socials"`
 	UserNameImage common.UsernameImageStruct `json:"usernameImage"`
 }
 
@@ -31,34 +31,31 @@ func Profile(w http.ResponseWriter, r *http.Request) {
 	// Display the user's profile
 	// Display the user's settings
 
-	
-	
 	if r.URL.Path != "/users/profile" {
-        ErrorHandler(w, r, http.StatusNotFound)
-        return
-    }
-	
+		ErrorHandler(w, r, http.StatusNotFound)
+		return
+	}
+
 	// Session check
 	sessionOk, userID := users.ValidateDbSession(w, r)
-	if(!sessionOk){
-		
+	if !sessionOk {
+
 		// Delete cookies
 		users.DeleteSessionCookie(w, r)
 		users.DeleteUserCookie(w, r)
 
 		http.Redirect(w, r, "/", http.StatusSeeOther)
-	} 
-	
+	}
 
 	var userNameImage common.UsernameImageStruct
 
 	// Fetch user name and image from saved browser cookies
 	status, msg, userName, image := FetchUsernameImage(w, r)
 
-	if(!status){
+	if !status {
 		log.Println(msg)
 	} else {
-		userNameImage  = common.UsernameImageStruct{userName,image}
+		userNameImage = common.UsernameImageStruct{userName, image}
 	}
 
 	_, _, userprofile := fetchUserProfile(userID)
@@ -69,11 +66,10 @@ func Profile(w http.ResponseWriter, r *http.Request) {
 	tmpl, err := template.New("").ParseFiles("templates/app/profile.gohtml", "templates/app/contributors/common/base.gohtml")
 	if err != nil {
 		fmt.Println(err.Error())
-	}else {
-		tmpl.ExecuteTemplate(w, "contributorbase", userSettingsStruct) 
+	} else {
+		tmpl.ExecuteTemplate(w, "contributorbase", userSettingsStruct)
 	}
 }
-
 
 // Display and edit user profile
 func UserEdit(w http.ResponseWriter, r *http.Request) {
@@ -86,37 +82,34 @@ func UserEdit(w http.ResponseWriter, r *http.Request) {
 	// Display the user's profile
 	// Display the user's settings
 
-	
-	
 	if r.URL.Path != "/users/editprofile" {
-        ErrorHandler(w, r, http.StatusNotFound)
-        return
-    }
-	
+		ErrorHandler(w, r, http.StatusNotFound)
+		return
+	}
+
 	// Session check
 	sessionOk, userID := users.ValidateDbSession(w, r)
-	if(!sessionOk){
-		
+	if !sessionOk {
+
 		// Delete cookies
 		users.DeleteSessionCookie(w, r)
 		users.DeleteUserCookie(w, r)
 
 		http.Redirect(w, r, "/", http.StatusSeeOther)
-	} 
+	}
 
 	var userNameImage common.UsernameImageStruct
 
 	// Fetch user name and image from saved browser cookies
 	status, msg, userName, image := FetchUsernameImage(w, r)
 
-	if(!status){
+	if !status {
 		log.Println(msg)
 	} else {
-		userNameImage  = common.UsernameImageStruct{userName,image}
+		userNameImage = common.UsernameImageStruct{userName, image}
 	}
 
-
-	if r.Method == "POST"{
+	if r.Method == "POST" {
 		// Update user profile
 
 		errParse := r.ParseForm()
@@ -129,12 +122,13 @@ func UserEdit(w http.ResponseWriter, r *http.Request) {
 			linkedin := r.Form.Get("linkedin")
 			twitter := r.Form.Get("twitter")
 			stackoverflow := r.Form.Get("stackoverflow")
-			
-			socialStatus, socialMsg := updateSocials(userID, facebook, linkedin, twitter, stackoverflow)
-			profileStatus, profileMsg := UpdateUserProfile(userID, name, repoUrl)
+			about := r.Form.Get("about")
 
-			if (socialStatus && profileStatus){
-				fmt.Println("ok",socialMsg, profileMsg)
+			socialStatus, socialMsg := updateSocials(userID, facebook, linkedin, twitter, stackoverflow)
+			profileStatus, profileMsg := UpdateUserProfile(userID, name, repoUrl, about)
+
+			if socialStatus && profileStatus {
+				fmt.Println("ok", socialMsg, profileMsg)
 			} else {
 				fmt.Println("Wrong", socialMsg, profileMsg)
 			}
@@ -149,13 +143,13 @@ func UserEdit(w http.ResponseWriter, r *http.Request) {
 	tmpl, err := template.New("").ParseFiles("templates/app/profileedit.gohtml", "templates/app/contributors/common/base.gohtml")
 	if err != nil {
 		fmt.Println(err.Error())
-	}else {
-		tmpl.ExecuteTemplate(w, "contributorbase", userSettingsStruct) 
+	} else {
+		tmpl.ExecuteTemplate(w, "contributorbase", userSettingsStruct)
 	}
 }
 
 // Fetch user profile
-func fetchUserProfile(userID primitive.ObjectID)(status bool, msg string, userProfile common.FetchUserStruct){
+func fetchUserProfile(userID primitive.ObjectID) (status bool, msg string, userProfile common.FetchUserStruct) {
 	status = false
 	msg = ""
 	_, _, client := common.Mongoconnect()
@@ -163,11 +157,11 @@ func fetchUserProfile(userID primitive.ObjectID)(status bool, msg string, userPr
 
 	dbName := common.GetMoDb()
 	fetchUsers := client.Database(dbName).Collection(common.CONST_MO_USERS)
-	err := fetchUsers.FindOne(context.TODO(),  bson.M{"_id": userID}, options.FindOne().SetProjection(bson.M{"_id": 0})).Decode(&userProfile)
+	err := fetchUsers.FindOne(context.TODO(), bson.M{"_id": userID}, options.FindOne().SetProjection(bson.M{"_id": 0})).Decode(&userProfile)
 
 	if err != nil {
 		msg = err.Error()
-	}  else {
+	} else {
 		msg = "Success"
 		status = true
 	}
@@ -176,14 +170,14 @@ func fetchUserProfile(userID primitive.ObjectID)(status bool, msg string, userPr
 }
 
 // Update user profile
-func UpdateUserProfile(userID primitive.ObjectID, name, repoLink string)(status bool, msg string){
+func UpdateUserProfile(userID primitive.ObjectID, name, repoLink, about string) (status bool, msg string) {
 
 	_, _, client := common.Mongoconnect()
 	defer client.Disconnect(context.TODO())
 
 	dbName := common.GetMoDb()
 	updateUsers := client.Database(dbName).Collection(common.CONST_MO_USERS)
-	_ , errUpdate := updateUsers.UpdateOne(context.TODO(), bson.M{"_id": userID}, bson.M{"$set": bson.M{"name": name, "repourl": repoLink}})
+	_, errUpdate := updateUsers.UpdateOne(context.TODO(), bson.M{"_id": userID}, bson.M{"$set": bson.M{"name": name, "repourl": repoLink, "about": about}})
 
 	if errUpdate != nil {
 		status = false
@@ -197,7 +191,7 @@ func UpdateUserProfile(userID primitive.ObjectID, name, repoLink string)(status 
 }
 
 // Fetch socials
-func fetchSocials(userID primitive.ObjectID)(status bool, msg string, socials common.FetchSocialStruct){
+func fetchSocials(userID primitive.ObjectID) (status bool, msg string, socials common.FetchSocialStruct) {
 
 	status = false
 	msg = ""
@@ -207,7 +201,7 @@ func fetchSocials(userID primitive.ObjectID)(status bool, msg string, socials co
 
 	dbName := common.GetMoDb()
 	fetchSocials := client.Database(dbName).Collection(common.CONST_MO_SOCIALS)
-	err := fetchSocials.FindOne(context.TODO(),  bson.M{"userid": userID}, options.FindOne().SetProjection(bson.M{"_id": 0})).Decode(&socials)
+	err := fetchSocials.FindOne(context.TODO(), bson.M{"userid": userID}, options.FindOne().SetProjection(bson.M{"_id": 0})).Decode(&socials)
 
 	if err != nil {
 		msg = err.Error()
@@ -220,19 +214,19 @@ func fetchSocials(userID primitive.ObjectID)(status bool, msg string, socials co
 }
 
 // Update socials
-func updateSocials(userID primitive.ObjectID, facebook, linkedin, twitter, stackoverflow string)(status bool, msg string){
+func updateSocials(userID primitive.ObjectID, facebook, linkedin, twitter, stackoverflow string) (status bool, msg string) {
 	_, _, client := common.Mongoconnect()
 	defer client.Disconnect(context.TODO())
 
 	dbName := common.GetMoDb()
 	fetchSocials := client.Database(dbName).Collection(common.CONST_MO_SOCIALS)
-	countUsers, errSearch := fetchSocials.CountDocuments(context.TODO(),  bson.M{"userid": userID})
+	countUsers, errSearch := fetchSocials.CountDocuments(context.TODO(), bson.M{"userid": userID})
 
 	if errSearch != nil {
 		status = false
 		msg = errSearch.Error()
 	} else {
-		if (countUsers == 0){
+		if countUsers == 0 {
 			// Insert
 			insertResult, errInsert := fetchSocials.InsertOne(context.TODO(), bson.M{"userid": userID, "facebook": facebook, "linkedin": linkedin, "twitter": twitter, "stackoverflow": stackoverflow})
 			if errInsert != nil {
@@ -245,7 +239,7 @@ func updateSocials(userID primitive.ObjectID, facebook, linkedin, twitter, stack
 
 		} else {
 			// Update
-			_, errUpdate := fetchSocials.UpdateOne(context.TODO(),  bson.M{"userid": userID}, bson.M{"$set": bson.M{"facebook": facebook, "linkedin": linkedin, "twitter": twitter, "stackoverflow": stackoverflow}})
+			_, errUpdate := fetchSocials.UpdateOne(context.TODO(), bson.M{"userid": userID}, bson.M{"$set": bson.M{"facebook": facebook, "linkedin": linkedin, "twitter": twitter, "stackoverflow": stackoverflow}})
 			if errUpdate != nil {
 				status = false
 				msg = errUpdate.Error()
