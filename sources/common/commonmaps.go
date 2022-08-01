@@ -69,7 +69,7 @@ var ProjectType = map[string]string{
 }
 
 var Contributors = map[string]string{
-	"1" : "Project founder only",
-	"less_than_10" : "Less than 10",
-	"more_than_10" : "More than 10",
+	CONTRIBUTOR_COUNT[0] : "Project founder only",
+	CONTRIBUTOR_COUNT[1] : "Less than 10",
+	CONTRIBUTOR_COUNT[2] : "More than 10",
 }

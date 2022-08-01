@@ -26,8 +26,13 @@ const(
 	CONST_MO_USER_SESSIONS = "user_sessions"
 	CONST_MO_CONTRIBUTOR_PREFERENCES = "contributor_preferences"
 	CONST_MO_PROJECTS = "projects"
-	CONST_MO_CONTRIBUTOR_NOTIFICATIONS = "contributor_notifications"
-	CONST_MO_PROJECT_NOTIFICATIONS = "project_notifications"
+	CONST_MO_NOTIFICATIONS = "notifications"
 	CONST_MO_BOOKMARKS = "bookmarks"
 	CONST_MO_USER_PROJECT_REACTIONS = "user_project_reactions"
 )
+
+// Contributor count
+var CONTRIBUTOR_COUNT = []string{"1", "less_than_10", "more_than_10"}
+
+// Notificaitons type
+var NOTIFICATION_TYPES = []string{"projects"}

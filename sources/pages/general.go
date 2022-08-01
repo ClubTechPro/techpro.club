@@ -121,7 +121,7 @@ func NotificationsCount(userID primitive.ObjectID)(status bool, msg string, coun
 	defer client.Disconnect(context.TODO())
 
 	dbName := common.GetMoDb()
-	countNotifications := client.Database(dbName).Collection(common.CONST_MO_CONTRIBUTOR_NOTIFICATIONS)
+	countNotifications := client.Database(dbName).Collection(common.CONST_MO_NOTIFICATIONS)
 	count, errCount := countNotifications.CountDocuments(context.TODO(), bson.M{"read": false, "userid" : userID})
 
 	if errCount != nil{

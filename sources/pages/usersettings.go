@@ -117,7 +117,7 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 
 		dbName := common.GetMoDb()
 
-		projectCollection := client.Database(dbName).Collection(common.CONST_MO_CONTRIBUTOR_NOTIFICATIONS)
+		projectCollection := client.Database(dbName).Collection(common.CONST_MO_NOTIFICATIONS)
 		_, err1 := projectCollection.DeleteMany(context.TODO(), bson.M{"userid": userID})
 
 		userSessionCollection := client.Database(dbName).Collection(common.CONST_MO_USER_SESSIONS)

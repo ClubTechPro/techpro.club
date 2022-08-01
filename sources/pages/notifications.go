@@ -69,7 +69,7 @@ func fetchNotificationList(w http.ResponseWriter, r *http.Request, userID primit
 	defer client.Disconnect(context.TODO())
 
 	dbName := common.GetMoDb()
-	fetchNotifications := client.Database(dbName).Collection(common.CONST_MO_CONTRIBUTOR_NOTIFICATIONS)
+	fetchNotifications := client.Database(dbName).Collection(common.CONST_MO_NOTIFICATIONS)
 	notifications, errNotifications := fetchNotifications.Find(context.TODO(), bson.M{"userid" : userID})
 
 	if errNotifications != nil{
