@@ -33,7 +33,7 @@
                 <div class="col-md-10">
                     <img src="{{$User.ImageLink}}" height="30" alt="User avatar" class="me-1"/> 
                     {{$User.Name}} 
-                    <small class="text-muted me-2">- 4h</small>
+                    <small class="text-muted me-2">- {{timeElapsed .CreatedDate}}</small>
                     
                 </div>
                 <div class="col-md-2">

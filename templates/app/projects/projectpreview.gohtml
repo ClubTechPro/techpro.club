@@ -28,7 +28,7 @@
 
     <div class="text-muted mt-2">
         {{if .ProjectPreview.Public}}<i class="fa-solid fa-lock-open me-1"></i>Public{{else}}<i class="fa-solid fa-lock me-1"></i>Private{{end}} 
-        <i class="fa-solid fa-heart ms-2 me-1 text-danger"></i><small>201</small>
+        <i class="fa-solid fa-heart ms-2 me-1 text-danger"></i><small>{{.ProjectPreview.ReactionsCount}}</small>
     </div>
 
     <div class="row rowspacing mt-3">

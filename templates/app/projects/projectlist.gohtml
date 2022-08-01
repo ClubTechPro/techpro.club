@@ -28,7 +28,9 @@
         <span class="badge bg-light text-primary">Info</span>
     </div>
 </div>
-{{else}}{{range .ProjectsList}}
+{{else}}
+
+{{range .ProjectsList}}
 <div class="panel shadow bg-body rounded">
     <div class="panel-body">
 
@@ -44,7 +46,7 @@
                 {{else}}
                 Under Moderation
                 {{ end }},
-                {{.CreatedDate}}
+                {{timeElapsed .CreatedDate}}
 
                 <a href="{{.RepoLink}}" target="_blank"
                     ><span class="ti-link"> </span>{{.RepoLink}}</a
@@ -56,7 +58,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <i class="fa-solid fa-lock me-3"></i>
-                    <i class="fa-solid fa-heart me-2 text-danger"></i><small>201</small>
+                    <i class="fa-solid fa-heart me-2 text-danger"></i><small>{{.ReactionsCount}}</small>
                 </div>
             </div>
             <div class="row mt-2">
@@ -78,4 +80,5 @@
     </div>
 </div>
 </div>
-{{ end }}{{ end }} {{ end }}
+{{ end }}{{ end }}{{ end }}
+
