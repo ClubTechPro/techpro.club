@@ -112,27 +112,61 @@ func FetchProjectDetails(projectID string, userID primitive.ObjectID) (status bo
 }
 
 // Find total unread notifications for a user from database
-func NotificationsCount(userID primitive.ObjectID)(status bool, msg string, count int64){
-	status = true
-	msg = "Success"
+func NotificationsCountAndTopFive(userID primitive.ObjectID)(status bool, msg string, count int64, notificationsList []common.MainNotificationStruct){
+	status = false
+	msg = "Failed"
 	count = 0
+
+	statusCount := false
+	msgCount := ""
+
+	statusList := false
+	msgList := ""
+
+	var notifications common.FetchNotificationStruct
 
 	status, msg, client := common.Mongoconnect()
 	defer client.Disconnect(context.TODO())
 
 	dbName := common.GetMoDb()
 	countNotifications := client.Database(dbName).Collection(common.CONST_MO_NOTIFICATIONS)
-	count, errCount := countNotifications.CountDocuments(context.TODO(), bson.M{"read": false, "userid" : userID})
-
+	errCount := countNotifications.FindOne(context.TODO(), bson.M{"userid" : userID}).Decode(&notifications)
 	if errCount != nil{
-		status = false
-		msg = errCount.Error()
+		msgCount = errCount.Error()
 	} else {
-		status = true
-		msg = "Success"
+		statusCount = true
+		msgCount = "Success"
+		count = int64(notifications.UnreadNotifications)
+	}
+	
+	fetchNotifications, errFetch := countNotifications.Find(context.TODO(),  bson.M{"userid": userID})
+
+	if errFetch != nil{
+		msgList = errCount.Error()
+	} else {
+		for fetchNotifications.Next(context.TODO()){
+			err := fetchNotifications.Decode(&notifications)
+
+			if err != nil {
+				statusList = false
+				msgList = errCount.Error()
+			} else {
+				statusList = true
+				msgList = "Success"
+				notificationsList = notifications.NotificationsList
+			}
+		}
 	}
 
-	return status, msg, count
+
+	if statusCount && statusList{
+		status = true
+		msg = "Success"
+	} else {
+		msg = msgList + "." + msgCount
+	}
+	
+	return status, msg, count, notificationsList
 }
 
 // Manage reaction to a project

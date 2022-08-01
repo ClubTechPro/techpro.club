@@ -99,13 +99,27 @@
                             class="navbar-link dropdown-toggle icon"
                         >
                             <i class="fa fa-bell"></i>
-                            <span class="badge">0</span>
+                            <span class="badge">{{.NotificaitonsCount}}</span>
                         </a>
                         <div class="dropdown-menu media-list dropdown-menu-end">
-                            <div class="dropdown-header">NOTIFICATIONS (0)</div>
-                            <div class="text-center w-300px py-3">
-                                No notification found
+                            <div class="dropdown-header">NOTIFICATIONS ({{.NotificaitonsCount}})</div>
+                            {{range .NotificationsList}}                                
+                                <a href="{{.Link}}" class="dropdown-item media">
+                                    <div class="media-left">
+                                        <i class="fa-solid fa-rocket media-object bg-gray-400"></i>
+                                    </div>
+                                    <div class="media-body">
+                                        <h6 class="media-heading">{{.Subject}}</h6>
+                                        <p>{{.Message}}</p>
+                                        <div class="text-muted fs-12px">{{.CreatedDate}}</div>
+                                    </div>
+                                </a>
+                            {{end}}
+
+                            <div class="dropdown-footer text-center">
+                                <a href="/users/notifications" class="text-decoration-none">View more</a>
                             </div>
+                            
                         </div>
                     </div>
                     <div class="navbar-item navbar-user dropdown">

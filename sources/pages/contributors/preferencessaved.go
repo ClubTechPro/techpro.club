@@ -11,6 +11,11 @@ import (
 	"techpro.club/sources/users"
 )
 
+type FinalPreferenceSavedOutputStruct struct{
+	UserNameImage common.UsernameImageStruct `json:"usernameImage"`
+	NotificaitonsCount int64 `json:"notificationsCount"`
+	NotificationsList []common.MainNotificationStruct `json:"nofiticationsList"`
+}
 
 func PreferencesSaved(w http.ResponseWriter, r *http.Request){
 	
@@ -20,7 +25,7 @@ func PreferencesSaved(w http.ResponseWriter, r *http.Request){
     }
 
 	// Session check
-	sessionOk, _ := users.ValidateDbSession(w, r)
+	sessionOk, userID := users.ValidateDbSession(w, r)
 	if(!sessionOk){
 		
 		// Delete cookies
@@ -35,18 +40,22 @@ func PreferencesSaved(w http.ResponseWriter, r *http.Request){
 	// Fetch user name and image from saved browser cookies
 	status, msg, userName, image := pages.FetchUsernameImage(w, r)
 
+	// Fetch notificaitons
+	_, _, notificationsCount, notificationsList := pages.NotificationsCountAndTopFive(userID)
+
 	if(!status){
 		log.Println(msg)
 	} else {
 		userNameImage  = common.UsernameImageStruct{userName,image}
 	}
 
+	output := FinalPreferenceSavedOutputStruct{userNameImage, notificationsCount, notificationsList}
 
 	tmpl, err := template.New("").ParseFiles("templates/app/contributors/preferencessaved.gohtml", "templates/app/contributors/common/base.gohtml")
 	if err != nil {
 		fmt.Println(err.Error())
 	}else {
-		tmpl.ExecuteTemplate(w, "contributorbase", userNameImage) 
+		tmpl.ExecuteTemplate(w, "contributorbase", output) 
 	}
 	
 }

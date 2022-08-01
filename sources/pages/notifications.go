@@ -17,6 +17,8 @@ import (
 type NotificationStruct struct{
 	Notifications []common.FetchNotificationStruct `json:"notifications"`
 	UserNameImage common.UsernameImageStruct `json:"usernameImage"`
+	NotificaitonsCount int64 `json:"notificationsCount"`
+	NotificationsList []common.MainNotificationStruct `json:"nofiticationsList"`
 }
 
 func Notifications(w http.ResponseWriter, r *http.Request){
@@ -38,6 +40,9 @@ func Notifications(w http.ResponseWriter, r *http.Request){
 
 	var userNameImage common.UsernameImageStruct
 
+	// Fetch notificaitons
+	_, _, notificationsCount, notificationsList := NotificationsCountAndTopFive(userID)
+
 	// Fetch user name and image from saved browser cookies
 	status, msg, userName, image := FetchUsernameImage(w, r)
 
@@ -49,7 +54,7 @@ func Notifications(w http.ResponseWriter, r *http.Request){
 
 	_, _, Notifications := fetchNotificationList(w, r, userID)
 
-	output := NotificationStruct{Notifications, userNameImage}
+	output := NotificationStruct{Notifications, userNameImage, notificationsCount, notificationsList}
 
 	tmpl, err := template.New("").ParseFiles("templates/app/notifications.gohtml", "templates/app/contributors/common/base.gohtml")
 

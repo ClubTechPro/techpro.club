@@ -18,6 +18,8 @@ type FinalBookmarksOutputStruct struct{
 	Projects []common.FeedStruct `json:"projects"`
 	UserNameImage common.UsernameImageStruct `json:"usernameImage"`
 	MyReactions []primitive.ObjectID `json:"myReactions"`
+	NotificaitonsCount int64 `json:"notificationsCount"`
+	NotificationsList []common.MainNotificationStruct `json:"nofiticationsList"`
 }
 
 // Fetched bookmarked projects
@@ -43,6 +45,9 @@ func FetchBookmarks(w http.ResponseWriter, r *http.Request) {
 	// Fetch user name and image from saved browser cookies
 	status, msg, userName, image := pages.FetchUsernameImage(w, r)
 
+	// Fetch notificaitons
+	_, _, notificationsCount, notificationsList := pages.NotificationsCountAndTopFive(userID)
+
 	if(!status){
 		log.Println(msg)
 	} else {
@@ -62,7 +67,7 @@ func FetchBookmarks(w http.ResponseWriter, r *http.Request) {
 	_, _, results := fetchBookmarkedProjectsList(int64(pageid), userID)
 	_, _, _, reactions := pages.FetchMyBookmarksAndReactions(userID)
 
-	output := FinalBookmarksOutputStruct{results, userNameImage, reactions}
+	output := FinalBookmarksOutputStruct{results, userNameImage, reactions, notificationsCount, notificationsList}
 
 	tmpl, err := template.New("").Funcs(functions).ParseFiles("templates/app/contributors/common/base.gohtml", "templates/app/contributors/bookmarks.gohtml")
 	if err != nil {

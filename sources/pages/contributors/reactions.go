@@ -18,6 +18,8 @@ type FinalReactionsOutputStruct struct{
 	Projects []common.FeedStruct `json:"projects"`
 	UserNameImage common.UsernameImageStruct `json:"usernameImage"`
 	MyBookmarks []primitive.ObjectID `json:"myBookmarks"`
+	NotificaitonsCount int64 `json:"notificationsCount"`
+	NotificationsList []common.MainNotificationStruct `json:"nofiticationsList"`
 }
 
 // Fetched reacted projects
@@ -43,6 +45,9 @@ func FetchReactions(w http.ResponseWriter, r *http.Request) {
 	// Fetch user name and image from saved browser cookies
 	status, msg, userName, image := pages.FetchUsernameImage(w, r)
 
+	// Fetch notificaitons
+	_, _, notificationsCount, notificationsList := pages.NotificationsCountAndTopFive(userID)
+
 	if(!status){
 		log.Println(msg)
 	} else {
@@ -63,7 +68,7 @@ func FetchReactions(w http.ResponseWriter, r *http.Request) {
 	_, _, bookmarks, _ := pages.FetchMyBookmarksAndReactions(userID)
 	
 
-	output := FinalReactionsOutputStruct{results, userNameImage, bookmarks}
+	output := FinalReactionsOutputStruct{results, userNameImage, bookmarks, notificationsCount, notificationsList}
 
 	tmpl, err := template.New("").Funcs(functions).ParseFiles("templates/app/contributors/common/base.gohtml", "templates/app/contributors/reactions.gohtml")
 	if err != nil {

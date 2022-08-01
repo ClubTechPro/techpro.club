@@ -23,6 +23,8 @@ type FinalProjectOutStruct struct{
 	Contributors map[string]string `json:"contributors"`
 	ProjectStruct common.FetchProjectStruct `json:"projectStruct"`
 	UserNameImage common.UsernameImageStruct `json:"userNameImage"`
+	NotificaitonsCount int64 `json:"notificationsCount"`
+	NotificationsList []common.MainNotificationStruct `json:"nofiticationsList"`
 }
 
 func ProjectEdit(w http.ResponseWriter, r *http.Request){
@@ -47,10 +49,14 @@ func ProjectEdit(w http.ResponseWriter, r *http.Request){
 		"sliceToCsv" : pages.SliceToCsv,
 	}
 
+	// Fetch notificaitons
+	_, _, notificationsCount, notificationsList := pages.NotificationsCountAndTopFive(userID)
+
 	var userNameImage common.UsernameImageStruct
 
 	// Fetch user name and image from saved browser cookies
 	status, msg, userName, image := pages.FetchUsernameImage(w, r)
+	
 
 	if(!status){
 		log.Println(msg)
@@ -71,6 +77,8 @@ func ProjectEdit(w http.ResponseWriter, r *http.Request){
 			common.Contributors,
 			result,
 			userNameImage,
+			notificationsCount,
+			notificationsList,
 		}
 		
 

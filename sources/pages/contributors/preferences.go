@@ -22,6 +22,8 @@ type FinalPreferencesOutStruct struct{
 	Contributors map[string]string `json:"contributors"`
 	ContributorPreferences common.SaveContributorPreferencesStruct `json:"contributorPreferences"`
 	UserNameImage common.UsernameImageStruct `json:"userNameImage"`
+	NotificaitonsCount int64 `json:"notificationsCount"`
+	NotificationsList []common.MainNotificationStruct `json:"nofiticationsList"`
 }
 
 func Preferences(w http.ResponseWriter, r *http.Request){
@@ -52,6 +54,9 @@ func Preferences(w http.ResponseWriter, r *http.Request){
 	// Fetch user name and image from saved browser cookies
 	status, msg, userName, image := pages.FetchUsernameImage(w, r)
 
+	// Fetch notificaitons
+	_, _, notificationsCount, notificationsList := pages.NotificationsCountAndTopFive(userID)
+
 	if(!status){
 		log.Println(msg)
 	} else {
@@ -69,6 +74,8 @@ func Preferences(w http.ResponseWriter, r *http.Request){
 			common.Contributors,
 			preferences,
 			userNameImage,
+			notificationsCount, 
+			notificationsList,
 		}
 
 		tmpl, err := template.New("").Funcs(functions).ParseFiles("templates/app/contributors/preferences.gohtml", "templates/app/contributors/common/base.gohtml")

@@ -11,6 +11,11 @@ import (
 	"techpro.club/sources/users"
 )
 
+type ProjectSavedOutStruct struct{
+	UserNameImage common.UsernameImageStruct `json:"userNameImage"`
+	NotificaitonsCount int64 `json:"notificationsCount"`
+	NotificationsList []common.MainNotificationStruct `json:"nofiticationsList"`
+}
 
 func ProjectSaved(w http.ResponseWriter, r *http.Request){
 
@@ -20,7 +25,7 @@ func ProjectSaved(w http.ResponseWriter, r *http.Request){
     }
 
 	// Session check
-	sessionOk, _ := users.ValidateDbSession(w, r)
+	sessionOk, userID := users.ValidateDbSession(w, r)
 	if(!sessionOk){
 		
 		// Delete cookies
@@ -32,6 +37,9 @@ func ProjectSaved(w http.ResponseWriter, r *http.Request){
 
 	var userNameImage common.UsernameImageStruct
 
+	// Fetch notificaitons
+	_, _, notificationsCount, notificationsList := pages.NotificationsCountAndTopFive(userID)
+
 	// Fetch user name and image from saved browser cookies
 	status, msg, userName, image := pages.FetchUsernameImage(w, r)
 
@@ -41,11 +49,13 @@ func ProjectSaved(w http.ResponseWriter, r *http.Request){
 		userNameImage  = common.UsernameImageStruct{userName,image}
 	}
 	
+	output := ProjectSavedOutStruct{userNameImage, notificationsCount, notificationsList}
+
 	tmpl, err := template.New("").ParseFiles("templates/app/projects/projectsaved.gohtml", "templates/app/projects/common/base.gohtml")
 	if err != nil {
 		fmt.Println(err.Error())
 	}else {
-		tmpl.ExecuteTemplate(w, "projectbase", userNameImage) 
+		tmpl.ExecuteTemplate(w, "projectbase", output) 
 	}
 	
 }

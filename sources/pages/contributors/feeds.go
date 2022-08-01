@@ -18,6 +18,8 @@ type FinalFeedsOutputStruct struct{
 	UserNameImage common.UsernameImageStruct `json:"usernameImage"`
 	MyBookmarks []primitive.ObjectID `json:"myBookmarks"`
 	MyReactions []primitive.ObjectID `json:"myReactions"`
+	NotificaitonsCount int64 `json:"notificationsCount"`
+	NotificationsList []common.MainNotificationStruct `json:"nofiticationsList"`
 }
 
 func Feeds(w http.ResponseWriter, r *http.Request){
@@ -43,6 +45,9 @@ func Feeds(w http.ResponseWriter, r *http.Request){
 	// Fetch user name and image from saved browser cookies
 	status, msg, userName, image := pages.FetchUsernameImage(w, r)
 
+	// Fetch notificaitons
+	_, _, notificationsCount, notificationsList := pages.NotificationsCountAndTopFive(userID)
+
 	if(!status){
 		log.Println(msg)
 	} else {
@@ -63,7 +68,7 @@ func Feeds(w http.ResponseWriter, r *http.Request){
 	_, _, results := filterActiveProjects(pageid, tags, keyword)
 	_, _, bookmarks, reactions := pages.FetchMyBookmarksAndReactions(userID)
 
-	output := FinalFeedsOutputStruct{results, userNameImage, bookmarks, reactions}
+	output := FinalFeedsOutputStruct{results, userNameImage, bookmarks, reactions, notificationsCount, notificationsList}
 
 	tmpl, err := template.New("").Funcs(functions).ParseFiles("templates/app/contributors/feeds.gohtml", "templates/app/contributors/common/base.gohtml")
 
@@ -142,7 +147,6 @@ func filterActiveProjects(pageid int64, tags []string, keyword string)(status bo
 	projectsList, err := fetchProjects.Aggregate(context.TODO(), []bson.M{aggCondition, aggLookup, aggProjections, aggSkip, aggLimit})
 
 	if err != nil {
-		fmt.Println(err.Error())
 		msg = err.Error()
 	} else {
 		for projectsList.Next(context.TODO()){
@@ -150,7 +154,6 @@ func filterActiveProjects(pageid int64, tags []string, keyword string)(status bo
 			errDecode := projectsList.Decode(&elem)
 
 			if errDecode != nil {
-				fmt.Println(errDecode.Error())
 				msg = errDecode.Error()
 			} else {
 				results = append(results, elem)

@@ -17,6 +17,8 @@ import (
 type FinalProjectListOutStruct struct{
 	ProjectsList []common.FetchProjectStruct `json:"projectsList"`
 	UserNameImage common.UsernameImageStruct `json:"userNameImage"`
+	NotificaitonsCount int64 `json:"notificationsCount"`
+	NotificationsList []common.MainNotificationStruct `json:"nofiticationsList"`
 }
 
 func ProjectList(w http.ResponseWriter, r *http.Request){
@@ -40,6 +42,9 @@ func ProjectList(w http.ResponseWriter, r *http.Request){
 	var finalOutStruct FinalProjectListOutStruct
 	var userNameImage common.UsernameImageStruct
 
+	// Fetch notificaitons
+	_, _, notificationsCount, notificationsList := pages.NotificationsCountAndTopFive(userID)
+
 	// Fetch user name and image from saved browser cookies
 	status, msg, userName, image := pages.FetchUsernameImage(w, r)
 
@@ -50,7 +55,7 @@ func ProjectList(w http.ResponseWriter, r *http.Request){
 	}
 	
 	_, _, results := listProjects(w, r, userID)
-	finalOutStruct = FinalProjectListOutStruct{results, userNameImage}
+	finalOutStruct = FinalProjectListOutStruct{results, userNameImage, notificationsCount, notificationsList}
 	
 
 	tmpl, err := template.New("").ParseFiles("templates/app/projects/projectlist.gohtml", "templates/app/projects/common/base.gohtml")
