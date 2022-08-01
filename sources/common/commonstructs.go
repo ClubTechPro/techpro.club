@@ -66,25 +66,19 @@ type FeedParentUserStruct struct{
 
 // Fetch Notifications Struct
 type FetchNotificationStruct struct {
-	Id primitive.ObjectID `json:"id"`
+	Id primitive.ObjectID `json:"id" bson:"_id,omitempty"`
 	UserID primitive.ObjectID `json:"userID"`
-	NotificationType string `json:"notificationType"`
-	Subject string `json:"subject"`
-	Message string `json:"message"`
-	Link string `json:"link"`
-	CreatedDate string `json:"createdDate"`
-	Read bool `json:"read"`
+	UnreadNotifications int `json:"unreadNotifications"`
+	NotificationsList []MainNotificationStruct `json:"notificationslist"`
 }
 
-// Save Notifications Struct
-type SaveNotificationStruct struct {
-	UserID primitive.ObjectID `json:"userID"`
-	NotificationType string `json:"notificationType"`
+// Main Notifications struct
+type MainNotificationStruct struct{
+	NotificationType string `json:"notificationtype"`
 	Subject string `json:"subject"`
 	Message string `json:"message"`
 	Link string `json:"link"`
-	CreatedDate string `json:"createdDate"`
-	Read bool `json:"read"`
+	CreatedDate string `json:"createddate"`
 }
 
 

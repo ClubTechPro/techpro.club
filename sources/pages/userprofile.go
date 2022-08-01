@@ -18,6 +18,8 @@ type ProfileStruct struct {
 	UserProfile   common.FetchUserStruct     `json:"userprofile"`
 	UserSocials   common.FetchSocialStruct   `json:"socials"`
 	UserNameImage common.UsernameImageStruct `json:"usernameImage"`
+	NotificaitonsCount int64 `json:"notificationsCount"`
+	NotificationsList []common.MainNotificationStruct `json:"nofiticationsList"`
 }
 
 // Display user profile
@@ -49,6 +51,9 @@ func Profile(w http.ResponseWriter, r *http.Request) {
 
 	var userNameImage common.UsernameImageStruct
 
+	// Fetch notificaitons
+	_, _, notificationsCount, notificationsList := NotificationsCountAndTopFive(userID)
+
 	// Fetch user name and image from saved browser cookies
 	status, msg, userName, image := FetchUsernameImage(w, r)
 
@@ -61,7 +66,7 @@ func Profile(w http.ResponseWriter, r *http.Request) {
 	_, _, userprofile := fetchUserProfile(userID)
 	_, _, socials := fetchSocials(userID)
 
-	userSettingsStruct := ProfileStruct{userprofile, socials, userNameImage}
+	userSettingsStruct := ProfileStruct{userprofile, socials, userNameImage, notificationsCount, notificationsList}
 	
 	tmpl, err := template.New("").ParseFiles("templates/app/profile.gohtml", "templates/app/contributors/common/base.gohtml")
 	if err != nil {
@@ -99,6 +104,9 @@ func UserEdit(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var userNameImage common.UsernameImageStruct
+
+	// Fetch notificaitons
+	_, _, notificationsCount, notificationsList := NotificationsCountAndTopFive(userID)
 
 	// Fetch user name and image from saved browser cookies
 	status, msg, userName, image := FetchUsernameImage(w, r)
@@ -138,7 +146,7 @@ func UserEdit(w http.ResponseWriter, r *http.Request) {
 	_, _, userprofile := fetchUserProfile(userID)
 	_, _, socials := fetchSocials(userID)
 
-	userSettingsStruct := ProfileStruct{userprofile, socials, userNameImage}
+	userSettingsStruct := ProfileStruct{userprofile, socials, userNameImage, notificationsCount, notificationsList}
 
 	tmpl, err := template.New("").ParseFiles("templates/app/profileedit.gohtml", "templates/app/contributors/common/base.gohtml")
 	if err != nil {

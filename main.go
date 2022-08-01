@@ -6,7 +6,6 @@ import (
 
 	"techpro.club/sources/authentication"
 	"techpro.club/sources/common"
-	"techpro.club/sources/notifications"
 	"techpro.club/sources/pages"
 	"techpro.club/sources/pages/contributors"
 	"techpro.club/sources/pages/projects"
@@ -44,7 +43,7 @@ func main() {
 	// Users
 	http.HandleFunc("/users/editprofile", pages.UserEdit)
 	http.HandleFunc("/users/profile", pages.Profile)
-	http.HandleFunc("/users/notifications", notifications.Fetch)
+	http.HandleFunc("/users/notifications", pages.Notifications)
 	http.HandleFunc("/users/settings", pages.UserSettings)
 
 	// Templates/Contributors

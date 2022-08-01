@@ -18,6 +18,8 @@ import (
 type UserSettingsStruct struct {
 	UserProfile   common.FetchUserStruct     `json:"userprofile"`
 	UserNameImage common.UsernameImageStruct `json:"usernameImage"`
+	NotificaitonsCount int64 `json:"notificationsCount"`
+	NotificationsList []common.MainNotificationStruct `json:"nofiticationsList"`
 }
 
 // Display user settings
@@ -49,6 +51,9 @@ func UserSettings(w http.ResponseWriter, r *http.Request) {
 
 	var userNameImage common.UsernameImageStruct
 
+	// Fetch notificaitons
+	_, _, notificationsCount, notificationsList := NotificationsCountAndTopFive(userID)
+
 	// Fetch user name and image from saved browser cookies
 	status, msg, userName, image := FetchUsernameImage(w, r)
 
@@ -60,7 +65,7 @@ func UserSettings(w http.ResponseWriter, r *http.Request) {
 
 	_, _, userprofile := fetchUserProfile(userID)
 
-	userSettingData := UserSettingsStruct{userprofile, userNameImage}
+	userSettingData := UserSettingsStruct{userprofile, userNameImage, notificationsCount, notificationsList}
 
 	tmpl, err := template.New("").ParseFiles("templates/app/contributors/settings.gohtml", "templates/app/contributors/common/base.gohtml")
 	if err != nil {
@@ -117,7 +122,7 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 
 		dbName := common.GetMoDb()
 
-		projectCollection := client.Database(dbName).Collection(common.CONST_MO_CONTRIBUTOR_NOTIFICATIONS)
+		projectCollection := client.Database(dbName).Collection(common.CONST_MO_NOTIFICATIONS)
 		_, err1 := projectCollection.DeleteMany(context.TODO(), bson.M{"userid": userID})
 
 		userSessionCollection := client.Database(dbName).Collection(common.CONST_MO_USER_SESSIONS)

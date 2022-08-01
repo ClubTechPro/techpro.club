@@ -1,102 +1,27 @@
 {{define "content"}}
-<style>
-.notif-card:hover{
-	cursor: pointer;
-	background-color: #f4f4f4;
-	border-radius: 1em;
-	color:#4285f4
-}
 
-.notif-container{
-	color: #595959;
-}
-</style>
-<div class="notif-container">
-<h1 class="page-header">Notifications</h1>
-
-<div class="panel panel-inverse">
-    <div class="panel-heading">
-        <h4 class="panel-title">Latest</h4>
+<!-- BEGIN page-header -->
+<div class="row">
+    <div class="col col-md-12">
+        <h1 class="page-header">Notifications</h1>
     </div>
+</div>
+
+{{range .NotificationsList}}
+<div class="panel shadow shadow-sm">
     <div class="panel-body">
-        <h6 class="card-subtitle mb-2 text-muted"></h6>
         <div class="card-text notif-card">
-			<div class="d-flex" style="align-items: center;padding: 10px;">
-				<a href="javascript:;">
-					<i class="fa fa-bell" style="font-size:20px" aria-hidden="true"></i>
-				</a>
+			<div class="d-flex">
+				<div class="text-primary"><i class="fa fa-bell" aria-hidden="true"></i></div>
 				<div class="ps-3 flex-1">
-					<h5 class="mb-1">Project Title</h5>
-					<p class="mb-0">Contribute to this project on C++</p>
-					<p class="mb-0">1h</p>
-
+					<h6 class="mb-1"><a href="{{.Link}}">{{.Subject}}</a><small class="ms-1">{{.CreatedDate}}</small></h6>
+					<div class="">{{.Message}}</div>
 				</div>
 			</div>
-
         </div>
-
-		<hr class="bg-gray-500" />
-
-
-		<div class="card-text notif-card">
-			<div class="d-flex" style="align-items: center;padding: 10px;">
-				<a href="javascript:;">
-					<i class="fa fa-bell" style="font-size:20px" aria-hidden="true"></i>
-				</a>
-				<div class="ps-3 flex-1">
-					<h5 class="mb-1">Project Title</h5>
-					<p class="mb-0">Contribute to this project on C++</p>
-					<p class="mb-0">3h</p>
-				</div>
-			</div>
-
-		</div>
-
-    </div>
+	</div>
 </div>
-
-<div class="panel panel-inverse">
-    <div class="panel-heading">
-        <h4 class="panel-title">Previous</h4>
-    </div>
-    <div class="panel-body">
-        <h6 class="card-subtitle mb-2 text-muted"></h6>
-		<div class="card-text notif-card">
-			<div class="d-flex" style="align-items: center;padding: 10px;">
-				<a href="javascript:;">
-					<i class="fa fa-bell" style="font-size:20px" aria-hidden="true"></i>
-				</a>
-				<div class="ps-3 flex-1">
-					<h5 class="mb-1">Project Title</h5>
-					<p class="mb-0">Contribute to this project on Golang</p>
-					<p class="mb-0">Last week</p>
-				</div>
-			</div>
-
-        </div>
-
-		<hr class="bg-gray-500" />
-
-
-		<div class="card-text notif-card">
-			<div class="d-flex" style="align-items: center;padding: 10px;">
-				<a href="javascript:;">
-					<i class="fa fa-bell" style="font-size:20px" aria-hidden="true"></i>
-				</a>
-				<div class="ps-3 flex-1">
-					<h5 class="mb-1">Project Title</h5>
-					<p class="mb-0">Contribute to this project on React</p>
-					<p class="mb-0">2 weeks</p>
-				</div>
-			</div>
-
-        </div>
-
-    </div>
-</div>
-
-</div>
-
+{{end}}
 
 
 {{end}}

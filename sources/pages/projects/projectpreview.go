@@ -14,6 +14,8 @@ import (
 type FinalProjectPreviewOutStruct struct{
 	ProjectPreview common.FetchProjectStruct `json:"projectsList"`
 	UserNameImage common.UsernameImageStruct `json:"userNameImage"`
+	NotificaitonsCount int64 `json:"notificationsCount"`
+	NotificationsList []common.MainNotificationStruct `json:"nofiticationsList"`
 }
 
 func ProjectPreview(w http.ResponseWriter, r *http.Request){
@@ -36,6 +38,9 @@ func ProjectPreview(w http.ResponseWriter, r *http.Request){
 	var finalOutStruct FinalProjectPreviewOutStruct
 	var userNameImage common.UsernameImageStruct
 
+	// Fetch notificaitons
+	_, _, notificationsCount, notificationsList := pages.NotificationsCountAndTopFive(userID)
+
 	// Fetch user name and image from saved browser cookies
 	status, msg, userName, image := pages.FetchUsernameImage(w, r)
 
@@ -48,7 +53,7 @@ func ProjectPreview(w http.ResponseWriter, r *http.Request){
 	projectID := r.URL.Query().Get("projectid")
 	_, _, result := pages.FetchProjectDetails(projectID, userID)
 
-	finalOutStruct = FinalProjectPreviewOutStruct{result, userNameImage}
+	finalOutStruct = FinalProjectPreviewOutStruct{result, userNameImage, notificationsCount, notificationsList}
 	
 
 	tmpl, err := template.New("").ParseFiles("templates/app/projects/projectpreview.gohtml", "templates/app/projects/common/base.gohtml")
