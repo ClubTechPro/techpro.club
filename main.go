@@ -30,6 +30,7 @@ func main() {
 	http.HandleFunc("/api/managebookmark", pages.ManageBookmarks)
 	http.HandleFunc("/api/marknotificationsread", pages.MarkNotificationRead)
 	http.HandleFunc("/api/deleteuser", pages.DeleteUser)
+	http.HandleFunc("/api/deleteproject", projects.DeleteProject)
 
 	// Templates
 	http.HandleFunc("/", pages.IndexHandler)

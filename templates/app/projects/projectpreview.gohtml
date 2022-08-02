@@ -13,7 +13,7 @@
     {{if .ProjectOwner}}
     <div class="col col-md-2 text-end">
         <a href="/projects/edit?projectid={{.ProjectPreview.Id.Hex}}"><button class="btn btn-primary btn-sm"><i class="fa-regular fa-pen-to-square me-1"></i>Edit</button></a>
-        <a href="/projects/delete?projectid={{.ProjectPreview.Id.Hex}}"><button class="btn btn-danger btn-sm"><i class="fa-regular fa-trash-can me-1"></i>Delete</button></a>
+        <a href="#modal-message" data-bs-toggle="modal"><button class="btn btn-danger btn-sm" onClick="deleteProject()"><i class="fa-regular fa-trash-can me-1"></i>Delete</button></a>
     </div>
     {{end}}
 </div>
@@ -101,6 +101,38 @@
     </div>
 </div>
 
+<div class="modal modal-message fade" id="modal-message">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Do you want to delete the project?</h4>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-hidden="true"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <p>You will lose all the love received on this project.</p>
+        <p>
+          Enter 
+          <span style="font-weight: 500">{{.ProjectPreview.ProjectName}}</span>
+          to continue.
+        </p>
+        <input id="projectname" type="text" oninput="resetErrorMsg()" />
+        <p id="validInputMsg" style="display: none" class="text-danger"></p>
+      </div>
+      <div class="modal-footer">
+        <a href="javascript:;" class="btn btn-white" data-bs-dismiss="modal"
+          >Cancel</a
+        >
+        <a onclick="deleteProject()" class="btn btn-danger">Delete</a>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
 function react(){
 
@@ -140,6 +172,49 @@ function bookmark(){
     fetch(request)
         .then((response) => response.json())
         .then((data) => console.log(data));
+}
+
+function deleteProject(){
+    console.log("/projects/delete?projectid={{.ProjectPreview.Id.Hex}}")
+
+    const errorMsgEle = document.getElementById("validInputMsg");
+    const projectName = document.getElementById("projectname").value;
+
+    if (projectName == "{{.ProjectPreview.ProjectName}}") {
+
+        const request = new Request("/api/deleteproject?projectid={{.ProjectPreview.Id.Hex}}", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json;charset=utf-8",
+            }
+        });
+
+        fetch(request).then(
+            (data) => {
+                console.log("DELETED PROJECT")
+                errorMsgEle.style.display = "block";
+                errorMsgEle.innerHTML = "Project deleted. Please wait while we redirect you."
+                setTimeout(redirection, 2000)
+        },
+        (err) => {
+            console.warn("Unable to delete project.");
+            errorMsgEle.style.display = "block";
+            errorMsgEle.innerHTML = err.message;
+        }
+    );
+    } else {
+        errorMsgEle.style.display = "block";
+        errorMsgEle.innerHTML = "Please enter valid project name"
+    }
+}
+
+function resetErrorMsg() {
+    const errorMsgEle = document.getElementById("validInputMsg");
+    errorMsgEle.style.display = "none";
+}
+
+function redirection() {
+    window.location.replace("/projects/list");
 }
 </script>
 {{end}}
