@@ -24,6 +24,7 @@ type FinalPreferencesOutStruct struct{
 	UserNameImage common.UsernameImageStruct `json:"userNameImage"`
 	NotificaitonsCount int64 `json:"notificationsCount"`
 	NotificationsList []common.MainNotificationStruct `json:"nofiticationsList"`
+	PageTitle common.PageTitle `json:"pageTitle"`
 }
 
 func Preferences(w http.ResponseWriter, r *http.Request){
@@ -63,6 +64,7 @@ func Preferences(w http.ResponseWriter, r *http.Request){
 		userNameImage  = common.UsernameImageStruct{userName,image}
 	}
 
+	pageTitle := common.PageTitle{Title : "Project Preferences"}
 
 	if r.Method == "GET"{
 		_, _, preferences := fetchPreferences(userID)
@@ -76,6 +78,7 @@ func Preferences(w http.ResponseWriter, r *http.Request){
 			userNameImage,
 			notificationsCount, 
 			notificationsList,
+			pageTitle,
 		}
 
 		tmpl, err := template.New("").Funcs(functions).ParseFiles("templates/app/common/base.gohtml", "templates/app/common/contributormenu.gohtml", "templates/app/contributors/preferences.gohtml")

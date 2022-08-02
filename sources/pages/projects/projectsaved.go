@@ -15,6 +15,7 @@ type ProjectSavedOutStruct struct{
 	UserNameImage common.UsernameImageStruct `json:"userNameImage"`
 	NotificaitonsCount int64 `json:"notificationsCount"`
 	NotificationsList []common.MainNotificationStruct `json:"nofiticationsList"`
+	PageTitle common.PageTitle `json:"pageTitle"`
 }
 
 func ProjectSaved(w http.ResponseWriter, r *http.Request){
@@ -49,7 +50,9 @@ func ProjectSaved(w http.ResponseWriter, r *http.Request){
 		userNameImage  = common.UsernameImageStruct{userName,image}
 	}
 	
-	output := ProjectSavedOutStruct{userNameImage, notificationsCount, notificationsList}
+	pageTitle := common.PageTitle{Title : "Thank you"}
+
+	output := ProjectSavedOutStruct{userNameImage, notificationsCount, notificationsList, pageTitle}
 
 	tmpl, err := template.New("").ParseFiles("templates/app/common/base.gohtml", "templates/app/common/projectmenu.gohtml", "templates/app/projects/projectsaved.gohtml")
 	if err != nil {

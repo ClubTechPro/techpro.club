@@ -20,6 +20,7 @@ type FinalProjectPreviewOutStruct struct{
 	MyReactions []primitive.ObjectID `json:"myReactions"`
 	NotificaitonsCount int64 `json:"notificationsCount"`
 	NotificationsList []common.MainNotificationStruct `json:"nofiticationsList"`
+	PageTitle common.PageTitle `json:"pageTitle"`
 }
 
 func ProjectPreview(w http.ResponseWriter, r *http.Request){
@@ -64,14 +65,26 @@ func ProjectPreview(w http.ResponseWriter, r *http.Request){
 	}
 
 	projectID := r.URL.Query().Get("projectid")
-	_, _, result := pages.FetchProjectDetails(projectID, userID)
+	projectStatus, projectError, result := pages.FetchProjectDetails(projectID, userID)
 
 	projectOwner := false
-	if result.UserID == userID {
-		projectOwner = true
-	}
 
-	finalOutStruct = FinalProjectPreviewOutStruct{result, userNameImage, projectOwner, bookmarks, reactions, notificationsCount, notificationsList}
+	pageTitle := common.PageTitle{Title : result.ProjectName}
+	
+
+	if(projectStatus){
+
+		if result.UserID == userID {
+			projectOwner = true
+		}
+
+		finalOutStruct = FinalProjectPreviewOutStruct{result, userNameImage, projectOwner, bookmarks, reactions, notificationsCount, notificationsList, pageTitle}
+	} else {
+		fmt.Println(projectError)
+		pages.ErrorHandler(w, r, http.StatusNotFound)
+		return
+	}
+	
 	
 
 	tmpl, err := template.New("").Funcs(functions).ParseFiles("templates/app/common/base.gohtml", "templates/app/common/projectmenu.gohtml", "templates/app/projects/projectpreview.gohtml")

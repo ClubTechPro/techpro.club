@@ -25,6 +25,7 @@ type FinalProjectOutStruct struct{
 	UserNameImage common.UsernameImageStruct `json:"userNameImage"`
 	NotificaitonsCount int64 `json:"notificationsCount"`
 	NotificationsList []common.MainNotificationStruct `json:"nofiticationsList"`
+	PageTitle common.PageTitle `json:"pageTitle"`
 }
 
 func ProjectEdit(w http.ResponseWriter, r *http.Request){
@@ -70,6 +71,8 @@ func ProjectEdit(w http.ResponseWriter, r *http.Request){
 
 		_, _, result := pages.FetchProjectDetails(projectID, userID)
 
+		pageTitle := common.PageTitle{Title : "Edit " + result.ProjectName}
+
 		constantLists := FinalProjectOutStruct{
 			common.ProgrammingLanguages,
 			common.AlliedServices,
@@ -79,6 +82,7 @@ func ProjectEdit(w http.ResponseWriter, r *http.Request){
 			userNameImage,
 			notificationsCount,
 			notificationsList,
+			pageTitle,
 		}
 		
 

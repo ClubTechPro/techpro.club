@@ -20,6 +20,7 @@ type ProfileStruct struct {
 	UserNameImage common.UsernameImageStruct `json:"usernameImage"`
 	NotificaitonsCount int64 `json:"notificationsCount"`
 	NotificationsList []common.MainNotificationStruct `json:"nofiticationsList"`
+	PageTitle common.PageTitle `json:"pageTitle"`
 }
 
 // Display user profile
@@ -66,13 +67,16 @@ func Profile(w http.ResponseWriter, r *http.Request) {
 	_, _, userprofile := fetchUserProfile(userID)
 	_, _, socials := fetchSocials(userID)
 
-	userSettingsStruct := ProfileStruct{userprofile, socials, userNameImage, notificationsCount, notificationsList}
+	pageTitle := common.PageTitle{Title : userName + "'s profile"}
+
+	userSettingsStruct := ProfileStruct{userprofile, socials, userNameImage, notificationsCount, notificationsList, pageTitle}
+
 	
-	tmpl, err := template.New("").ParseFiles("templates/app/profile.gohtml", "templates/app/contributors/common/base.gohtml")
+	tmpl, err := template.New("").ParseFiles("templates/app/common/base.gohtml", "templates/app/common/contributormenu.gohtml", "templates/app/profile.gohtml")
 	if err != nil {
 		fmt.Println(err.Error())
 	} else {
-		tmpl.ExecuteTemplate(w, "contributorbase", userSettingsStruct)
+		tmpl.ExecuteTemplate(w, "base", userSettingsStruct)
 	}
 }
 
@@ -146,9 +150,11 @@ func UserEdit(w http.ResponseWriter, r *http.Request) {
 	_, _, userprofile := fetchUserProfile(userID)
 	_, _, socials := fetchSocials(userID)
 
-	userSettingsStruct := ProfileStruct{userprofile, socials, userNameImage, notificationsCount, notificationsList}
+	pageTitle := common.PageTitle{Title : "Edit profile"}
 
-	tmpl, err := template.New("").ParseFiles("templates/app/common/base.gohtml", "templates/app/common/projectmenu.gohtml", "templates/app/profileedit.gohtml")
+	userSettingsStruct := ProfileStruct{userprofile, socials, userNameImage, notificationsCount, notificationsList, pageTitle}
+
+	tmpl, err := template.New("").ParseFiles("templates/app/common/base.gohtml", "templates/app/common/contributormenu.gohtml", "templates/app/profileedit.gohtml")
 	if err != nil {
 		fmt.Println(err.Error())
 	} else {

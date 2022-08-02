@@ -20,6 +20,7 @@ type FinalReactionsOutputStruct struct{
 	MyBookmarks []primitive.ObjectID `json:"myBookmarks"`
 	NotificaitonsCount int64 `json:"notificationsCount"`
 	NotificationsList []common.MainNotificationStruct `json:"nofiticationsList"`
+	PageTitle common.PageTitle `json:"pageTitle"`
 }
 
 // Fetched reacted projects
@@ -68,8 +69,9 @@ func FetchReactions(w http.ResponseWriter, r *http.Request) {
 	_, _, results := fetchReactedProjectsList(int64(pageid), userID)
 	_, _, bookmarks, _ := pages.FetchMyBookmarksAndReactions(userID)
 	
+	pageTitle := common.PageTitle{Title : "Reactions"}
 
-	output := FinalReactionsOutputStruct{results, userNameImage, bookmarks, notificationsCount, notificationsList}
+	output := FinalReactionsOutputStruct{results, userNameImage, bookmarks, notificationsCount, notificationsList, pageTitle}
 
 	tmpl, err := template.New("").Funcs(functions).ParseFiles("templates/app/common/base.gohtml", "templates/app/common/contributormenu.gohtml", "templates/app/contributors/reactions.gohtml")
 	if err != nil {

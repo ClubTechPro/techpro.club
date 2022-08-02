@@ -19,6 +19,7 @@ type FinalProjectListOutStruct struct{
 	UserNameImage common.UsernameImageStruct `json:"userNameImage"`
 	NotificaitonsCount int64 `json:"notificationsCount"`
 	NotificationsList []common.MainNotificationStruct `json:"nofiticationsList"`
+	PageTitle common.PageTitle `json:"pageTitle"`
 }
 
 func ProjectList(w http.ResponseWriter, r *http.Request){
@@ -58,8 +59,10 @@ func ProjectList(w http.ResponseWriter, r *http.Request){
 		userNameImage  = common.UsernameImageStruct{userName,image}
 	}
 	
+	pageTitle := common.PageTitle{Title : "Projects List"}
+
 	_, _, results := listProjects(w, r, userID)
-	finalOutStruct = FinalProjectListOutStruct{results, userNameImage, notificationsCount, notificationsList}
+	finalOutStruct = FinalProjectListOutStruct{results, userNameImage, notificationsCount, notificationsList, pageTitle}
 	
 
 	tmpl, err := template.New("").Funcs(functions).ParseFiles("templates/app/common/base.gohtml", "templates/app/common/projectmenu.gohtml", "templates/app/projects/projectlist.gohtml")

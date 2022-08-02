@@ -15,6 +15,7 @@ type FinalPreferenceSavedOutputStruct struct{
 	UserNameImage common.UsernameImageStruct `json:"usernameImage"`
 	NotificaitonsCount int64 `json:"notificationsCount"`
 	NotificationsList []common.MainNotificationStruct `json:"nofiticationsList"`
+	PageTitle common.PageTitle `json:"pageTitle"`
 }
 
 func PreferencesSaved(w http.ResponseWriter, r *http.Request){
@@ -49,7 +50,9 @@ func PreferencesSaved(w http.ResponseWriter, r *http.Request){
 		userNameImage  = common.UsernameImageStruct{userName,image}
 	}
 
-	output := FinalPreferenceSavedOutputStruct{userNameImage, notificationsCount, notificationsList}
+	pageTitle := common.PageTitle{Title : "Thank you"}
+
+	output := FinalPreferenceSavedOutputStruct{userNameImage, notificationsCount, notificationsList, pageTitle}
 
 	tmpl, err := template.New("").ParseFiles("templates/app/common/base.gohtml", "templates/app/common/contributormenu.gohtml", "templates/app/contributors/preferencessaved.gohtml")
 	if err != nil {
