@@ -64,14 +64,23 @@ func ProjectPreview(w http.ResponseWriter, r *http.Request){
 	}
 
 	projectID := r.URL.Query().Get("projectid")
-	_, _, result := pages.FetchProjectDetails(projectID, userID)
+	projectStatus, projectError, result := pages.FetchProjectDetails(projectID, userID)
 
 	projectOwner := false
-	if result.UserID == userID {
-		projectOwner = true
-	}
+	
 
-	finalOutStruct = FinalProjectPreviewOutStruct{result, userNameImage, projectOwner, bookmarks, reactions, notificationsCount, notificationsList}
+	if(!projectStatus){
+		
+		if result.UserID == userID {
+			projectOwner = true
+		}
+
+		finalOutStruct = FinalProjectPreviewOutStruct{result, userNameImage, projectOwner, bookmarks, reactions, notificationsCount, notificationsList}
+	} else {
+		fmt.Println(projectError)
+		finalOutStruct = FinalProjectPreviewOutStruct{result, userNameImage, projectOwner, bookmarks, reactions, notificationsCount, notificationsList}
+	}
+	
 	
 
 	tmpl, err := template.New("").Funcs(functions).ParseFiles("templates/app/common/base.gohtml", "templates/app/common/projectmenu.gohtml", "templates/app/projects/projectpreview.gohtml")
