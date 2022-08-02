@@ -2,8 +2,12 @@
 
 <!-- BEGIN page-header -->
 <div class="row">
-    <div class="col col-md-12">
+
+	<div class="col col-md-10">
         <h1 class="page-header">Notifications</h1>
+    </div>
+    <div class="col col-md-2 text-end">
+        <button class="btn btn-primary btn-sm" onClick="markread()"><i class="fa-solid fa-plus me-1"></i>Mark all as read</button>
     </div>
 </div>
 
@@ -23,5 +27,20 @@
 </div>
 {{end}}
 
-
+<script>
+	function markread(){
+		fetch('/api/marknotificationsread', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		}).then(function(response) {
+			return response.json();
+		}).then(function(data) {
+			if(data.status){
+			console.log(data);
+			}
+		});
+	}
+</script>
 {{end}}
