@@ -69,8 +69,8 @@ func ProjectPreview(w http.ResponseWriter, r *http.Request){
 	projectOwner := false
 	
 
-	if(!projectStatus){
-		
+	if(projectStatus){
+
 		if result.UserID == userID {
 			projectOwner = true
 		}
@@ -78,7 +78,8 @@ func ProjectPreview(w http.ResponseWriter, r *http.Request){
 		finalOutStruct = FinalProjectPreviewOutStruct{result, userNameImage, projectOwner, bookmarks, reactions, notificationsCount, notificationsList}
 	} else {
 		fmt.Println(projectError)
-		finalOutStruct = FinalProjectPreviewOutStruct{result, userNameImage, projectOwner, bookmarks, reactions, notificationsCount, notificationsList}
+		pages.ErrorHandler(w, r, http.StatusNotFound)
+		return
 	}
 	
 	
