@@ -1,0 +1,110 @@
+{{define "menu"}}
+<!-- BEGIN #sidebar -->
+<div id="sidebar" class="app-sidebar">
+    <!-- BEGIN scrollbar -->
+    <div
+        class="app-sidebar-content"
+        data-scrollbar="true"
+        data-height="100%"
+    >
+        <!-- BEGIN menu -->
+        <div class="menu">
+            <div class="menu-header">Viewing as Project Owner</div>
+
+            <div class="menu-item active mt-2">
+                <a href="/contributors/feeds" class="menu-link">
+                    <div class="menu-icon">
+                        <i class="material-icons"
+                            >flip_camera_android</i
+                        >
+                    </div>
+                    <div class="menu-text">
+                        Switch to developers view
+                    </div>
+                </a>
+            </div>
+            <div class="menu-item mt-4">
+                <a href="/projects/list" class="menu-link">
+                    <div class="menu-icon">
+                        <i class="material-icons"
+                            >featured_play_list</i
+                        >
+                    </div>
+                    <div class="menu-text">Projects List</div>
+                </a>
+            </div>
+
+            <div class="menu-item">
+                <a href="/projects/create" class="menu-link">
+                    <div class="menu-icon">
+                        <i class="material-icons">add</i>
+                    </div>
+                    <div class="menu-text">New Project</div>
+                </a>
+            </div>
+
+
+            <div class="menu-header mt-4">Resources</div>
+
+            <div class="menu-item">
+                <a
+                    href="https://github.com/ClubTechPro/techpro.club"
+                    target="_blank"
+                    class="menu-link"
+                >
+                    <div class="menu-icon">
+                        <i class="fa-brands fa-github"></i>
+                    </div>
+                    <div class="menu-text">Github repository</div>
+                </a>
+            </div>
+
+            <div class="menu-item">
+                <a
+                    href="https://github.com/ClubTechPro/techpro.club/issues/new/choose"
+                    target="_blank"
+                    class="menu-link"
+                >
+                    <div class="menu-icon">
+                        <i class="material-icons">bug_report</i>
+                    </div>
+                    <div class="menu-text">Bug report</div>
+                </a>
+            </div>
+
+            <div class="menu-item">
+                <a
+                    href="https://blogs.techpro.club"
+                    target="_blank"
+                    class="menu-link"
+                >
+                    <div class="menu-icon">
+                        <i class="material-icons">rss_feed</i>
+                    </div>
+                    <div class="menu-text">Blogs</div>
+                </a>
+            </div>
+
+            <div class="menu-item">
+                <a href="/videos" class="menu-link">
+                    <div class="menu-icon">
+                        <i class="material-icons">play_arrow</i>
+                    </div>
+                    <div class="menu-text">Training Videos</div>
+                </a>
+            </div>
+        </div>
+        <!-- END menu -->
+    </div>
+    <!-- END scrollbar -->
+</div>
+<div class="app-sidebar-bg"></div>
+<div class="app-sidebar-mobile-backdrop">
+    <a
+        href="#"
+        data-dismiss="app-sidebar-mobile"
+        class="stretched-link"
+    ></a>
+</div>
+<!-- END #sidebar -->
+{{end}}

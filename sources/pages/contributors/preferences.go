@@ -78,11 +78,11 @@ func Preferences(w http.ResponseWriter, r *http.Request){
 			notificationsList,
 		}
 
-		tmpl, err := template.New("").Funcs(functions).ParseFiles("templates/app/contributors/preferences.gohtml", "templates/app/contributors/common/base.gohtml")
+		tmpl, err := template.New("").Funcs(functions).ParseFiles("templates/app/common/base.gohtml", "templates/app/common/contributormenu.gohtml", "templates/app/contributors/preferences.gohtml")
 		if err != nil {
 			fmt.Println(err.Error())
 		}else {
-			tmpl.ExecuteTemplate(w, "contributorbase", finalPreferencesOutStruct) 
+			tmpl.ExecuteTemplate(w, "base", finalPreferencesOutStruct) 
 		}
 	} else {
 	

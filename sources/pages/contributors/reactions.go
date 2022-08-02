@@ -71,11 +71,11 @@ func FetchReactions(w http.ResponseWriter, r *http.Request) {
 
 	output := FinalReactionsOutputStruct{results, userNameImage, bookmarks, notificationsCount, notificationsList}
 
-	tmpl, err := template.New("").Funcs(functions).ParseFiles("templates/app/contributors/common/base.gohtml", "templates/app/contributors/reactions.gohtml")
+	tmpl, err := template.New("").Funcs(functions).ParseFiles("templates/app/common/base.gohtml", "templates/app/common/contributormenu.gohtml", "templates/app/contributors/reactions.gohtml")
 	if err != nil {
 		fmt.Println(err.Error())
 	}else {
-		tmpl.ExecuteTemplate(w, "contributorbase", output) 
+		tmpl.ExecuteTemplate(w, "base", output) 
 	}
 }
 

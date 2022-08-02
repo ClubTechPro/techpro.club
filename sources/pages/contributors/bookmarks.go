@@ -70,11 +70,11 @@ func FetchBookmarks(w http.ResponseWriter, r *http.Request) {
 
 	output := FinalBookmarksOutputStruct{results, userNameImage, reactions, notificationsCount, notificationsList}
 
-	tmpl, err := template.New("").Funcs(functions).ParseFiles("templates/app/contributors/common/base.gohtml", "templates/app/contributors/bookmarks.gohtml")
+	tmpl, err := template.New("").Funcs(functions).ParseFiles("templates/app/common/base.gohtml", "templates/app/common/contributormenu.gohtml", "templates/app/contributors/bookmarks.gohtml")
 	if err != nil {
 		fmt.Println(err.Error())
 	}else {
-		tmpl.ExecuteTemplate(w, "contributorbase", output) 
+		tmpl.ExecuteTemplate(w, "base", output) 
 	}
 }
 

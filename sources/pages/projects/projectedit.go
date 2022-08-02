@@ -82,11 +82,11 @@ func ProjectEdit(w http.ResponseWriter, r *http.Request){
 		}
 		
 
-		tmpl, err := template.New("").Funcs(functions).ParseFiles("templates/app/projects/projectedit.gohtml", "templates/app/projects/common/base.gohtml")
+		tmpl, err := template.New("").Funcs(functions).ParseFiles("templates/app/common/base.gohtml", "templates/app/common/projectmenu.gohtml", "templates/app/projects/projectedit.gohtml")
 		if err != nil {
 			fmt.Println(err.Error())
 		}else {
-			tmpl.ExecuteTemplate(w, "projectbase", constantLists) 
+			tmpl.ExecuteTemplate(w, "base", constantLists) 
 		}
 	} else {
 		projectID := r.URL.Query().Get("projectid")

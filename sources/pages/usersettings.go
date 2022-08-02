@@ -67,11 +67,11 @@ func UserSettings(w http.ResponseWriter, r *http.Request) {
 
 	userSettingData := UserSettingsStruct{userprofile, userNameImage, notificationsCount, notificationsList}
 
-	tmpl, err := template.New("").ParseFiles("templates/app/contributors/settings.gohtml", "templates/app/contributors/common/base.gohtml")
+	tmpl, err := template.New("").ParseFiles("templates/app/common/base.gohtml", "templates/app/common/projectmenu.gohtml", "templates/app/contributors/settings.gohtml")
 	if err != nil {
 		fmt.Println(err.Error())
 	} else {
-		tmpl.ExecuteTemplate(w, "contributorbase", userSettingData)
+		tmpl.ExecuteTemplate(w, "base", userSettingData)
 	}
 }
 

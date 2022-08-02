@@ -71,12 +71,12 @@ func Feeds(w http.ResponseWriter, r *http.Request){
 
 	output := FinalFeedsOutputStruct{results, userNameImage, bookmarks, reactions, notificationsCount, notificationsList}
 
-	tmpl, err := template.New("").Funcs(functions).ParseFiles("templates/app/contributors/feeds.gohtml", "templates/app/contributors/common/base.gohtml")
+	tmpl, err := template.New("").Funcs(functions).ParseFiles("templates/app/common/base.gohtml", "templates/app/common/contributormenu.gohtml", "templates/app/contributors/feeds.gohtml")
 
 	if err != nil {
 		fmt.Println(err.Error())
 	}else {
-		tmpl.ExecuteTemplate(w, "contributorbase", output) 
+		tmpl.ExecuteTemplate(w, "base", output) 
 	}
 
 }
