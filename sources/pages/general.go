@@ -96,7 +96,7 @@ func FetchProjectDetails(projectID string, userID primitive.ObjectID) (status bo
 
 			dbName := common.GetMoDb()
 			fetchProject := client.Database(dbName).Collection(common.CONST_MO_PROJECTS)
-			err := fetchProject.FindOne(context.TODO(),  bson.M{"userid": userID, "_id": projectIdHex}).Decode(&projectDetails)
+			err := fetchProject.FindOne(context.TODO(),  bson.M{ "_id": projectIdHex}).Decode(&projectDetails)
 
 			if err != nil {
 				msg = err.Error()

@@ -1,91 +1,145 @@
 {{define "content"}}
 
+{{$myBookmarks := .MyBookmarks }}
+{{$myReactions := .MyReactions }}
+{{$ifBookmarked := ""}}
+{{$ifReacted := ""}}
+
 <!-- BEGIN page-header -->
 <div class="row">
     <div class="col col-md-10">
         <h1 class="page-header">Project details</h1>
     </div>
+    {{if .ProjectOwner}}
     <div class="col col-md-2 text-end">
         <a href="/projects/edit?projectid={{.ProjectPreview.Id.Hex}}"><button class="btn btn-primary btn-sm"><i class="fa-regular fa-pen-to-square me-1"></i>Edit</button></a>
         <a href="/projects/delete?projectid={{.ProjectPreview.Id.Hex}}"><button class="btn btn-danger btn-sm"><i class="fa-regular fa-trash-can me-1"></i>Delete</button></a>
     </div>
+    {{end}}
 </div>
 
 <!-- END page-header -->
 
+{{if containsObjectId $myBookmarks .ProjectPreview.Id}}{{$ifBookmarked = "text-primary"}}{{else}}{{$ifBookmarked = ""}}{{end}}
+{{if containsObjectId $myReactions .ProjectPreview.Id}}{{$ifReacted = "text-danger"}}{{else}}{{$ifReacted = ""}}{{end}}
+
 <div class="panel shadow bg-body rounded">
-<div class="panel-body">
-    <div class="row rowspacing">
-        <div class="col col-md-10">
-            <div class="row"><small>Name</small></div>
-            <div class="row"><b>{{.ProjectPreview.ProjectName}}</b></div>
+    <div id="projectId" class="{{objectIdToString .ProjectPreview.Id}}">
+        <div class="panel-body">
+            <div class="row rowspacing">
+                <div class="col col-md-10">
+                    <div class="row"><small>Name</small></div>
+                    <div class="row"><b>{{.ProjectPreview.ProjectName}}</b></div>
+                </div>
+                <div class="col col-md-2 text-end">
+                    <button class="btn btn-default btn-xs {{$ifReacted}}" id="heart-btn" onClick=react()><i class="fa-solid fa-heart"></i></button>
+                    <button class="btn btn-default btn-xs {{$ifBookmarked}}" id="bookmark-btn" onClick=bookmark()><i class="fa-solid fa-bookmark"></i></button>
+                </div>
+            </div>
+
+            <div class="text-muted mt-2">
+                {{if .ProjectPreview.Public}}<i class="fa-solid fa-lock-open me-1"></i>Public{{else}}<i class="fa-solid fa-lock me-1"></i>Private{{end}} 
+                <i class="fa-solid fa-heart ms-2 me-1 text-danger"></i><small>{{.ProjectPreview.ReactionsCount}}</small>
+            </div>
+
+            <div class="row rowspacing mt-3">
+            
+                <div class="col col-md-12">
+                    <div class="row"><small>Description</small></div>
+                    <div class="row">{{.ProjectPreview.ProjectDescription}}</div>
+                </div>
+            </div>
+
+
+            <div class="row rowspacing mt-2">
+                <div class="col col-md-12 col-sm-6">
+                    {{range .ProjectPreview.Languages}}<span class="badge bg-light text-primary me-1">{{.}}</span>{{end}}
+                    {{range .ProjectPreview.OtherLanguages}}<span class="badge bg-light text-warning me-1">{{.}}</span>{{end}}
+                    {{range .ProjectPreview.Allied}}<span class="badge bg-light text-dark me-1">{{.}}</span>{{end}}
+                </div>
+            </div>
+
+
+            <div class="row rowspacing mt-3">
+                <div class="col col-md-12 col-sm-6"><small>Project Type</small></div>
+                <div class="col col-md-12 col-sm-6">
+                    {{range .ProjectPreview.ProjectType}}<span>{{.}},</span>{{end}}
+                </div>
+            </div>
+
+            <div class="row rowspacing mt-3">
+                <div class="col col-md-12 col-sm-6">
+                    <small>Current Project Contributors</small>
+                </div>
+                <div class="col col-md-12 col-sm-6">{{.ProjectPreview.ContributorCount}}</div>
+            </div>
+
+            <div class="row rowspacing mt-3">
+                <div class="col col-md-12 col-sm-6">
+                    <b>Other Details</b>
+                </div>
+            </div>
+
+            <div class="row rowspacing mt-3">
+
+                <div class="col col-md-4 col-sm-6">
+                    <div class="row"><small>Documentation</small></div>
+                    <div class="row"><a href="{{.ProjectPreview.Documentation}}">{{.ProjectPreview.Documentation}}</a></div>
+                </div>
+
+                <div class="col col-md-4 col-sm-6">
+                    <div class="row"><small>Company</small></div>
+                    <div class="row">{{if .ProjectPreview.Company}}{{.ProjectPreview.CompanyName}}{{end}}</div>
+                </div>
+
+                <div class="col col-md-4 col-sm-6">
+                    <div class="row"><small>Funded</small></div>
+                    <div class="row">{{if eq .ProjectPreview.Funded "true"}}Yes {{else}} No{{end}}</div>
+                </div>
+            </div>
         </div>
-        <div class="col col-md-2 text-end">
-            <button class="btn btn-default btn-xs"><i class="fa-regular fa-heart"></i></button>
-            <button class="btn btn-default btn-xs"><i class="fa-regular fa-bookmark"></i></button>
-        </div>
-    </div>
-
-    <div class="text-muted mt-2">
-        {{if .ProjectPreview.Public}}<i class="fa-solid fa-lock-open me-1"></i>Public{{else}}<i class="fa-solid fa-lock me-1"></i>Private{{end}} 
-        <i class="fa-solid fa-heart ms-2 me-1 text-danger"></i><small>{{.ProjectPreview.ReactionsCount}}</small>
-    </div>
-
-    <div class="row rowspacing mt-3">
-    
-        <div class="col col-md-12">
-            <div class="row"><small>Description</small></div>
-            <div class="row">{{.ProjectPreview.ProjectDescription}}</div>
-        </div>
-    </div>
-
-
-    <div class="row rowspacing mt-2">
-        <div class="col col-md-12 col-sm-6">
-            {{range .ProjectPreview.Languages}}<span class="badge bg-light text-primary me-1">{{.}}</span>{{end}}
-            {{range .ProjectPreview.OtherLanguages}}<span class="badge bg-light text-warning me-1">{{.}}</span>{{end}}
-            {{range .ProjectPreview.Allied}}<span class="badge bg-light text-dark me-1">{{.}}</span>{{end}}
-        </div>
-    </div>
-
-
-    <div class="row rowspacing mt-3">
-        <div class="col col-md-12 col-sm-6"><small>Project Type</small></div>
-        <div class="col col-md-12 col-sm-6">
-            {{range .ProjectPreview.ProjectType}}<span>{{.}},</span>{{end}}
-        </div>
-    </div>
-
-    <div class="row rowspacing mt-3">
-        <div class="col col-md-12 col-sm-6">
-            <small>Current Project Contributors</small>
-        </div>
-        <div class="col col-md-12 col-sm-6">{{.ProjectPreview.ContributorCount}}</div>
-    </div>
-
-    <div class="row rowspacing mt-3">
-        <div class="col col-md-12 col-sm-6">
-            <b>Other Details</b>
-        </div>
-    </div>
-
-    <div class="row rowspacing mt-3">
-
-        <div class="col col-md-4 col-sm-6">
-            <div class="row"><small>Documentation</small></div>
-            <div class="row"><a href="{{.ProjectPreview.Documentation}}">{{.ProjectPreview.Documentation}}</a></div>
-        </div>
-
-        <div class="col col-md-4 col-sm-6">
-            <div class="row"><small>Company</small></div>
-            <div class="row">{{if .ProjectPreview.Company}}{{.ProjectPreview.CompanyName}}{{end}}</div>
-        </div>
-
-        <div class="col col-md-4 col-sm-6">
-            <div class="row"><small>Funded</small></div>
-            <div class="row">{{if eq .ProjectPreview.Funded "true"}}Yes {{else}} No{{end}}</div>
-        </div>
-    </div>
     </div>
 </div>
+
+<script>
+function react(){
+
+    let heartBtn = document.getElementById("heart-btn");
+    let projectId = document.getElementById("projectId").className;
+
+    heartBtn.classList.contains("text-danger") ? heartBtn.classList.remove("text-danger") : heartBtn.classList.add("text-danger");
+
+    const request = new Request("/api/managereaction", {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify({"projectId": projectId})
+    });
+
+    fetch(request)
+        .then((response) => response.json())
+        .then((data) => console.log(data));
+
+}
+
+function bookmark(){
+    let bookmarkBtn = document.getElementById("bookmark-btn");
+    let projectId = document.getElementById("projectId").className;
+
+    bookmarkBtn.classList.contains("text-primary") ? bookmarkBtn.classList.remove("text-primary") : bookmarkBtn.classList.add("text-primary");
+
+    const request = new Request("/api/managebookmark", {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify({"projectId": projectId})
+    });
+
+    fetch(request)
+        .then((response) => response.json())
+        .then((data) => console.log(data));
+}
+</script>
 {{end}}
