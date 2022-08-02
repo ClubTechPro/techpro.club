@@ -62,11 +62,11 @@ func ProjectList(w http.ResponseWriter, r *http.Request){
 	finalOutStruct = FinalProjectListOutStruct{results, userNameImage, notificationsCount, notificationsList}
 	
 
-	tmpl, err := template.New("").Funcs(functions).ParseFiles("templates/app/projects/projectlist.gohtml", "templates/app/projects/common/base.gohtml")
+	tmpl, err := template.New("").Funcs(functions).ParseFiles("templates/app/common/base.gohtml", "templates/app/common/projectmenu.gohtml", "templates/app/projects/projectlist.gohtml")
 	if err != nil {
 		fmt.Println(err.Error())
 	}else {
-		tmpl.ExecuteTemplate(w, "projectbase", finalOutStruct) 
+		tmpl.ExecuteTemplate(w, "base", finalOutStruct) 
 	}
 }
 

@@ -51,11 +51,11 @@ func ProjectSaved(w http.ResponseWriter, r *http.Request){
 	
 	output := ProjectSavedOutStruct{userNameImage, notificationsCount, notificationsList}
 
-	tmpl, err := template.New("").ParseFiles("templates/app/projects/projectsaved.gohtml", "templates/app/projects/common/base.gohtml")
+	tmpl, err := template.New("").ParseFiles("templates/app/common/base.gohtml", "templates/app/common/projectmenu.gohtml", "templates/app/projects/projectsaved.gohtml")
 	if err != nil {
 		fmt.Println(err.Error())
 	}else {
-		tmpl.ExecuteTemplate(w, "projectbase", output) 
+		tmpl.ExecuteTemplate(w, "base", output) 
 	}
 	
 }

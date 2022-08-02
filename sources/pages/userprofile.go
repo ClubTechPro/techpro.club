@@ -148,11 +148,11 @@ func UserEdit(w http.ResponseWriter, r *http.Request) {
 
 	userSettingsStruct := ProfileStruct{userprofile, socials, userNameImage, notificationsCount, notificationsList}
 
-	tmpl, err := template.New("").ParseFiles("templates/app/profileedit.gohtml", "templates/app/contributors/common/base.gohtml")
+	tmpl, err := template.New("").ParseFiles("templates/app/common/base.gohtml", "templates/app/common/projectmenu.gohtml", "templates/app/profileedit.gohtml")
 	if err != nil {
 		fmt.Println(err.Error())
 	} else {
-		tmpl.ExecuteTemplate(w, "contributorbase", userSettingsStruct)
+		tmpl.ExecuteTemplate(w, "base", userSettingsStruct)
 	}
 }
 

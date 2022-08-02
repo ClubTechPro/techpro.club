@@ -51,11 +51,11 @@ func PreferencesSaved(w http.ResponseWriter, r *http.Request){
 
 	output := FinalPreferenceSavedOutputStruct{userNameImage, notificationsCount, notificationsList}
 
-	tmpl, err := template.New("").ParseFiles("templates/app/contributors/preferencessaved.gohtml", "templates/app/contributors/common/base.gohtml")
+	tmpl, err := template.New("").ParseFiles("templates/app/common/base.gohtml", "templates/app/common/contributormenu.gohtml", "templates/app/contributors/preferencessaved.gohtml")
 	if err != nil {
 		fmt.Println(err.Error())
 	}else {
-		tmpl.ExecuteTemplate(w, "contributorbase", output) 
+		tmpl.ExecuteTemplate(w, "base", output) 
 	}
 	
 }

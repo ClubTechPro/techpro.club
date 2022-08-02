@@ -58,12 +58,12 @@ func Notifications(w http.ResponseWriter, r *http.Request){
 
 	output := NotificationStruct{Notifications, userNameImage, notificationsCount, notificationsList}
 
-	tmpl, err := template.New("").ParseFiles("templates/app/notifications.gohtml", "templates/app/contributors/common/base.gohtml")
+	tmpl, err := template.New("").ParseFiles("templates/app/common/base.gohtml", "templates/app/common/contributormenu.gohtml", "templates/app/notifications.gohtml")
 
 	if err != nil {
 		fmt.Println(err.Error())
 	}else {
-		tmpl.ExecuteTemplate(w, "contributorbase", output) 
+		tmpl.ExecuteTemplate(w, "base", output) 
 	}
 }
 
