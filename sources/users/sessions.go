@@ -213,10 +213,12 @@ func deleteDbSession(w http.ResponseWriter, r *http.Request, sessionID string)(s
 	_, _, client := common.Mongoconnect()
 	defer client.Disconnect(context.TODO())
 
+	_, userID := ValidateDbSession(w, r)
+
 	dbName := common.GetMoDb()
 	saveUserSession := client.Database(dbName).Collection(common.CONST_MO_USER_SESSIONS)
 
-	_, err := saveUserSession.DeleteOne(context.TODO(), bson.M{"sessionid": sessionID})
+	_, err := saveUserSession.DeleteMany(context.TODO(), bson.M{"userid": userID})
 
 	if err != nil {
 		status = false

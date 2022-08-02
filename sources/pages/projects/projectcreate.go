@@ -190,6 +190,7 @@ func createProjectNotifications(projectID primitive.ObjectID, projectParams comm
 			newNotification.Subject = projectParams.ProjectName
 			newNotification.Message = projectParams.ProjectDescription		
 			newNotification.CreatedDate = projectParams.CreatedDate
+			newNotification.Read = false
 			
 
 			sendNotifications.UpdateOne(context.TODO(), bson.M{"userid": preferenceStruct.UserID}, bson.M{"$inc": bson.M{"unreadnotifications": 1}, "$push": bson.M{"notificationslist": newNotification}})
