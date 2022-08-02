@@ -163,6 +163,7 @@ type FetchUserStruct struct {
 	Source 		string `json:"source"`
 	CreatedDate string `json:"createdDate"`
 	About       string `json:"about"`
+	Login		string `json:"login"`
 }
 
 // Save users struct
