@@ -20,6 +20,7 @@ type FinalBookmarksOutputStruct struct{
 	MyReactions []primitive.ObjectID `json:"myReactions"`
 	NotificaitonsCount int64 `json:"notificationsCount"`
 	NotificationsList []common.MainNotificationStruct `json:"nofiticationsList"`
+	PageTitle common.PageTitle `json:"pageTitle"`
 }
 
 // Fetched bookmarked projects
@@ -68,7 +69,9 @@ func FetchBookmarks(w http.ResponseWriter, r *http.Request) {
 	_, _, results := fetchBookmarkedProjectsList(int64(pageid), userID)
 	_, _, _, reactions := pages.FetchMyBookmarksAndReactions(userID)
 
-	output := FinalBookmarksOutputStruct{results, userNameImage, reactions, notificationsCount, notificationsList}
+	pageTitle := common.PageTitle{Title : "Bookmarks"}
+
+	output := FinalBookmarksOutputStruct{results, userNameImage, reactions, notificationsCount, notificationsList, pageTitle}
 
 	tmpl, err := template.New("").Funcs(functions).ParseFiles("templates/app/common/base.gohtml", "templates/app/common/contributormenu.gohtml", "templates/app/contributors/bookmarks.gohtml")
 	if err != nil {
