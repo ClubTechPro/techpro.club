@@ -57,6 +57,7 @@ func Feeds(w http.ResponseWriter, r *http.Request){
 	var functions = template.FuncMap{
 		"objectIdToString" : pages.ObjectIDToString,
 		"containsObjectId" : pages.ContainsObjectID,
+		"timeElapsed" : pages.TimeElapsed,
 	}
 	
 	// TEST CONDITIONS

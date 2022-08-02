@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/http"
 	"strings"
+	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -95,7 +96,7 @@ func FetchProjectDetails(projectID string, userID primitive.ObjectID) (status bo
 
 			dbName := common.GetMoDb()
 			fetchProject := client.Database(dbName).Collection(common.CONST_MO_PROJECTS)
-			err := fetchProject.FindOne(context.TODO(),  bson.M{"userid": userID, "_id": projectIdHex}).Decode(&projectDetails)
+			err := fetchProject.FindOne(context.TODO(),  bson.M{ "_id": projectIdHex}).Decode(&projectDetails)
 
 			if err != nil {
 				msg = err.Error()
@@ -447,4 +448,29 @@ func StringToObjectId(Id string)(idObject primitive.ObjectID){
 	}
 
 	return idObject
+}
+
+// Calculate time elapsed since project creation in nearest unit
+func TimeElapsed(inputTime string)(nearestTimeUnit string){
+	
+	newTime, _ := time.Parse("Mon Jan 2 15:04:05 MST 2006", inputTime)
+
+	timeElapsed := int64(time.Since(newTime).Seconds())
+
+
+	if timeElapsed < 60 {
+		return fmt.Sprintf("%ds", timeElapsed)
+	} else if timeElapsed < 3600 {
+		return fmt.Sprintf("%dm", timeElapsed/60)
+	} else if timeElapsed < 86400 {
+		return fmt.Sprintf("%dh", timeElapsed/3600)
+	} else if timeElapsed < 604800 {
+		return fmt.Sprintf("%dd", timeElapsed/86400)
+	} else if timeElapsed < 2592000 {
+		return fmt.Sprintf("%dw", timeElapsed/604800)
+	} else if timeElapsed < 31536000 {
+		return fmt.Sprintf("%dmo", timeElapsed/2592000)
+	} else {
+		return fmt.Sprintf("%dy", timeElapsed/31536000)
+	}
 }

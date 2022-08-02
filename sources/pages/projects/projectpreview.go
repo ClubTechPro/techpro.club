@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"techpro.club/sources/common"
 	"techpro.club/sources/pages"
 	"techpro.club/sources/users"
@@ -14,6 +15,9 @@ import (
 type FinalProjectPreviewOutStruct struct{
 	ProjectPreview common.FetchProjectStruct `json:"projectsList"`
 	UserNameImage common.UsernameImageStruct `json:"userNameImage"`
+	ProjectOwner bool `json:"projectOwner"`
+	MyBookmarks []primitive.ObjectID `json:"myBookmarks"`
+	MyReactions []primitive.ObjectID `json:"myReactions"`
 	NotificaitonsCount int64 `json:"notificationsCount"`
 	NotificationsList []common.MainNotificationStruct `json:"nofiticationsList"`
 }
@@ -41,6 +45,9 @@ func ProjectPreview(w http.ResponseWriter, r *http.Request){
 	// Fetch notificaitons
 	_, _, notificationsCount, notificationsList := pages.NotificationsCountAndTopFive(userID)
 
+	// Fetch reactions and bookmarks
+	_, _, bookmarks, reactions := pages.FetchMyBookmarksAndReactions(userID)
+
 	// Fetch user name and image from saved browser cookies
 	status, msg, userName, image := pages.FetchUsernameImage(w, r)
 
@@ -50,13 +57,24 @@ func ProjectPreview(w http.ResponseWriter, r *http.Request){
 		userNameImage  = common.UsernameImageStruct{userName,image}
 	}
 
+	var functions = template.FuncMap{
+		"objectIdToString" : pages.ObjectIDToString,
+		"containsObjectId" : pages.ContainsObjectID,
+		"timeElapsed" : pages.TimeElapsed,
+	}
+
 	projectID := r.URL.Query().Get("projectid")
 	_, _, result := pages.FetchProjectDetails(projectID, userID)
 
-	finalOutStruct = FinalProjectPreviewOutStruct{result, userNameImage, notificationsCount, notificationsList}
+	projectOwner := false
+	if result.UserID == userID {
+		projectOwner = true
+	}
+
+	finalOutStruct = FinalProjectPreviewOutStruct{result, userNameImage, projectOwner, bookmarks, reactions, notificationsCount, notificationsList}
 	
 
-	tmpl, err := template.New("").ParseFiles("templates/app/projects/projectpreview.gohtml", "templates/app/projects/common/base.gohtml")
+	tmpl, err := template.New("").Funcs(functions).ParseFiles("templates/app/projects/projectpreview.gohtml", "templates/app/projects/common/base.gohtml")
 	if err != nil {
 		fmt.Println(err.Error())
 	}else {

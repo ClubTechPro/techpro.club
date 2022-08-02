@@ -3,8 +3,6 @@
 <h1 class="page-header">My Bookmarks</h1>
 <!-- END page-header -->
 
-<!-- BEGIN Search feeds -->
-
 
 {{if not .Projects}}
 <div class="panel shadow bg-body rounded">
@@ -35,7 +33,7 @@
                 <div class="col-md-10">
                     <img src="{{$User.ImageLink}}" height="30" alt="User avatar" class="me-1"/> 
                     {{$User.Name}} 
-                    <small class="text-muted me-2">- 4h</small>
+                    <small class="text-muted me-2">- {{timeElapsed .CreatedDate}}</small>
                     
                 </div>
                 <div class="col-md-2">
@@ -46,7 +44,7 @@
                 </div>
             </div>
 
-            <h6 class="card-subtitle mb-2 mt-2">{{.ProjectName}}</h6>
+            <a href="/projects/view?projectid={{.Id.Hex}}"><h6 class="card-subtitle mb-2 mt-2">{{.ProjectName}}</h6></a>
             
             <p class="card-text">
                 {{.ProjectDescription}}

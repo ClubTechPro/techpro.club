@@ -79,6 +79,7 @@ type MainNotificationStruct struct{
 	Message string `json:"message"`
 	Link string `json:"link"`
 	CreatedDate string `json:"createddate"`
+	Read bool `json:"read"`
 }
 
 

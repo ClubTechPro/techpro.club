@@ -39,6 +39,10 @@ func ProjectList(w http.ResponseWriter, r *http.Request){
 		http.Redirect(w, r, "/projects", http.StatusSeeOther)
 	}
 
+	functions := template.FuncMap{
+		"timeElapsed" : pages.TimeElapsed,
+	}
+	
 	var finalOutStruct FinalProjectListOutStruct
 	var userNameImage common.UsernameImageStruct
 
@@ -58,7 +62,7 @@ func ProjectList(w http.ResponseWriter, r *http.Request){
 	finalOutStruct = FinalProjectListOutStruct{results, userNameImage, notificationsCount, notificationsList}
 	
 
-	tmpl, err := template.New("").ParseFiles("templates/app/projects/projectlist.gohtml", "templates/app/projects/common/base.gohtml")
+	tmpl, err := template.New("").Funcs(functions).ParseFiles("templates/app/projects/projectlist.gohtml", "templates/app/projects/common/base.gohtml")
 	if err != nil {
 		fmt.Println(err.Error())
 	}else {
