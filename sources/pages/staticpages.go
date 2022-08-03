@@ -122,6 +122,57 @@ func Videos(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// Privacy policy page
+func PrivacyPolicy(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path != "/privacy-policy" {
+        ErrorHandler(w, r, http.StatusNotFound)
+        return
+    }	
+		
+	pageTitle := common.PageTitle{Title : "Privacy Policy"}
+
+	tmpl, err := template.New("").ParseFiles("templates/home/privacy.gohtml", "templates/home/base.gohtml")
+	if err != nil {
+		fmt.Println(err.Error())
+	}else {
+		tmpl.ExecuteTemplate(w, "basehome", pageTitle) 
+	}
+}
+
+// Cookie policy page
+func CookiePolicy(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path != "/cookie-policy" {
+        ErrorHandler(w, r, http.StatusNotFound)
+        return
+    }	
+		
+	pageTitle := common.PageTitle{Title : "Cookie Policy"}
+
+	tmpl, err := template.New("").ParseFiles("templates/home/cookie.gohtml", "templates/home/base.gohtml")
+	if err != nil {
+		fmt.Println(err.Error())
+	}else {
+		tmpl.ExecuteTemplate(w, "basehome", pageTitle) 
+	}
+}
+
+// Cookie policy page
+func TermsOfService(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path != "/terms-and-conditions" {
+        ErrorHandler(w, r, http.StatusNotFound)
+        return
+    }	
+		
+	pageTitle := common.PageTitle{Title : "Terms and Conditions"}
+
+	tmpl, err := template.New("").ParseFiles("templates/home/terms.gohtml", "templates/home/base.gohtml")
+	if err != nil {
+		fmt.Println(err.Error())
+	}else {
+		tmpl.ExecuteTemplate(w, "basehome", pageTitle) 
+	}
+}
+
 // Page not found. 404 handler
 func ErrorHandler(w http.ResponseWriter, r *http.Request, status int) {
 	w.WriteHeader(status)
