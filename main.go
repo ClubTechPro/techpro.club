@@ -41,6 +41,9 @@ func main() {
 	http.HandleFunc("/campus", pages.Campus)
 	http.HandleFunc("/campusonboard", pages.CampusOnboard)
 	http.HandleFunc("/videos", pages.Videos)
+	http.HandleFunc("/privacy-policy", pages.PrivacyPolicy)
+	http.HandleFunc("/cookie-policy", pages.CookiePolicy)
+	http.HandleFunc("/terms-and-conditions", pages.TermsOfService)
 
 	// Users
 	http.HandleFunc("/users/editprofile", pages.UserEdit)
