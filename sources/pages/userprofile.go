@@ -2,8 +2,10 @@ package pages
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"html/template"
+	"io/ioutil"
 	"log"
 	"net/http"
 
@@ -174,7 +176,63 @@ func fetchUserProfile(userID primitive.ObjectID) (status bool, msg string, userP
 		status = true
 	}
 
+	gitres,err := http.Get("https://api.github.com/users/rohitv5/repos?per_page=2");
+	
+
+	
+
+	if err != nil {
+		msg = err.Error()
+	} else {
+		msg = "Success"
+		status = true
+	}
+
+	databytes,err := ioutil.ReadAll(gitres.Body)
+
+	if err != nil {
+		msg = err.Error()
+	} else {
+		msg = "Success"
+		status = true
+	}
+
+	checkValid := json.Valid(databytes)
+
+	fmt.Println(checkValid)
+
+	var githubData []map[string]interface{}
+	json.Unmarshal(databytes, &githubData)
+	fmt.Printf("%#v\n", githubData)
+
+	defer gitres.Body.Close()
+
 	return status, msg, userProfile
+}
+
+// Update project function
+func updateUserRepos(repoList string)(status bool, msg string){
+	status = false
+	msg = ""
+
+	_, _, client := common.Mongoconnect()
+	defer client.Disconnect(context.TODO())
+
+	dbName := common.GetMoDb()
+	saveProject := client.Database(dbName).Collection(common.CONST_MO_USER_REPO_LIST)
+
+
+	_, err := saveProject.InsertOne(context.TODO(),bson.M{"$set": repoList})
+
+	if err != nil {
+		fmt.Println(err)
+		msg = err.Error()
+	} else {
+		status = true
+		msg = "Success"
+	}
+
+	return status, msg
 }
 
 // Update user profile
