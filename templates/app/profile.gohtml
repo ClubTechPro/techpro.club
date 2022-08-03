@@ -91,73 +91,28 @@
   </div>
 </div>
 
-<h6 class="card-subtitle mb-3 mt-2">Github Repositories</h6>
+<h6 class="card-subtitle mb-3 mt-2">Github Repositories (Public only)</h6>
 
 <div class="row">
+  {{range .GithubRepos}}
   <div class="col col-md-6 mt-3">
     <div class="panel shadow bg-body rounded">
       <div class="panel-body">
-        <h6 class="card-subtitle mb-2 mt-2">Hello world</h6>
+        <h6 class="card-subtitle mb-2 mt-2"><a href="{{.HtmlUrl}}" target="_blank">{{.FullName}}</a></h6>
 
         <p class="card-text">
-          In publishing and graphic design, Lorem ipsum is a placeholder text
-          commonly used to demonstrate the visual form of a document or a
-          typeface without relying on meaningful content. Lorem ipsum may be
-          used as a placeholder before final copy is available.
+          {{.Description}}
         </p>
 
         <div class="row">
           <div class="col-md-6">
-            <i class="fa-solid fa-lock me-3"></i>
-            <i class="fa-solid fa-heart me-2 text-danger"></i><small>201</small>
+            <i class="fa-solid fa-lock-open me-3"></i>
           </div>
         </div>
-        <div class="row mt-2">
-          <div class="col-md-12">
-            <div class="social-buttons">
-              <span class="badge bg-light text-primary">c++</span>
-
-              <span class="badge bg-light text-warning">html</span>
-
-              <span class="badge bg-light text-dark">devops</span>
-            </div>
-          </div>
-        </div>
+        
       </div>
     </div>
   </div>
-
-  <div class="col col-md-6 mt-3 float-right">
-    <div class="panel shadow bg-body rounded">
-      <div class="panel-body">
-        <h6 class="card-subtitle mb-2 mt-2">Hello world</h6>
-
-        <p class="card-text">
-          In publishing and graphic design, Lorem ipsum is a placeholder text
-          commonly used to demonstrate the visual form of a document or a
-          typeface without relying on meaningful content. Lorem ipsum may be
-          used as a placeholder before final copy is available.
-        </p>
-
-        <div class="row">
-          <div class="col-md-6">
-            <i class="fa-solid fa-lock me-3"></i>
-            <i class="fa-solid fa-heart me-2 text-danger"></i><small>201</small>
-          </div>
-        </div>
-        <div class="row mt-2">
-          <div class="col-md-12">
-            <div class="social-buttons">
-              <span class="badge bg-light text-primary">c++</span>
-
-              <span class="badge bg-light text-warning">html</span>
-
-              <span class="badge bg-light text-dark">devops</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  {{end}}
 </div>
 {{ end }}

@@ -249,3 +249,28 @@ type BookmarkStruct struct{
 	Id primitive.ObjectID `json:"id" bson:"_id,omitempty"`
 	ProjectBookmarks []primitive.ObjectID `json:"projectBookmarks"`
 }
+
+// Fetch Github projects struct
+type FetchGithubProjectsStruct struct{
+	Id primitive.ObjectID `json:"id" bson:"_id,omitempty"`
+	UserId primitive.ObjectID `json:"userId"`
+	GithubRepos []GithubRepoStruct `json:"githubRepos"`
+}
+
+// Save Github projects struct
+type SaveGithubProjectsStruct struct{
+	UserId primitive.ObjectID `json:"userId"`
+	GithubRepos []GithubRepoStruct `json:"githubRepos"`
+}
+
+// Main Github Repos Struct
+type GithubRepoStruct struct {
+	Name string `json:"name"`
+	FullName string `json:"full_name"`
+	URL string `json:"url"`
+	HtmlUrl string `json:"html_url"`
+	Description string `json:"description,omitempty"`
+	CreatedAt string `json:"created_at"`
+	GithubProjectId float64 `json:"github_project_id"`
+	NodeId string `json:"node_id"`
+}

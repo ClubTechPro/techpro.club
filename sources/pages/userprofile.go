@@ -20,6 +20,7 @@ type ProfileStruct struct {
 	UserProfile   common.FetchUserStruct     `json:"userprofile"`
 	UserSocials   common.FetchSocialStruct   `json:"socials"`
 	UserNameImage common.UsernameImageStruct `json:"usernameImage"`
+	GithubRepos []common.GithubRepoStruct `json:"githubRepos"`
 	NotificaitonsCount int64 `json:"notificationsCount"`
 	NotificationsList []common.MainNotificationStruct `json:"nofiticationsList"`
 	PageTitle common.PageTitle `json:"pageTitle"`
@@ -71,7 +72,10 @@ func Profile(w http.ResponseWriter, r *http.Request) {
 
 	pageTitle := common.PageTitle{Title : userName + "'s profile"}
 
-	userSettingsStruct := ProfileStruct{userprofile, socials, userNameImage, notificationsCount, notificationsList, pageTitle}
+	// Test repository fetch
+	_, _, githubRepos := fetchGithubReposList(userprofile.Login)
+
+	userSettingsStruct := ProfileStruct{userprofile, socials, userNameImage, githubRepos, notificationsCount, notificationsList, pageTitle}
 
 	
 	tmpl, err := template.New("").ParseFiles("templates/app/common/base.gohtml", "templates/app/common/contributormenu.gohtml", "templates/app/profile.gohtml")
@@ -152,9 +156,12 @@ func UserEdit(w http.ResponseWriter, r *http.Request) {
 	_, _, userprofile := fetchUserProfile(userID)
 	_, _, socials := fetchSocials(userID)
 
+	// Test repository fetch
+	_, _, githubRepos := fetchGithubReposList(userprofile.Login)
+
 	pageTitle := common.PageTitle{Title : "Edit profile"}
 
-	userSettingsStruct := ProfileStruct{userprofile, socials, userNameImage, notificationsCount, notificationsList, pageTitle}
+	userSettingsStruct := ProfileStruct{userprofile, socials, userNameImage, githubRepos, notificationsCount, notificationsList, pageTitle}
 
 	tmpl, err := template.New("").ParseFiles("templates/app/common/base.gohtml", "templates/app/common/contributormenu.gohtml", "templates/app/profileedit.gohtml")
 	if err != nil {
@@ -181,37 +188,6 @@ func fetchUserProfile(userID primitive.ObjectID) (status bool, msg string, userP
 		msg = "Success"
 		status = true
 	}
-
-	gitres,err := http.Get("https://api.github.com/users/rohitv5/repos?per_page=2");
-	
-
-	
-
-	if err != nil {
-		msg = err.Error()
-	} else {
-		msg = "Success"
-		status = true
-	}
-
-	databytes,err := ioutil.ReadAll(gitres.Body)
-
-	if err != nil {
-		msg = err.Error()
-	} else {
-		msg = "Success"
-		status = true
-	}
-
-	checkValid := json.Valid(databytes)
-
-	fmt.Println(checkValid)
-
-	var githubData []map[string]interface{}
-	json.Unmarshal(databytes, &githubData)
-	fmt.Printf("%#v\n", githubData)
-
-	defer gitres.Body.Close()
 
 	return status, msg, userProfile
 }
@@ -323,4 +299,64 @@ func updateSocials(userID primitive.ObjectID, facebook, linkedin, twitter, stack
 	}
 
 	return status, msg
+}
+
+
+// Fetch Github repos list
+func fetchGithubReposList(login string)(status bool, msg string, reposList []common.GithubRepoStruct){
+
+	status = false
+	msg = ""
+
+	var githubRepos []common.GithubRepoStruct
+	var githubRepoUni common.GithubRepoStruct
+
+	gitRepos, errRepos := http.Get("https://api.github.com/users/" + login + "/repos");
+
+	if errRepos != nil {
+		msg = errRepos.Error()
+
+	} else {
+		databytes, errBytes := ioutil.ReadAll(gitRepos.Body)
+
+		if errBytes != nil {
+			msg = errBytes.Error()
+		} else {
+			checkValid := json.Valid(databytes)
+	
+			if !checkValid {
+				msg = "Invalid JSON"
+			} else {
+				var githubData []map[string]interface{}
+				json.Unmarshal(databytes, &githubData)
+		
+				for _, repo := range githubData {
+					githubRepoUni.Name = repo["name"].(string)
+					githubRepoUni.FullName = repo["full_name"].(string)
+					githubRepoUni.URL = repo["url"].(string)
+					githubRepoUni.HtmlUrl = repo["html_url"].(string)
+					githubRepoUni.NodeId = repo["node_id"].(string)
+					githubRepoUni.GithubProjectId = repo["id"].(float64)
+					githubRepoUni.CreatedAt = repo["created_at"].(string)
+		
+					if repo["description"] != nil {
+						githubRepoUni.Description = repo["description"].(string)
+					} else {
+						githubRepoUni.Description = ""
+					}
+		
+					githubRepos = append(githubRepos, githubRepoUni)
+		
+				}
+
+				status = true
+				msg = "Success"
+			
+				defer gitRepos.Body.Close()
+			}
+		}
+	}
+
+	return status, msg, githubRepos
+	
 }
