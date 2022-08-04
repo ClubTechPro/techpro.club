@@ -8,7 +8,7 @@
   </a>
 
   <p align="center">
-    Lets contribute to the open-source projects & help them find more contributors and adopters.
+    We help students and freshers build their career portfolios by encouraging them to contribute to open-source projects
     <br />
     <br />
     <br />
@@ -47,11 +47,11 @@
 
 ## About The Project
 
-There are thousands of opensource projects and libraries which have become the backbone for various other projects. Without a community of active contributors, these projects are very hard to maintain and cannot adapt to the latest changes.
+As a new programmer, you have a tremendous opportunity to learn and create fantastic softwares.
 
-<a href="https://techpro.club">Techpro club</a> is an exclusive community of open source contributors, which helps you to discover such wonderful projects and encourages you to participate.
+<a href="https://techpro.club">Techpro club</a>  is a platform to help you hone your programming skills and learn to collaborate with people early on in your career.
 
-With all our efforts as the community grows, you, as an individual, enhance your skillsets and portfolio.
+While you contribute to projects, ask questions, and share your knowledge, we track them down in one place and help you build a better portfolio.
 
 Our core services to the open source projects will be free forever. Feel free to contribute to our repository
 
@@ -199,12 +199,9 @@ Links -
 ## Acknowledgments
 
 -   [Best Readme Template](https://github.com/othneildrew/Best-README-Template)
--   [Meetup website template](https://onepagelove.com/meetup)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-## Founder
+## Founders
 -   [Chilarai](https://github.com/chilarai)
-
-## Core Team
 -   [Rohit Verma](https://github.com/RohitV5)
