@@ -29,7 +29,12 @@
             <div class="row rowspacing">
                 <div class="col col-md-10">
                     <div class="row"><small>Name</small></div>
-                    <div class="row"><b>{{.ProjectPreview.ProjectName}}</b></div>
+                    <div class="row">
+                    <a href="{{.ProjectPreview.RepoLink}}" target="_blank">
+                        <i class="fa-brands fa-github text-dark"></i>
+                        <b class="ms-2 text-primary">{{.ProjectPreview.ProjectName}}</b>
+                    </a>  
+                    </div>
                 </div>
                 <div class="col col-md-2 text-end">
                     <button class="btn btn-default btn-xs {{$ifReacted}}" id="heart-btn" onClick=react()><i class="fa-solid fa-heart"></i></button>
@@ -84,7 +89,7 @@
 
                 <div class="col col-md-4 col-sm-6">
                     <div class="row"><small>Documentation</small></div>
-                    <div class="row"><a href="{{.ProjectPreview.Documentation}}">{{.ProjectPreview.Documentation}}</a></div>
+                    <div class="row"><a href="{{.ProjectPreview.Documentation}}" target="_blank">{{.ProjectPreview.Documentation}}</a></div>
                 </div>
 
                 <div class="col col-md-4 col-sm-6">
