@@ -128,16 +128,18 @@ The above steps are before you unlock the sending limits in SES. Read https://do
     -   [x] Projects Create, Read, Update
     -   [x] Registration welcome email
     -   [x] Master templates
--   [ ] **v 0.2**
-    -   [ ] Profile management - avatar, delete account, etc.
-    -   [ ] Project feeds
-    -   [ ] Feed filters
-    -   [ ] Notification for contributors
-    -   [ ] Notification for projects
+-   [x] **v 0.2**
+    -   [x] Profile management - avatar, delete account, etc.
+    -   [x] Project feeds
+    -   [x] Notification for contributors
+    -   [x] Notification for projects
+    -   [x] Fetch Github profile
+    -   [x] Bookmarks and Reactions
 -   [ ] **v 0.3**
     -   [ ] Project invite members
     -   [ ] Project manage members
     -   [ ] Share on social media
+    -   [ ] Feed filters
 -   [ ] **v 0.4**
     -   [ ] Project analytics
 -   [ ] **v 0.5**
