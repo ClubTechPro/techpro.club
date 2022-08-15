@@ -1,4 +1,4 @@
-package projects
+package videos
 
 import (
 	"fmt"
@@ -11,16 +11,15 @@ import (
 	"techpro.club/sources/users"
 )
 
-type ProjectSavedOutStruct struct{
+type FinalVideoListOutStruct struct{
 	UserNameImage common.UsernameImageStruct `json:"userNameImage"`
 	NotificaitonsCount int64 `json:"notificationsCount"`
 	NotificationsList []common.MainNotificationStruct `json:"nofiticationsList"`
 	PageTitle common.PageTitle `json:"pageTitle"`
 }
 
-func ProjectSaved(w http.ResponseWriter, r *http.Request){
-
-	if r.URL.Path != "/projects/thankyou" {
+func NewVideo(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path != "/videos/newvideo" {
         pages.ErrorHandler(w, r, http.StatusNotFound)
         return
     }
@@ -38,27 +37,36 @@ func ProjectSaved(w http.ResponseWriter, r *http.Request){
 
 	var userNameImage common.UsernameImageStruct
 
-	// Fetch notificaitons
-	_, _, notificationsCount, notificationsList := pages.NotificationsCountAndTopFive(userID)
-
 	// Fetch user name and image from saved browser cookies
 	status, msg, userName, image := pages.FetchUsernameImage(w, r)
+
+	// Fetch notificaitons
+	_, _, notificationsCount, notificationsList := pages.NotificationsCountAndTopFive(userID)
 
 	if(!status){
 		log.Println(msg)
 	} else {
 		userNameImage  = common.UsernameImageStruct{userName,image}
 	}
-	
-	pageTitle := common.PageTitle{Title : "Thank you"}
+		
 
-	output := ProjectSavedOutStruct{userNameImage, notificationsCount, notificationsList, pageTitle}
+	if r.Method == "GET"{
 
-	tmpl, err := template.New("").ParseFiles("templates/app/common/base.gohtml", "templates/app/common/projectmenu.gohtml", "templates/app/projects/projectsaved.gohtml")
-	if err != nil {
-		fmt.Println(err.Error())
-	}else {
-		tmpl.ExecuteTemplate(w, "base", output) 
+		pageTitle := common.PageTitle{Title : "New Video"}
+
+		output := FinalVideoListOutStruct{
+			userNameImage,
+			notificationsCount,
+			notificationsList,
+			pageTitle,
+		}
+
+		tmpl, err := template.New("").ParseFiles("templates/app/common/base.gohtml", "templates/app/common/videomenu.gohtml",  "templates/app/videos/newvideo.gohtml")
+		if err != nil {
+			fmt.Println(err.Error())
+		}else {
+			tmpl.ExecuteTemplate(w, "base", output) 
+		}
+
 	}
-	
 }

@@ -29,7 +29,7 @@ func DeleteProject(w http.ResponseWriter, r *http.Request){
 		users.DeleteSessionCookie(w, r)
 		users.DeleteUserCookie(w, r)
 
-		http.Redirect(w, r, "/projects", http.StatusSeeOther)
+		http.Redirect(w, r, "/", http.StatusSeeOther)
 	}
 
 	projectID := r.URL.Query().Get("projectid")
