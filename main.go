@@ -9,6 +9,7 @@ import (
 	"techpro.club/sources/pages"
 	"techpro.club/sources/pages/contributors"
 	"techpro.club/sources/pages/projects"
+	"techpro.club/sources/pages/videos"
 
 	"github.com/joho/godotenv"
 )
@@ -53,18 +54,25 @@ func main() {
 
 	// Templates/Contributors
 	http.HandleFunc("/contributors/feeds", contributors.Feeds)
+	http.HandleFunc("/contributors/videofeeds", contributors.VideoFeeds)
 	http.HandleFunc("/contributors/preferences", contributors.Preferences)
 	http.HandleFunc("/contributors/thankyou", contributors.PreferencesSaved)
 	http.HandleFunc("/contributors/reactions", contributors.FetchReactions)
 	http.HandleFunc("/contributors/bookmarks", contributors.FetchBookmarks)
 	
 
-	// Templates/Contributors
+	// Templates/Projects
 	http.HandleFunc("/projects/create", projects.ProjectCreate)
 	http.HandleFunc("/projects/list", projects.ProjectList)
 	http.HandleFunc("/projects/view", projects.ProjectPreview)
 	http.HandleFunc("/projects/edit", projects.ProjectEdit)
 	http.HandleFunc("/projects/thankyou", projects.ProjectSaved)
+
+	// Templates/Videos
+	http.HandleFunc("/videos/list", videos.VideosList)
+	http.HandleFunc("/videos/newvideo", videos.NewVideo)
+	http.HandleFunc("/videos/editvideo", videos.EditVideo)
+
 
 
 	// Authentication
