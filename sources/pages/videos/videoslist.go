@@ -12,7 +12,7 @@ import (
 )
 
 func VideosList(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path != "/videos/videoslist" {
+	if r.URL.Path != "/videos/list" {
         pages.ErrorHandler(w, r, http.StatusNotFound)
         return
     }
