@@ -54,7 +54,7 @@ func TestFetchProjectDetails(t *testing.T) {
 func TestNotificationsCount(t *testing.T) {
 	var testUserID primitive.ObjectID = primitive.NewObjectID()
 
-	status, msg, _ := NotificationsCount(testUserID)
+	status, msg, _, _ := NotificationsCountAndTopFive(testUserID)
 
 	if !status {
 		t.Errorf(msg)

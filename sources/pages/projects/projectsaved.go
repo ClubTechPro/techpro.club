@@ -11,24 +11,24 @@ import (
 	"techpro.club/sources/users"
 )
 
-type ProjectSavedOutStruct struct{
-	UserNameImage common.UsernameImageStruct `json:"userNameImage"`
-	NotificaitonsCount int64 `json:"notificationsCount"`
-	NotificationsList []common.MainNotificationStruct `json:"nofiticationsList"`
-	PageTitle common.PageTitle `json:"pageTitle"`
+type ProjectSavedOutStruct struct {
+	UserNameImage      common.UsernameImageStruct      `json:"userNameImage"`
+	NotificaitonsCount int64                           `json:"notificationsCount"`
+	NotificationsList  []common.MainNotificationStruct `json:"nofiticationsList"`
+	PageTitle          common.PageTitle                `json:"pageTitle"`
 }
 
-func ProjectSaved(w http.ResponseWriter, r *http.Request){
+func ProjectSaved(w http.ResponseWriter, r *http.Request) {
 
 	if r.URL.Path != "/projects/thankyou" {
-        pages.ErrorHandler(w, r, http.StatusNotFound)
-        return
-    }
+		pages.ErrorHandler(w, r, http.StatusNotFound)
+		return
+	}
 
 	// Session check
 	sessionOk, userID := users.ValidateDbSession(w, r)
-	if(!sessionOk){
-		
+	if !sessionOk {
+
 		// Delete cookies
 		users.DeleteSessionCookie(w, r)
 		users.DeleteUserCookie(w, r)
@@ -44,21 +44,21 @@ func ProjectSaved(w http.ResponseWriter, r *http.Request){
 	// Fetch user name and image from saved browser cookies
 	status, msg, userName, image := pages.FetchUsernameImage(w, r)
 
-	if(!status){
+	if !status {
 		log.Println(msg)
 	} else {
-		userNameImage  = common.UsernameImageStruct{userName,image}
+		userNameImage = common.UsernameImageStruct{Username: userName, Image: image}
 	}
-	
-	pageTitle := common.PageTitle{Title : "Thank you"}
+
+	pageTitle := common.PageTitle{Title: "Thank you"}
 
 	output := ProjectSavedOutStruct{userNameImage, notificationsCount, notificationsList, pageTitle}
 
 	tmpl, err := template.New("").ParseFiles("templates/app/common/base.gohtml", "templates/app/common/projectmenu.gohtml", "templates/app/projects/projectsaved.gohtml")
 	if err != nil {
 		fmt.Println(err.Error())
-	}else {
-		tmpl.ExecuteTemplate(w, "base", output) 
+	} else {
+		tmpl.ExecuteTemplate(w, "base", output)
 	}
-	
+
 }

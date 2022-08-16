@@ -16,11 +16,11 @@ import (
 )
 
 type UserSettingsStruct struct {
-	UserProfile   common.FetchUserStruct     `json:"userprofile"`
-	UserNameImage common.UsernameImageStruct `json:"usernameImage"`
-	NotificaitonsCount int64 `json:"notificationsCount"`
-	NotificationsList []common.MainNotificationStruct `json:"nofiticationsList"`
-	PageTitle common.PageTitle `json:"pageTitle"`
+	UserProfile        common.FetchUserStruct          `json:"userprofile"`
+	UserNameImage      common.UsernameImageStruct      `json:"usernameImage"`
+	NotificaitonsCount int64                           `json:"notificationsCount"`
+	NotificationsList  []common.MainNotificationStruct `json:"nofiticationsList"`
+	PageTitle          common.PageTitle                `json:"pageTitle"`
 }
 
 // Display user settings
@@ -61,12 +61,12 @@ func UserSettings(w http.ResponseWriter, r *http.Request) {
 	if !status {
 		log.Println(msg)
 	} else {
-		userNameImage = common.UsernameImageStruct{userName, image}
+		userNameImage = common.UsernameImageStruct{Username: userName, Image: image}
 	}
 
 	_, _, userprofile := fetchUserProfile(userID)
 
-	pageTitle := common.PageTitle{Title : "Settings"}
+	pageTitle := common.PageTitle{Title: "Settings"}
 
 	userSettingData := UserSettingsStruct{userprofile, userNameImage, notificationsCount, notificationsList, pageTitle}
 
@@ -140,7 +140,7 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 		socialsCollection := client.Database(dbName).Collection(common.CONST_MO_SOCIALS)
 		_, err5 := socialsCollection.DeleteOne(context.TODO(), bson.M{"userid": userID})
 
-		if err1 != nil && err2 != nil && err3 != nil && err4 != nil && err5 != nil{
+		if err1 != nil && err2 != nil && err3 != nil && err4 != nil && err5 != nil {
 			msg = err1.Error()
 		} else {
 			status = true

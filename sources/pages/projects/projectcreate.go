@@ -16,35 +16,34 @@ import (
 	"techpro.club/sources/users"
 )
 
-type FinalOutStruct struct{
-	ProgrammingLanguages map[string]string `json:"programmingLanguages"`
-	AlliedServices map[string]string `json:"alliedServices"`
-	ProjectType map[string]string `json:"projectType"`
-	Contributors map[string]string `json:"contributors"`
-	UserNameImage common.UsernameImageStruct `json:"userNameImage"`
-	NotificaitonsCount int64 `json:"notificationsCount"`
-	NotificationsList []common.MainNotificationStruct `json:"nofiticationsList"`
-	PageTitle common.PageTitle `json:"pageTitle"`
+type FinalOutStruct struct {
+	ProgrammingLanguages map[string]string               `json:"programmingLanguages"`
+	AlliedServices       map[string]string               `json:"alliedServices"`
+	ProjectType          map[string]string               `json:"projectType"`
+	Contributors         map[string]string               `json:"contributors"`
+	UserNameImage        common.UsernameImageStruct      `json:"userNameImage"`
+	NotificaitonsCount   int64                           `json:"notificationsCount"`
+	NotificationsList    []common.MainNotificationStruct `json:"nofiticationsList"`
+	PageTitle            common.PageTitle                `json:"pageTitle"`
 }
 
-func ProjectCreate(w http.ResponseWriter, r *http.Request){
+func ProjectCreate(w http.ResponseWriter, r *http.Request) {
 
 	if r.URL.Path != "/projects/create" {
-        pages.ErrorHandler(w, r, http.StatusNotFound)
-        return
-    }
-	
+		pages.ErrorHandler(w, r, http.StatusNotFound)
+		return
+	}
+
 	// Session check
 	sessionOk, userID := users.ValidateDbSession(w, r)
-	if(!sessionOk){
-		
+	if !sessionOk {
+
 		// Delete cookies
 		users.DeleteSessionCookie(w, r)
 		users.DeleteUserCookie(w, r)
 
 		http.Redirect(w, r, "/", http.StatusSeeOther)
-	} 
-
+	}
 
 	var userNameImage common.UsernameImageStruct
 
@@ -54,15 +53,15 @@ func ProjectCreate(w http.ResponseWriter, r *http.Request){
 	// Fetch notificaitons
 	_, _, notificationsCount, notificationsList := pages.NotificationsCountAndTopFive(userID)
 
-	if(!status){
+	if !status {
 		log.Println(msg)
 	} else {
-		userNameImage  = common.UsernameImageStruct{userName,image}
+		userNameImage = common.UsernameImageStruct{Username: userName, Image: image}
 	}
-	
-	if r.Method == "GET"{
 
-		pageTitle := common.PageTitle{Title : "New Project"}
+	if r.Method == "GET" {
+
+		pageTitle := common.PageTitle{Title: "New Project"}
 
 		output := FinalOutStruct{
 			common.ProgrammingLanguages,
@@ -75,11 +74,11 @@ func ProjectCreate(w http.ResponseWriter, r *http.Request){
 			pageTitle,
 		}
 
-		tmpl, err := template.New("").ParseFiles("templates/app/common/base.gohtml", "templates/app/common/projectmenu.gohtml",  "templates/app/projects/projectcreate.gohtml")
+		tmpl, err := template.New("").ParseFiles("templates/app/common/base.gohtml", "templates/app/common/projectmenu.gohtml", "templates/app/projects/projectcreate.gohtml")
 		if err != nil {
 			fmt.Println(err.Error())
-		}else {
-			tmpl.ExecuteTemplate(w, "base", output) 
+		} else {
+			tmpl.ExecuteTemplate(w, "base", output)
 		}
 
 	} else {
@@ -93,7 +92,7 @@ func ProjectCreate(w http.ResponseWriter, r *http.Request){
 			language := r.Form["language"]
 			otherLanguages := r.Form.Get("otherLanguages")
 			allied := r.Form["allied"]
-			projectType :=  r.Form["pType"]
+			projectType := r.Form["pType"]
 			contributorCount := r.Form.Get("contributorCount")
 			documentation := r.Form.Get("documentation")
 			public := r.Form.Get("public")
@@ -109,25 +108,24 @@ func ProjectCreate(w http.ResponseWriter, r *http.Request){
 			var result common.SaveProjectStruct
 
 			if submit == "Save as draft" {
-				result = common.SaveProjectStruct{userID, projectName, projectDescription, repoLink, language, otherLanguagesSplit, allied, projectType, contributorCount, documentation, public, company, companyName ,funded, dt, "", "", common.CONST_INACTIVE, 0}
+				result = common.SaveProjectStruct{UserID: userID, ProjectName: projectName, ProjectDescription: projectDescription, RepoLink: repoLink, Languages: language, OtherLanguages: otherLanguagesSplit, Allied: allied, ProjectType: projectType, ContributorCount: contributorCount, Documentation: documentation, Public: public, Company: company, CompanyName: companyName, Funded: funded, CreatedDate: dt, PublishedDate: "", ClosedDate: "", IsActive: common.CONST_INACTIVE, ReactionsCount: 0}
 				saveProject(w, r, result)
 			} else {
-				result = common.SaveProjectStruct{userID, projectName, projectDescription, repoLink, language, otherLanguagesSplit, allied, projectType, contributorCount, documentation, public, company, companyName ,funded, dt, dt, "", common.CONST_ACTIVE, 0}
+				result = common.SaveProjectStruct{UserID: userID, ProjectName: projectName, ProjectDescription: projectDescription, RepoLink: repoLink, Languages: language, OtherLanguages: otherLanguagesSplit, Allied: allied, ProjectType: projectType, ContributorCount: contributorCount, Documentation: documentation, Public: public, Company: company, CompanyName: companyName, Funded: funded, CreatedDate: dt, PublishedDate: dt, ClosedDate: "", IsActive: common.CONST_ACTIVE, ReactionsCount: 0}
 				_, _, projectID := saveProject(w, r, result)
 				go createProjectNotifications(projectID, result)
-			}	
+			}
 
 			http.Redirect(w, r, "/projects/thankyou", http.StatusSeeOther)
 		}
 	}
 }
 
-
-func saveProject(w http.ResponseWriter, r *http.Request, newProjectStruct common.SaveProjectStruct)(status bool, msg string, projectId primitive.ObjectID){
+func saveProject(w http.ResponseWriter, r *http.Request, newProjectStruct common.SaveProjectStruct) (status bool, msg string, projectId primitive.ObjectID) {
 	status = false
 	msg = ""
 
-	_, _, client:= common.Mongoconnect()
+	_, _, client := common.Mongoconnect()
 	defer client.Disconnect(context.TODO())
 
 	dbName := common.GetMoDb()
@@ -148,11 +146,11 @@ func saveProject(w http.ResponseWriter, r *http.Request, newProjectStruct common
 }
 
 // Send notifications
-func createProjectNotifications(projectID primitive.ObjectID, projectParams common.SaveProjectStruct){
+func createProjectNotifications(projectID primitive.ObjectID, projectParams common.SaveProjectStruct) {
 
 	var preferenceStruct common.FetchContributorPreferencesStruct
 	var newNotification common.MainNotificationStruct
-	_, _, client:= common.Mongoconnect()
+	_, _, client := common.Mongoconnect()
 	defer client.Disconnect(context.TODO())
 
 	dbName := common.GetMoDb()
@@ -160,9 +158,9 @@ func createProjectNotifications(projectID primitive.ObjectID, projectParams comm
 	contributorPreferences := client.Database(dbName).Collection(common.CONST_MO_CONTRIBUTOR_PREFERENCES)
 
 	var orConditionsLanguages []bson.M = []bson.M{
-		{"languages": projectParams.Languages}, 
-		{"otherlanguages": projectParams.OtherLanguages}, 
-		{"allied": projectParams.Allied}, 
+		{"languages": projectParams.Languages},
+		{"otherlanguages": projectParams.OtherLanguages},
+		{"allied": projectParams.Allied},
 		{"projecttype": projectParams.ProjectType},
 	}
 
@@ -178,24 +176,23 @@ func createProjectNotifications(projectID primitive.ObjectID, projectParams comm
 	orConditionsContributors = append(orConditionsContributors, bson.M{"contributorcount": bson.M{"$in": contributorsArray}})
 
 	andConditions := []bson.M{
-		{"$or" : orConditionsLanguages}, 
+		{"$or": orConditionsLanguages},
 		{"$or": orConditionsContributors},
-	} 
+	}
 
-	fetchPreferences, errPreferences := contributorPreferences.Find(context.TODO(), bson.M{"userid" : bson.M{"$ne": projectParams.UserID}, "$and": andConditions})
+	fetchPreferences, errPreferences := contributorPreferences.Find(context.TODO(), bson.M{"userid": bson.M{"$ne": projectParams.UserID}, "$and": andConditions})
 	if errPreferences != nil {
 		fmt.Println(errPreferences.Error())
 	} else {
-		for fetchPreferences.Next(context.TODO()){
+		for fetchPreferences.Next(context.TODO()) {
 			fetchPreferences.Decode(&preferenceStruct)
 
 			newNotification.Link = "/projects/view/" + projectID.Hex()
 			newNotification.NotificationType = common.NOTIFICATION_TYPES[0]
 			newNotification.Subject = projectParams.ProjectName
-			newNotification.Message = projectParams.ProjectDescription		
+			newNotification.Message = projectParams.ProjectDescription
 			newNotification.CreatedDate = projectParams.CreatedDate
 			newNotification.Read = false
-			
 
 			sendNotifications.UpdateOne(context.TODO(), bson.M{"userid": preferenceStruct.UserID}, bson.M{"$inc": bson.M{"unreadnotifications": 1}, "$push": bson.M{"notificationslist": newNotification}})
 		}

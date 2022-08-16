@@ -16,28 +16,28 @@ import (
 	"techpro.club/sources/users"
 )
 
-type FinalProjectOutStruct struct{
-	ProgrammingLanguages map[string]string `json:"programmingLanguages"`
-	AlliedServices map[string]string `json:"alliedServices"`
-	ProjectType map[string]string `json:"projectType"`
-	Contributors map[string]string `json:"contributors"`
-	ProjectStruct common.FetchProjectStruct `json:"projectStruct"`
-	UserNameImage common.UsernameImageStruct `json:"userNameImage"`
-	NotificaitonsCount int64 `json:"notificationsCount"`
-	NotificationsList []common.MainNotificationStruct `json:"nofiticationsList"`
-	PageTitle common.PageTitle `json:"pageTitle"`
+type FinalProjectOutStruct struct {
+	ProgrammingLanguages map[string]string               `json:"programmingLanguages"`
+	AlliedServices       map[string]string               `json:"alliedServices"`
+	ProjectType          map[string]string               `json:"projectType"`
+	Contributors         map[string]string               `json:"contributors"`
+	ProjectStruct        common.FetchProjectStruct       `json:"projectStruct"`
+	UserNameImage        common.UsernameImageStruct      `json:"userNameImage"`
+	NotificaitonsCount   int64                           `json:"notificationsCount"`
+	NotificationsList    []common.MainNotificationStruct `json:"nofiticationsList"`
+	PageTitle            common.PageTitle                `json:"pageTitle"`
 }
 
-func ProjectEdit(w http.ResponseWriter, r *http.Request){
+func ProjectEdit(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/projects/edit" {
-        pages.ErrorHandler(w, r, http.StatusNotFound)
-        return
-    }
-	
+		pages.ErrorHandler(w, r, http.StatusNotFound)
+		return
+	}
+
 	// Session check
 	sessionOk, userID := users.ValidateDbSession(w, r)
-	if(!sessionOk){
-		
+	if !sessionOk {
+
 		// Delete cookies
 		users.DeleteSessionCookie(w, r)
 		users.DeleteUserCookie(w, r)
@@ -46,8 +46,8 @@ func ProjectEdit(w http.ResponseWriter, r *http.Request){
 	}
 
 	var functions = template.FuncMap{
-		"contains" : pages.Contains,
-		"sliceToCsv" : pages.SliceToCsv,
+		"contains":   pages.Contains,
+		"sliceToCsv": pages.SliceToCsv,
 	}
 
 	// Fetch notificaitons
@@ -57,21 +57,20 @@ func ProjectEdit(w http.ResponseWriter, r *http.Request){
 
 	// Fetch user name and image from saved browser cookies
 	status, msg, userName, image := pages.FetchUsernameImage(w, r)
-	
 
-	if(!status){
+	if !status {
 		log.Println(msg)
 	} else {
-		userNameImage  = common.UsernameImageStruct{userName,image}
+		userNameImage = common.UsernameImageStruct{Username: userName, Image: image}
 	}
 
-	if r.Method == "GET"{
+	if r.Method == "GET" {
 
 		projectID := r.URL.Query().Get("projectid")
 
 		_, _, result := pages.FetchProjectDetails(projectID, userID)
 
-		pageTitle := common.PageTitle{Title : "Edit " + result.ProjectName}
+		pageTitle := common.PageTitle{Title: "Edit " + result.ProjectName}
 
 		constantLists := FinalProjectOutStruct{
 			common.ProgrammingLanguages,
@@ -84,13 +83,12 @@ func ProjectEdit(w http.ResponseWriter, r *http.Request){
 			notificationsList,
 			pageTitle,
 		}
-		
 
 		tmpl, err := template.New("").Funcs(functions).ParseFiles("templates/app/common/base.gohtml", "templates/app/common/projectmenu.gohtml", "templates/app/projects/projectedit.gohtml")
 		if err != nil {
 			fmt.Println(err.Error())
-		}else {
-			tmpl.ExecuteTemplate(w, "base", constantLists) 
+		} else {
+			tmpl.ExecuteTemplate(w, "base", constantLists)
 		}
 	} else {
 		projectID := r.URL.Query().Get("projectid")
@@ -105,7 +103,7 @@ func ProjectEdit(w http.ResponseWriter, r *http.Request){
 			language := r.Form["language"]
 			otherLanguages := r.Form.Get("otherLanguages")
 			allied := r.Form["allied"]
-			projectType :=  r.Form["pType"]
+			projectType := r.Form["pType"]
 			contributorCount := r.Form.Get("contributorCount")
 			documentation := r.Form.Get("documentation")
 			public := r.Form.Get("public")
@@ -121,20 +119,20 @@ func ProjectEdit(w http.ResponseWriter, r *http.Request){
 			var result common.UpdateProjectStruct
 
 			if submit == "Save as draft" {
-				result = common.UpdateProjectStruct{userID, projectName, projectDescription, repoLink, language, otherLanguagesSplit, allied, projectType, contributorCount, documentation, public, company, companyName ,funded, dt, "", "", common.CONST_INACTIVE}
+				result = common.UpdateProjectStruct{UserID: userID, ProjectName: projectName, ProjectDescription: projectDescription, RepoLink: repoLink, Languages: language, OtherLanguages: otherLanguagesSplit, Allied: allied, ProjectType: projectType, ContributorCount: contributorCount, Documentation: documentation, Public: public, Company: company, CompanyName: companyName, Funded: funded, CreatedDate: dt, PublishedDate: "", ClosedDate: "", IsActive: common.CONST_INACTIVE}
 				updateProject(w, r, projectID, result)
 			} else {
-				result = common.UpdateProjectStruct{userID, projectName, projectDescription, repoLink, language, otherLanguagesSplit, allied, projectType, contributorCount, documentation, public, company, companyName ,funded, dt, dt, "", common.CONST_ACTIVE}
+				result = common.UpdateProjectStruct{UserID: userID, ProjectName: projectName, ProjectDescription: projectDescription, RepoLink: repoLink, Languages: language, OtherLanguages: otherLanguagesSplit, Allied: allied, ProjectType: projectType, ContributorCount: contributorCount, Documentation: documentation, Public: public, Company: company, CompanyName: companyName, Funded: funded, CreatedDate: dt, PublishedDate: dt, ClosedDate: "", IsActive: common.CONST_ACTIVE}
 				updateProject(w, r, projectID, result)
 			}
-			
+
 			http.Redirect(w, r, "/projects/thankyou", http.StatusSeeOther)
 		}
 	}
 }
 
 // Update project function
-func updateProject(w http.ResponseWriter, r *http.Request, projectID string, newProjectStruct common.UpdateProjectStruct)(status bool, msg string){
+func updateProject(w http.ResponseWriter, r *http.Request, projectID string, newProjectStruct common.UpdateProjectStruct) (status bool, msg string) {
 	status = false
 	msg = ""
 
