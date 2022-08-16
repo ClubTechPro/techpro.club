@@ -7,7 +7,7 @@ import (
 )
 
 // Test fetchUserProfile
-func TestFetchUserProfile(t *testing.T){
+func TestFetchUserProfile(t *testing.T) {
 	var testUserID primitive.ObjectID = primitive.NewObjectID()
 
 	status, msg, _ := fetchUserProfile(testUserID)
@@ -16,20 +16,19 @@ func TestFetchUserProfile(t *testing.T){
 	}
 }
 
-
 // Test UpdateUserProfile
-func TestUpdateUserProfile(t *testing.T){
+func TestUpdateUserProfile(t *testing.T) {
 	var testUserID primitive.ObjectID = primitive.NewObjectID()
-	var testName, testRepoLink string
+	var testName, testRepoLink, testAbout string
 
-	status, msg := UpdateUserProfile(testUserID, testName, testRepoLink)
+	status, msg := UpdateUserProfile(testUserID, testName, testRepoLink, testAbout)
 	if !status {
 		t.Errorf(msg)
 	}
 }
 
 // Test fetchSocials
-func TestFetchSocials(t *testing.T){
+func TestFetchSocials(t *testing.T) {
 	var testUserID primitive.ObjectID = primitive.NewObjectID()
 
 	status, msg, _ := fetchSocials(testUserID)
@@ -38,10 +37,9 @@ func TestFetchSocials(t *testing.T){
 	}
 }
 
-
 // Test updateSocials
-func TestUpdateSocials(t *testing.T){
-	var testUserID primitive.ObjectID  = primitive.NewObjectID()
+func TestUpdateSocials(t *testing.T) {
+	var testUserID primitive.ObjectID = primitive.NewObjectID()
 	var testFacebook, testLinkedin, testTwitter, testStackoverflow string
 
 	status, msg := updateSocials(testUserID, testFacebook, testLinkedin, testTwitter, testStackoverflow)

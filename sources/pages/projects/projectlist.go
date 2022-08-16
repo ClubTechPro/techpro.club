@@ -14,25 +14,25 @@ import (
 	"techpro.club/sources/users"
 )
 
-type FinalProjectListOutStruct struct{
-	ProjectsList []common.FetchProjectStruct `json:"projectsList"`
-	UserNameImage common.UsernameImageStruct `json:"userNameImage"`
-	NotificaitonsCount int64 `json:"notificationsCount"`
-	NotificationsList []common.MainNotificationStruct `json:"nofiticationsList"`
-	PageTitle common.PageTitle `json:"pageTitle"`
+type FinalProjectListOutStruct struct {
+	ProjectsList       []common.FetchProjectStruct     `json:"projectsList"`
+	UserNameImage      common.UsernameImageStruct      `json:"userNameImage"`
+	NotificaitonsCount int64                           `json:"notificationsCount"`
+	NotificationsList  []common.MainNotificationStruct `json:"nofiticationsList"`
+	PageTitle          common.PageTitle                `json:"pageTitle"`
 }
 
-func ProjectList(w http.ResponseWriter, r *http.Request){
-	
+func ProjectList(w http.ResponseWriter, r *http.Request) {
+
 	if r.URL.Path != "/projects/list" {
-        pages.ErrorHandler(w, r, http.StatusNotFound)
-        return
-    }
+		pages.ErrorHandler(w, r, http.StatusNotFound)
+		return
+	}
 
 	// Session check
 	sessionOk, userID := users.ValidateDbSession(w, r)
-	if(!sessionOk){
-		
+	if !sessionOk {
+
 		// Delete cookies
 		users.DeleteSessionCookie(w, r)
 		users.DeleteUserCookie(w, r)
@@ -41,9 +41,9 @@ func ProjectList(w http.ResponseWriter, r *http.Request){
 	}
 
 	functions := template.FuncMap{
-		"timeElapsed" : pages.TimeElapsed,
+		"timeElapsed": pages.TimeElapsed,
 	}
-	
+
 	var finalOutStruct FinalProjectListOutStruct
 	var userNameImage common.UsernameImageStruct
 
@@ -53,30 +53,28 @@ func ProjectList(w http.ResponseWriter, r *http.Request){
 	// Fetch user name and image from saved browser cookies
 	status, msg, userName, image := pages.FetchUsernameImage(w, r)
 
-	if(!status){
+	if !status {
 		log.Println(msg)
 	} else {
-		userNameImage  = common.UsernameImageStruct{userName,image}
+		userNameImage = common.UsernameImageStruct{Username: userName, Image: image}
 	}
-	
-	pageTitle := common.PageTitle{Title : "Projects List"}
+
+	pageTitle := common.PageTitle{Title: "Projects List"}
 
 	_, _, results := listProjects(w, r, userID)
 	finalOutStruct = FinalProjectListOutStruct{results, userNameImage, notificationsCount, notificationsList, pageTitle}
-	
 
 	tmpl, err := template.New("").Funcs(functions).ParseFiles("templates/app/common/base.gohtml", "templates/app/common/projectmenu.gohtml", "templates/app/projects/projectlist.gohtml")
 	if err != nil {
 		fmt.Println(err.Error())
-	}else {
-		tmpl.ExecuteTemplate(w, "base", finalOutStruct) 
+	} else {
+		tmpl.ExecuteTemplate(w, "base", finalOutStruct)
 	}
 }
 
-
 // List projects
-func listProjects(w http.ResponseWriter, r *http.Request, userID primitive.ObjectID)(status bool, msg string, results []common.FetchProjectStruct){
-	
+func listProjects(w http.ResponseWriter, r *http.Request, userID primitive.ObjectID) (status bool, msg string, results []common.FetchProjectStruct) {
+
 	status = false
 	msg = ""
 
@@ -85,13 +83,12 @@ func listProjects(w http.ResponseWriter, r *http.Request, userID primitive.Objec
 
 	dbName := common.GetMoDb()
 	fetchProject := client.Database(dbName).Collection(common.CONST_MO_PROJECTS)
-	projectsList, err := fetchProject.Find(context.TODO(),  bson.M{"userid": userID})
-
+	projectsList, err := fetchProject.Find(context.TODO(), bson.M{"userid": userID})
 
 	if err != nil {
 		msg = err.Error()
 	} else {
-		for projectsList.Next(context.TODO()){
+		for projectsList.Next(context.TODO()) {
 			var elem common.FetchProjectStruct
 			errDecode := projectsList.Decode(&elem)
 

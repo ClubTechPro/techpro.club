@@ -17,13 +17,13 @@ import (
 )
 
 type ProfileStruct struct {
-	UserProfile   common.FetchUserStruct     `json:"userprofile"`
-	UserSocials   common.FetchSocialStruct   `json:"socials"`
-	UserNameImage common.UsernameImageStruct `json:"usernameImage"`
-	GithubRepos []common.GithubRepoStruct `json:"githubRepos"`
-	NotificaitonsCount int64 `json:"notificationsCount"`
-	NotificationsList []common.MainNotificationStruct `json:"nofiticationsList"`
-	PageTitle common.PageTitle `json:"pageTitle"`
+	UserProfile        common.FetchUserStruct          `json:"userprofile"`
+	UserSocials        common.FetchSocialStruct        `json:"socials"`
+	UserNameImage      common.UsernameImageStruct      `json:"usernameImage"`
+	GithubRepos        []common.GithubRepoStruct       `json:"githubRepos"`
+	NotificaitonsCount int64                           `json:"notificationsCount"`
+	NotificationsList  []common.MainNotificationStruct `json:"nofiticationsList"`
+	PageTitle          common.PageTitle                `json:"pageTitle"`
 }
 
 // Display user profile
@@ -64,20 +64,19 @@ func Profile(w http.ResponseWriter, r *http.Request) {
 	if !status {
 		log.Println(msg)
 	} else {
-		userNameImage = common.UsernameImageStruct{userName, image}
+		userNameImage = common.UsernameImageStruct{Username: userName, Image: image}
 	}
 
 	_, _, userprofile := fetchUserProfile(userID)
 	_, _, socials := fetchSocials(userID)
 
-	pageTitle := common.PageTitle{Title : userName + "'s profile"}
+	pageTitle := common.PageTitle{Title: userName + "'s profile"}
 
 	// Test repository fetch
 	_, _, githubRepos := fetchGithubReposList(userprofile.Login)
 
 	userSettingsStruct := ProfileStruct{userprofile, socials, userNameImage, githubRepos, notificationsCount, notificationsList, pageTitle}
 
-	
 	tmpl, err := template.New("").ParseFiles("templates/app/common/base.gohtml", "templates/app/common/contributormenu.gohtml", "templates/app/profile.gohtml")
 	if err != nil {
 		fmt.Println(err.Error())
@@ -124,7 +123,7 @@ func UserEdit(w http.ResponseWriter, r *http.Request) {
 	if !status {
 		log.Println(msg)
 	} else {
-		userNameImage = common.UsernameImageStruct{userName, image}
+		userNameImage = common.UsernameImageStruct{Username: userName, Image: image}
 	}
 
 	if r.Method == "POST" {
@@ -159,7 +158,7 @@ func UserEdit(w http.ResponseWriter, r *http.Request) {
 	// Test repository fetch
 	_, _, githubRepos := fetchGithubReposList(userprofile.Login)
 
-	pageTitle := common.PageTitle{Title : "Edit profile"}
+	pageTitle := common.PageTitle{Title: "Edit profile"}
 
 	userSettingsStruct := ProfileStruct{userprofile, socials, userNameImage, githubRepos, notificationsCount, notificationsList, pageTitle}
 
@@ -193,7 +192,7 @@ func fetchUserProfile(userID primitive.ObjectID) (status bool, msg string, userP
 }
 
 // Update project function
-func updateUserRepos(repoList string)(status bool, msg string){
+func updateUserRepos(repoList string) (status bool, msg string) {
 	status = false
 	msg = ""
 
@@ -203,8 +202,7 @@ func updateUserRepos(repoList string)(status bool, msg string){
 	dbName := common.GetMoDb()
 	saveProject := client.Database(dbName).Collection(common.CONST_MO_USER_REPO_LIST)
 
-
-	_, err := saveProject.InsertOne(context.TODO(),bson.M{"$set": repoList})
+	_, err := saveProject.InsertOne(context.TODO(), bson.M{"$set": repoList})
 
 	if err != nil {
 		fmt.Println(err)
@@ -301,9 +299,8 @@ func updateSocials(userID primitive.ObjectID, facebook, linkedin, twitter, stack
 	return status, msg
 }
 
-
 // Fetch Github repos list
-func fetchGithubReposList(login string)(status bool, msg string, reposList []common.GithubRepoStruct){
+func fetchGithubReposList(login string) (status bool, msg string, reposList []common.GithubRepoStruct) {
 
 	status = false
 	msg = ""
@@ -311,7 +308,7 @@ func fetchGithubReposList(login string)(status bool, msg string, reposList []com
 	var githubRepos []common.GithubRepoStruct
 	var githubRepoUni common.GithubRepoStruct
 
-	gitRepos, errRepos := http.Get("https://api.github.com/users/" + login + "/repos");
+	gitRepos, errRepos := http.Get("https://api.github.com/users/" + login + "/repos")
 
 	if errRepos != nil {
 		msg = errRepos.Error()
@@ -323,13 +320,13 @@ func fetchGithubReposList(login string)(status bool, msg string, reposList []com
 			msg = errBytes.Error()
 		} else {
 			checkValid := json.Valid(databytes)
-	
+
 			if !checkValid {
 				msg = "Invalid JSON"
 			} else {
 				var githubData []map[string]interface{}
 				json.Unmarshal(databytes, &githubData)
-		
+
 				for _, repo := range githubData {
 					githubRepoUni.Name = repo["name"].(string)
 					githubRepoUni.FullName = repo["full_name"].(string)
@@ -338,25 +335,25 @@ func fetchGithubReposList(login string)(status bool, msg string, reposList []com
 					githubRepoUni.NodeId = repo["node_id"].(string)
 					githubRepoUni.GithubProjectId = repo["id"].(float64)
 					githubRepoUni.CreatedAt = repo["created_at"].(string)
-		
+
 					if repo["description"] != nil {
 						githubRepoUni.Description = repo["description"].(string)
 					} else {
 						githubRepoUni.Description = ""
 					}
-		
+
 					githubRepos = append(githubRepos, githubRepoUni)
-		
+
 				}
 
 				status = true
 				msg = "Success"
-			
+
 				defer gitRepos.Body.Close()
 			}
 		}
 	}
 
 	return status, msg, githubRepos
-	
+
 }

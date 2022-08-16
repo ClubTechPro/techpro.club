@@ -12,27 +12,27 @@ import (
 	"techpro.club/sources/users"
 )
 
-type FinalProjectPreviewOutStruct struct{
-	ProjectPreview common.FetchProjectStruct `json:"projectsList"`
-	UserNameImage common.UsernameImageStruct `json:"userNameImage"`
-	ProjectOwner bool `json:"projectOwner"`
-	MyBookmarks []primitive.ObjectID `json:"myBookmarks"`
-	MyReactions []primitive.ObjectID `json:"myReactions"`
-	NotificaitonsCount int64 `json:"notificationsCount"`
-	NotificationsList []common.MainNotificationStruct `json:"nofiticationsList"`
-	PageTitle common.PageTitle `json:"pageTitle"`
+type FinalProjectPreviewOutStruct struct {
+	ProjectPreview     common.FetchProjectStruct       `json:"projectsList"`
+	UserNameImage      common.UsernameImageStruct      `json:"userNameImage"`
+	ProjectOwner       bool                            `json:"projectOwner"`
+	MyBookmarks        []primitive.ObjectID            `json:"myBookmarks"`
+	MyReactions        []primitive.ObjectID            `json:"myReactions"`
+	NotificaitonsCount int64                           `json:"notificationsCount"`
+	NotificationsList  []common.MainNotificationStruct `json:"nofiticationsList"`
+	PageTitle          common.PageTitle                `json:"pageTitle"`
 }
 
-func ProjectPreview(w http.ResponseWriter, r *http.Request){
+func ProjectPreview(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/projects/view" {
-        pages.ErrorHandler(w, r, http.StatusNotFound)
-        return
-    }
+		pages.ErrorHandler(w, r, http.StatusNotFound)
+		return
+	}
 
 	// Session check
 	sessionOk, userID := users.ValidateDbSession(w, r)
-	if(!sessionOk){
-		
+	if !sessionOk {
+
 		// Delete cookies
 		users.DeleteSessionCookie(w, r)
 		users.DeleteUserCookie(w, r)
@@ -52,16 +52,16 @@ func ProjectPreview(w http.ResponseWriter, r *http.Request){
 	// Fetch user name and image from saved browser cookies
 	status, msg, userName, image := pages.FetchUsernameImage(w, r)
 
-	if(!status){
+	if !status {
 		log.Println(msg)
 	} else {
-		userNameImage  = common.UsernameImageStruct{userName,image}
+		userNameImage = common.UsernameImageStruct{Username: userName, Image: image}
 	}
 
 	var functions = template.FuncMap{
-		"objectIdToString" : pages.ObjectIDToString,
-		"containsObjectId" : pages.ContainsObjectID,
-		"timeElapsed" : pages.TimeElapsed,
+		"objectIdToString": pages.ObjectIDToString,
+		"containsObjectId": pages.ContainsObjectID,
+		"timeElapsed":      pages.TimeElapsed,
 	}
 
 	projectID := r.URL.Query().Get("projectid")
@@ -69,10 +69,9 @@ func ProjectPreview(w http.ResponseWriter, r *http.Request){
 
 	projectOwner := false
 
-	pageTitle := common.PageTitle{Title : result.ProjectName}
-	
+	pageTitle := common.PageTitle{Title: result.ProjectName}
 
-	if(projectStatus){
+	if projectStatus {
 
 		if result.UserID == userID {
 			projectOwner = true
@@ -84,13 +83,11 @@ func ProjectPreview(w http.ResponseWriter, r *http.Request){
 		pages.ErrorHandler(w, r, http.StatusNotFound)
 		return
 	}
-	
-	
 
 	tmpl, err := template.New("").Funcs(functions).ParseFiles("templates/app/common/base.gohtml", "templates/app/common/projectmenu.gohtml", "templates/app/projects/projectpreview.gohtml")
 	if err != nil {
 		fmt.Println(err.Error())
-	}else {
-		tmpl.ExecuteTemplate(w, "base", finalOutStruct) 
+	} else {
+		tmpl.ExecuteTemplate(w, "base", finalOutStruct)
 	}
 }

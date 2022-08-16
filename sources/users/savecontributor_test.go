@@ -6,12 +6,12 @@ import (
 )
 
 // Test SaveUser
-func TestSaveUser(t *testing.T){
-	var testEmail, testName, testLocation, testImageLink, testRepoUrl, testSource, testUserType string
+func TestSaveUser(t *testing.T) {
+	var testEmail, testName, testLogin, testLocation, testImageLink, testRepoUrl, testSource, testUserType string
 	var testW http.ResponseWriter = http.ResponseWriter(nil)
 	var testR *http.Request = new(http.Request)
 
-	status, msg, _ := SaveUser(testW, testR, testEmail, testName, testLocation, testImageLink, testRepoUrl, testSource, testUserType)
+	status, msg, _ := SaveUser(testW, testR, testEmail, testName, testLocation, testImageLink, testRepoUrl, testSource, testUserType, testLogin)
 
 	if !status {
 		t.Errorf(msg)

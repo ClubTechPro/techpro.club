@@ -15,19 +15,19 @@ import (
 )
 
 type UserStruct struct {
-	Login 		string `json:"login"`
-	Email 		string `json:"email"`
-	Name 		string `json:"name"`
-	Location 	string `json:"location"`
-	ImageLink 	string `json:"imageLink"`
-	RepoUrl 	string `json:"repoUrl"`
-	Source 		string `json:"source"`
+	Login       string `json:"login"`
+	Email       string `json:"email"`
+	Name        string `json:"name"`
+	Location    string `json:"location"`
+	ImageLink   string `json:"imageLink"`
+	RepoUrl     string `json:"repoUrl"`
+	Source      string `json:"source"`
 	CreatedDate string `json:"createdDate"`
 }
 
 // Save a user to database and send a welcome email for first time users
-func SaveUser(w http.ResponseWriter, r *http.Request, login, email, name, location, imageLink, repoUrl, source, userType string )(status bool, msg string, userIdObject interface{}){
-	
+func SaveUser(w http.ResponseWriter, r *http.Request, login, email, name, location, imageLink, repoUrl, source, userType string) (status bool, msg string, userIdObject interface{}) {
+
 	_, _, client := common.Mongoconnect()
 	defer client.Disconnect(context.TODO())
 
@@ -35,18 +35,18 @@ func SaveUser(w http.ResponseWriter, r *http.Request, login, email, name, locati
 	userCollection := client.Database(dbName).Collection(common.CONST_MO_USERS)
 	countUsers, errSearch := userCollection.CountDocuments(context.TODO(), bson.M{"email": email, "source": common.CONST_GITHUB})
 
-	if( errSearch != nil){
+	if errSearch != nil {
 		status = false
 		msg = errSearch.Error()
 		userIdObject = nil
 	} else {
 
-		if (countUsers == 0){
-			
+		if countUsers == 0 {
+
 			timestamp := time.Now()
 			user := UserStruct{login, email, name, location, imageLink, repoUrl, source, timestamp.Format("2006-01-02 15:04:05")}
 			insert, err := userCollection.InsertOne(context.TODO(), user)
-			if err != nil{
+			if err != nil {
 				status = false
 				msg = err.Error()
 				userIdObject = nil
@@ -54,7 +54,7 @@ func SaveUser(w http.ResponseWriter, r *http.Request, login, email, name, locati
 				status = true
 				msg = ""
 				userIdObject = insert.InsertedID
-					
+
 				// Code is the session
 				session := r.URL.Query().Get("code")
 				SaveUserDbSession(userIdObject.(primitive.ObjectID), session, email)
@@ -66,7 +66,7 @@ func SaveUser(w http.ResponseWriter, r *http.Request, login, email, name, locati
 		} else {
 
 			type useIdStruct struct {
-				ID	primitive.ObjectID `json:"id" bson:"_id,omitempty"`
+				ID primitive.ObjectID `json:"id" bson:"_id,omitempty"`
 			}
 			var result useIdStruct
 			err := userCollection.FindOne(context.TODO(), bson.M{"email": email, "source": common.CONST_GITHUB}, options.FindOne()).Decode(&result)
@@ -81,14 +81,14 @@ func SaveUser(w http.ResponseWriter, r *http.Request, login, email, name, locati
 			}
 
 			// Redirect to respective home pages of user
-			if userType == common.CONST_USER_CONTRIBUTOR{
+			if userType == common.CONST_USER_CONTRIBUTOR {
 				http.Redirect(w, r, "/contributors/feeds", http.StatusPermanentRedirect)
 			} else {
 				http.Redirect(w, r, "/projects/list", http.StatusPermanentRedirect)
 			}
 		}
-		
+
 	}
-	
+
 	return status, msg, userIdObject
 }

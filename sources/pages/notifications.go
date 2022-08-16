@@ -15,25 +15,24 @@ import (
 	"techpro.club/sources/users"
 )
 
-
-type NotificationStruct struct{
-	Notifications []common.FetchNotificationStruct `json:"notifications"`
-	UserNameImage common.UsernameImageStruct `json:"usernameImage"`
-	NotificaitonsCount int64 `json:"notificationsCount"`
-	NotificationsList []common.MainNotificationStruct `json:"nofiticationsList"`
-	PageTitle common.PageTitle `json:"pageTitle"`
+type NotificationStruct struct {
+	Notifications      []common.FetchNotificationStruct `json:"notifications"`
+	UserNameImage      common.UsernameImageStruct       `json:"usernameImage"`
+	NotificaitonsCount int64                            `json:"notificationsCount"`
+	NotificationsList  []common.MainNotificationStruct  `json:"nofiticationsList"`
+	PageTitle          common.PageTitle                 `json:"pageTitle"`
 }
 
-func Notifications(w http.ResponseWriter, r *http.Request){
+func Notifications(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/users/notifications" {
-        ErrorHandler(w, r, http.StatusNotFound)
-        return
-    }
+		ErrorHandler(w, r, http.StatusNotFound)
+		return
+	}
 
 	// Session check
 	sessionOk, userID := users.ValidateDbSession(w, r)
-	if(!sessionOk){
-		
+	if !sessionOk {
+
 		// Delete cookies
 		users.DeleteSessionCookie(w, r)
 		users.DeleteUserCookie(w, r)
@@ -49,15 +48,15 @@ func Notifications(w http.ResponseWriter, r *http.Request){
 	// Fetch user name and image from saved browser cookies
 	status, msg, userName, image := FetchUsernameImage(w, r)
 
-	if(!status){
+	if !status {
 		log.Println(msg)
 	} else {
-		userNameImage  = common.UsernameImageStruct{userName,image}
+		userNameImage = common.UsernameImageStruct{Username: userName, Image: image}
 	}
 
 	_, _, Notifications := fetchNotificationList(w, r, userID)
 
-	pageTitle := common.PageTitle{Title : "Notifications"}
+	pageTitle := common.PageTitle{Title: "Notifications"}
 
 	output := NotificationStruct{Notifications, userNameImage, notificationsCount, notificationsList, pageTitle}
 
@@ -65,13 +64,13 @@ func Notifications(w http.ResponseWriter, r *http.Request){
 
 	if err != nil {
 		fmt.Println(err.Error())
-	}else {
-		tmpl.ExecuteTemplate(w, "base", output) 
+	} else {
+		tmpl.ExecuteTemplate(w, "base", output)
 	}
 }
 
 // Mark notification read
-func MarkNotificationRead(w http.ResponseWriter, r *http.Request){
+func MarkNotificationRead(w http.ResponseWriter, r *http.Request) {
 
 	status := false
 	msg := ""
@@ -83,8 +82,8 @@ func MarkNotificationRead(w http.ResponseWriter, r *http.Request){
 
 	// Session check
 	sessionOk, userID := users.ValidateDbSession(w, r)
-	if(!sessionOk){
-		
+	if !sessionOk {
+
 		// Delete cookies
 		users.DeleteSessionCookie(w, r)
 		users.DeleteUserCookie(w, r)
@@ -97,24 +96,23 @@ func MarkNotificationRead(w http.ResponseWriter, r *http.Request){
 
 	dbName := common.GetMoDb()
 	fetchNotifications := client.Database(dbName).Collection(common.CONST_MO_NOTIFICATIONS)
-	errNotifications := fetchNotifications.FindOneAndUpdate(context.TODO(), bson.M{"userid" : userID}, 
-													bson.M{"$set" : bson.M{"notificationsList.$[elem].read" : true, "unreadnotifications" : 0}}, 
-													options.FindOneAndUpdate().SetArrayFilters(options.ArrayFilters{
-														Filters: []interface{}{bson.M{"elem.read": false}},
-													}),
-												)
+	errNotifications := fetchNotifications.FindOneAndUpdate(context.TODO(), bson.M{"userid": userID},
+		bson.M{"$set": bson.M{"notificationsList.$[elem].read": true, "unreadnotifications": 0}},
+		options.FindOneAndUpdate().SetArrayFilters(options.ArrayFilters{
+			Filters: []interface{}{bson.M{"elem.read": false}},
+		}),
+	)
 
-	if errNotifications.Err() != nil{
+	if errNotifications.Err() != nil {
 		msg = errNotifications.Err().Error()
 	} else {
 		status = true
 		msg = "Success"
 	}
 
-
 	output := common.JsonOutput{
 		Status: status,
-		Msg: msg,
+		Msg:    msg,
 	}
 
 	out, _ := json.Marshal(output)
@@ -122,7 +120,7 @@ func MarkNotificationRead(w http.ResponseWriter, r *http.Request){
 }
 
 // Fetch notifications list
-func fetchNotificationList(w http.ResponseWriter, r *http.Request, userID primitive.ObjectID)(status bool, msg string, Notifications []common.FetchNotificationStruct){
+func fetchNotificationList(w http.ResponseWriter, r *http.Request, userID primitive.ObjectID) (status bool, msg string, Notifications []common.FetchNotificationStruct) {
 	status = false
 	msg = ""
 
@@ -131,17 +129,17 @@ func fetchNotificationList(w http.ResponseWriter, r *http.Request, userID primit
 
 	dbName := common.GetMoDb()
 	fetchNotifications := client.Database(dbName).Collection(common.CONST_MO_NOTIFICATIONS)
-	notifications, errNotifications := fetchNotifications.Find(context.TODO(), bson.M{"userid" : userID})
+	notifications, errNotifications := fetchNotifications.Find(context.TODO(), bson.M{"userid": userID})
 
-	if errNotifications != nil{
+	if errNotifications != nil {
 		fmt.Println(errNotifications.Error())
 		msg = errNotifications.Error()
 	} else {
-		for notifications.Next(context.TODO()){
+		for notifications.Next(context.TODO()) {
 			var notification common.FetchNotificationStruct
 			errNotifications := notifications.Decode(&notification)
 
-			if errNotifications != nil{
+			if errNotifications != nil {
 				status = false
 				msg = errNotifications.Error()
 			} else {
