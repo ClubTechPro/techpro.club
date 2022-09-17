@@ -1,4 +1,14 @@
 {{define "content"}}
+<style>
+  .img-cover {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+
+    object-fit: cover;
+    object-position: center right;
+  }
+</style>
 <!-- BEGIN page-header -->
 <div class="row">
   <div class="col col-md-12">
@@ -9,11 +19,15 @@
 
 <div class="panel shadow bg-body rounded">
   <div class="panel-body">
+    <div class="col col-md-10">
+      <img class="img-cover" src="{{.UserProfile.ImageLink}}" />
+    </div>
     <div class="col-md-12 mt-3">
       <div class="row">
         <div class="col col-md-10">
           <h6 class="card-subtitle mb-3 mt-2">{{.UserProfile.Name}}</h6>
         </div>
+        {{if .IsPrivate.IsPrivate}}
         <div class="col col-md-2 text-end">
           <a
             class="btn btn-default btn-sm"
@@ -22,6 +36,7 @@
             ><i class="fa-solid fa-pen-to-square me-1"></i>Edit</a
           >
         </div>
+        {{ end }}
       </div>
     </div>
 
@@ -85,20 +100,24 @@
   </div>
 </div>
 
-{{/* <div class="panel shadow bg-body rounded">
+{{/*
+<div class="panel shadow bg-body rounded">
   <div class="panel-body">
     <h6 class="card-subtitle mb-3 mt-2">Stackoverflow feeds</h6>
   </div>
-</div> */}}
+</div>
+*/}}
 
 <h6 class="card-subtitle mb-3 mt-2">Github Repositories (Public only)</h6>
 
 <div class="row">
-  {{range .GithubRepos}}
+  {{ range.GithubRepos }}
   <div class="col col-md-6 mt-3">
     <div class="panel shadow bg-body rounded">
       <div class="panel-body">
-        <h6 class="card-subtitle mb-2 mt-2"><a href="{{.HtmlUrl}}" target="_blank">{{.FullName}}</a></h6>
+        <h6 class="card-subtitle mb-2 mt-2">
+          <a href="{{.HtmlUrl}}" target="_blank">{{.FullName}}</a>
+        </h6>
 
         <p class="card-text">
           {{.Description}}
@@ -109,10 +128,9 @@
             <i class="fa-solid fa-lock-open me-3"></i>
           </div>
         </div>
-        
       </div>
     </div>
   </div>
-  {{end}}
+  {{ end }}
 </div>
 {{ end }}

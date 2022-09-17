@@ -24,6 +24,7 @@ type ProfileStruct struct {
 	NotificaitonsCount int64                           `json:"notificationsCount"`
 	NotificationsList  []common.MainNotificationStruct `json:"nofiticationsList"`
 	PageTitle          common.PageTitle                `json:"pageTitle"`
+	IsPrivate          common.IsPrivate                `json:"isPrivate"`
 }
 
 // Display user profile
@@ -75,7 +76,75 @@ func Profile(w http.ResponseWriter, r *http.Request) {
 	// Test repository fetch
 	_, _, githubRepos := fetchGithubReposList(userprofile.Login)
 
-	userSettingsStruct := ProfileStruct{userprofile, socials, userNameImage, githubRepos, notificationsCount, notificationsList, pageTitle}
+	isPrivate := common.IsPrivate{IsPrivate: true}
+
+	userSettingsStruct := ProfileStruct{userprofile, socials, userNameImage, githubRepos, notificationsCount, notificationsList, pageTitle, isPrivate}
+
+	tmpl, err := template.New("").ParseFiles("templates/app/common/base.gohtml", "templates/app/common/contributormenu.gohtml", "templates/app/profile.gohtml")
+	if err != nil {
+		fmt.Println(err.Error())
+	} else {
+		tmpl.ExecuteTemplate(w, "base", userSettingsStruct)
+	}
+}
+
+// Display user profile
+func PublicProfile(w http.ResponseWriter, r *http.Request) {
+
+	// Session check
+	sessionOk, loggedInUserId := users.ValidateDbSession(w, r)
+	if !sessionOk {
+
+		// Delete cookies
+		users.DeleteSessionCookie(w, r)
+		users.DeleteUserCookie(w, r)
+
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+	}
+
+	userProfileIdFromQuery := r.URL.Query().Get("user")
+
+	fmt.Println(userProfileIdFromQuery)
+
+	if userProfileIdFromQuery == "" {
+		ErrorHandler(w, r, http.StatusNotFound)
+		return
+	}
+
+	_, _, userProfile := fetchUserProfileByUsername(userProfileIdFromQuery)
+
+	if userProfile.Name == "" {
+		ErrorHandler(w, r, http.StatusNotFound)
+		return
+	}
+
+	fmt.Println(primitive.ObjectID(userProfile.Id))
+	fmt.Println(userProfile)
+
+	var profileUserNameImage common.UsernameImageStruct
+
+	// Fetch notificaitons
+	_, _, notificationsCount, notificationsList := NotificationsCountAndTopFive(loggedInUserId)
+
+	// Fetch user name and image from saved browser cookies
+	status, msg, userName, image := FetchUsernameImage(w, r)
+
+	if !status {
+		log.Println(msg)
+	} else {
+		profileUserNameImage = common.UsernameImageStruct{Username: userName, Image: image}
+	}
+
+	_, _, socials := fetchSocials(userProfile.Id)
+
+	pageTitle := common.PageTitle{Title: userProfile.Name + "'s profile"}
+
+	// Test repository fetch
+	_, _, githubRepos := fetchGithubReposList(userProfile.Login)
+
+	isPrivate := common.IsPrivate{IsPrivate: false}
+
+	userSettingsStruct := ProfileStruct{userProfile, socials, profileUserNameImage, githubRepos, notificationsCount, notificationsList, pageTitle, isPrivate}
 
 	tmpl, err := template.New("").ParseFiles("templates/app/common/base.gohtml", "templates/app/common/contributormenu.gohtml", "templates/app/profile.gohtml")
 	if err != nil {
@@ -160,7 +229,9 @@ func UserEdit(w http.ResponseWriter, r *http.Request) {
 
 	pageTitle := common.PageTitle{Title: "Edit profile"}
 
-	userSettingsStruct := ProfileStruct{userprofile, socials, userNameImage, githubRepos, notificationsCount, notificationsList, pageTitle}
+	isPrivate := common.IsPrivate{IsPrivate: true}
+
+	userSettingsStruct := ProfileStruct{userprofile, socials, userNameImage, githubRepos, notificationsCount, notificationsList, pageTitle, isPrivate}
 
 	tmpl, err := template.New("").ParseFiles("templates/app/common/base.gohtml", "templates/app/common/contributormenu.gohtml", "templates/app/profileedit.gohtml")
 	if err != nil {
@@ -180,6 +251,27 @@ func fetchUserProfile(userID primitive.ObjectID) (status bool, msg string, userP
 	dbName := common.GetMoDb()
 	fetchUsers := client.Database(dbName).Collection(common.CONST_MO_USERS)
 	err := fetchUsers.FindOne(context.TODO(), bson.M{"_id": userID}, options.FindOne().SetProjection(bson.M{"_id": 0})).Decode(&userProfile)
+
+	if err != nil {
+		msg = err.Error()
+	} else {
+		msg = "Success"
+		status = true
+	}
+
+	return status, msg, userProfile
+}
+
+// Fetch user profile by username
+func fetchUserProfileByUsername(username string) (status bool, msg string, userProfile common.FetchUserStruct) {
+	status = false
+	msg = ""
+	_, _, client := common.Mongoconnect()
+	defer client.Disconnect(context.TODO())
+
+	dbName := common.GetMoDb()
+	fetchUsers := client.Database(dbName).Collection(common.CONST_MO_USERS)
+	err := fetchUsers.FindOne(context.TODO(), bson.M{"login": username}, options.FindOne().SetProjection(bson.M{})).Decode(&userProfile)
 
 	if err != nil {
 		msg = err.Error()

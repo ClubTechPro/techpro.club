@@ -7,6 +7,10 @@ type PageTitle struct {
 	Title string `json:"title"`
 }
 
+type IsPrivate struct {
+	IsPrivate bool `json:"isPublic"`
+}
+
 // Json output struct
 type JsonOutput struct {
 	Status bool   `json:"status"`
