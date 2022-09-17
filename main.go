@@ -48,6 +48,7 @@ func main() {
 
 	// Users
 	http.HandleFunc("/users/editprofile", pages.UserEdit)
+	http.HandleFunc("/users/profiles", pages.PublicProfile)
 	http.HandleFunc("/users/profile", pages.Profile)
 	http.HandleFunc("/users/notifications", pages.Notifications)
 	http.HandleFunc("/users/settings", pages.UserSettings)
