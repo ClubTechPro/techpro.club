@@ -9,6 +9,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/gorilla/mux"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -448,4 +449,8 @@ func fetchGithubReposList(login string) (status bool, msg string, reposList []co
 
 	return status, msg, githubRepos
 
+}
+
+func ProfileTest(w http.ResponseWriter, r *http.Request){
+	fmt.Println("Got request", mux.Vars(r)["username"])
 }
