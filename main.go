@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"net/http"
+	"time"
 
 	"techpro.club/sources/authentication"
 	"techpro.club/sources/common"
@@ -11,6 +12,7 @@ import (
 	"techpro.club/sources/pages/projects"
 	"techpro.club/sources/pages/videos"
 
+	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
 )
 
@@ -23,74 +25,88 @@ func init() {
 }
 
 func main() {
-    fs := http.FileServer(http.Dir("assets"))
-	http.Handle("/assets/", http.StripPrefix("/assets", fs))
+    
+
+	goMux := mux.NewRouter()
+
+	// fs := http.FileServer(http.Dir("assets"))
+	// http.Handle("/assets/", http.StripPrefix("/assets", fs))
+	goMux.PathPrefix("/assets/").Handler(http.StripPrefix("/assets", http.FileServer(http.Dir("assets"))))
 
 	// APIs
-	http.HandleFunc("/api/managereaction", pages.ManageReactions)
-	http.HandleFunc("/api/managebookmark", pages.ManageBookmarks)
-	http.HandleFunc("/api/marknotificationsread", pages.MarkNotificationRead)
-	http.HandleFunc("/api/deleteuser", pages.DeleteUser)
-	http.HandleFunc("/api/deleteproject", projects.DeleteProject)
+	goMux.HandleFunc("/api/managereaction", pages.ManageReactions)
+	goMux.HandleFunc("/api/managebookmark", pages.ManageBookmarks)
+	goMux.HandleFunc("/api/marknotificationsread", pages.MarkNotificationRead)
+	goMux.HandleFunc("/api/deleteuser", pages.DeleteUser)
+	goMux.HandleFunc("/api/deleteproject", projects.DeleteProject)
 
 	// Templates
-	http.HandleFunc("/", pages.IndexHandler)
-	http.HandleFunc("/contactus", pages.ContactUs)
-	http.HandleFunc("/careers", pages.Careers)
-	http.HandleFunc("/company", pages.Company)
-	http.HandleFunc("/brand", pages.Brand)
-	http.HandleFunc("/campus", pages.Campus)
-	http.HandleFunc("/campusonboard", pages.CampusOnboard)
-	http.HandleFunc("/videos", pages.Videos)
-	http.HandleFunc("/privacy-policy", pages.PrivacyPolicy)
-	http.HandleFunc("/cookie-policy", pages.CookiePolicy)
-	http.HandleFunc("/terms-and-conditions", pages.TermsOfService)
+	goMux.HandleFunc("/", pages.IndexHandler)
+	goMux.HandleFunc("/contactus", pages.ContactUs)
+	goMux.HandleFunc("/careers", pages.Careers)
+	goMux.HandleFunc("/company", pages.Company)
+	goMux.HandleFunc("/brand", pages.Brand)
+	goMux.HandleFunc("/campus", pages.Campus)
+	goMux.HandleFunc("/campusonboard", pages.CampusOnboard)
+	goMux.HandleFunc("/videos", pages.Videos)
+	goMux.HandleFunc("/privacy-policy", pages.PrivacyPolicy)
+	goMux.HandleFunc("/cookie-policy", pages.CookiePolicy)
+	goMux.HandleFunc("/terms-and-conditions", pages.TermsOfService)
 
 	// Users
-	http.HandleFunc("/users/editprofile", pages.UserEdit)
-	http.HandleFunc("/users/profiles", pages.PublicProfile)
-	http.HandleFunc("/users/profile", pages.Profile)
-	http.HandleFunc("/users/notifications", pages.Notifications)
-	http.HandleFunc("/users/settings", pages.UserSettings)
+	goMux.HandleFunc("/users/editprofile", pages.UserEdit)
+	goMux.HandleFunc("/users/profiles", pages.PublicProfile)
+	goMux.HandleFunc("/users/profile", pages.Profile)
+	goMux.HandleFunc("/users/notifications", pages.Notifications)
+	goMux.HandleFunc("/users/settings", pages.UserSettings)
+	goMux.HandleFunc("/users/profiletest/{username}", pages.ProfileTest)
 
 	// Templates/Contributors
-	http.HandleFunc("/contributors/feeds", contributors.Feeds)
-	http.HandleFunc("/contributors/videofeeds", contributors.VideoFeeds)
-	http.HandleFunc("/contributors/preferences", contributors.Preferences)
-	http.HandleFunc("/contributors/thankyou", contributors.PreferencesSaved)
-	http.HandleFunc("/contributors/reactions", contributors.FetchReactions)
-	http.HandleFunc("/contributors/bookmarks", contributors.FetchBookmarks)
+	goMux.HandleFunc("/contributors/feeds", contributors.Feeds)
+	goMux.HandleFunc("/contributors/videofeeds", contributors.VideoFeeds)
+	goMux.HandleFunc("/contributors/preferences", contributors.Preferences)
+	goMux.HandleFunc("/contributors/thankyou", contributors.PreferencesSaved)
+	goMux.HandleFunc("/contributors/reactions", contributors.FetchReactions)
+	goMux.HandleFunc("/contributors/bookmarks", contributors.FetchBookmarks)
 	
 
 	// Templates/Projects
-	http.HandleFunc("/projects/create", projects.ProjectCreate)
-	http.HandleFunc("/projects/list", projects.ProjectList)
-	http.HandleFunc("/projects/view", projects.ProjectPreview)
-	http.HandleFunc("/projects/edit", projects.ProjectEdit)
-	http.HandleFunc("/projects/thankyou", projects.ProjectSaved)
+	goMux.HandleFunc("/projects/create", projects.ProjectCreate)
+	goMux.HandleFunc("/projects/list", projects.ProjectList)
+	goMux.HandleFunc("/projects/view", projects.ProjectPreview)
+	goMux.HandleFunc("/projects/edit", projects.ProjectEdit)
+	goMux.HandleFunc("/projects/thankyou", projects.ProjectSaved)
 
 	// Templates/Videos
-	http.HandleFunc("/videos/list", videos.VideosList)
-	http.HandleFunc("/videos/newvideo", videos.NewVideo)
-	http.HandleFunc("/videos/editvideo", videos.EditVideo)
+	goMux.HandleFunc("/videos/list", videos.VideosList)
+	goMux.HandleFunc("/videos/newvideo", videos.NewVideo)
+	goMux.HandleFunc("/videos/editvideo", videos.EditVideo)
 
 
 
 	// Authentication
 	// Github
-	http.HandleFunc("/contributors/github/login/", authentication.GithubContributorLoginHandler)
-	http.HandleFunc("/contributors/github/callback", authentication.GithubContributorCallbackHandler)
+	goMux.HandleFunc("/contributors/github/login/", authentication.GithubContributorLoginHandler)
+	goMux.HandleFunc("/contributors/github/callback", authentication.GithubContributorCallbackHandler)
 
-	http.HandleFunc("/projects/github/login/", authentication.GithubProjectLoginHandler)
-	http.HandleFunc("/projects/github/callback", authentication.GithubProjectCallbackHandler)
+	goMux.HandleFunc("/projects/github/login/", authentication.GithubProjectLoginHandler)
+	goMux.HandleFunc("/projects/github/callback", authentication.GithubProjectCallbackHandler)
 
 	// Func to receive data after login
-	http.HandleFunc("/github/loggedin", func(w http.ResponseWriter, r *http.Request) {
+	goMux.HandleFunc("/github/loggedin", func(w http.ResponseWriter, r *http.Request) {
 		authentication.GithubLoggedinHandler(w, r, "", "", "")
 	})
 
-	http.HandleFunc("/logout", pages.Logout)
+	goMux.HandleFunc("/logout", pages.Logout)
+
+	srv := &http.Server{
+		Handler: goMux,
+		Addr:    "127.0.0.1" + common.CONST_APP_PORT,
+		// Good practice: enforce timeouts for servers you create!
+		WriteTimeout: 15 * time.Second,
+		ReadTimeout:  15 * time.Second,
+	}
 
 	// Start the web server
-    http.ListenAndServe(common.CONST_APP_PORT, nil)
+    srv.ListenAndServe()
 }
