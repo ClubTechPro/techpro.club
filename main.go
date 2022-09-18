@@ -3,7 +3,6 @@ package main
 import (
 	"log"
 	"net/http"
-	"time"
 
 	"techpro.club/sources/authentication"
 	"techpro.club/sources/common"
@@ -86,10 +85,10 @@ func main() {
 
 	// Authentication
 	// Github
-	goMux.HandleFunc("/contributors/github/login/", authentication.GithubContributorLoginHandler)
+	goMux.HandleFunc("/contributors/github/login", authentication.GithubContributorLoginHandler)
 	goMux.HandleFunc("/contributors/github/callback", authentication.GithubContributorCallbackHandler)
 
-	goMux.HandleFunc("/projects/github/login/", authentication.GithubProjectLoginHandler)
+	goMux.HandleFunc("/projects/github/login", authentication.GithubProjectLoginHandler)
 	goMux.HandleFunc("/projects/github/callback", authentication.GithubProjectCallbackHandler)
 
 	// Func to receive data after login
@@ -99,14 +98,7 @@ func main() {
 
 	goMux.HandleFunc("/logout", pages.Logout)
 
-	srv := &http.Server{
-		Handler: goMux,
-		Addr:    "127.0.0.1" + common.CONST_APP_PORT,
-		// Good practice: enforce timeouts for servers you create!
-		WriteTimeout: 15 * time.Second,
-		ReadTimeout:  15 * time.Second,
-	}
-
 	// Start the web server
-    srv.ListenAndServe()
+	// http.Handle("/", goMux)
+    http.ListenAndServe( common.CONST_APP_PORT, goMux)
 }
