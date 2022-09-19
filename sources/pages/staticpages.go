@@ -38,7 +38,6 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 
 // Handles Contact us page
 func ContactUs(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("Contact", w, r)
 	if r.URL.Path != "/contactus" {
         ErrorHandler(w, r, http.StatusNotFound)
         return

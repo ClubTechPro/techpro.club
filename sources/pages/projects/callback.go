@@ -10,7 +10,7 @@ import (
 	"techpro.club/sources/pages"
 )
 
-func CallBack(w http.ResponseWriter, r *http.Request) {
+func CallBackGithub(w http.ResponseWriter, r *http.Request) {
 
 	if r.URL.Path != "/projects/github/callback" {
 		pages.ErrorHandler(w, r, http.StatusNotFound)

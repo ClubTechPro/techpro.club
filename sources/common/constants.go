@@ -4,6 +4,7 @@ const(
 	CONST_APP_PORT = ":8080"
 
 	CONST_GITHUB string = "github"
+	CONST_GOOGLE string = "google"
 
 	// Session
 	CONST_SESSION_NAME = "session"

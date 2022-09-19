@@ -82,6 +82,39 @@ func GetMoAuthMethod() (moAuthMethod string) {
 	return moAuthMethod
 }
 
+// Get Google client id from environment variable
+func GetGoogleClientID() (googleClientID string) {
+
+	googleClientID, exists := os.LookupEnv("GO_CLIENT_ID")
+	if !exists {
+		log.Fatal("Google Client ID not defined in .env file")
+	}
+
+	return googleClientID
+}
+
+// Get Google client secret from environment variable
+func GetGoogleClientSecret() (googleClientSecret string) {
+
+	googleClientSecret, exists := os.LookupEnv("GO_CLIENT_SECRET")
+	if !exists {
+		log.Fatal("Google Client Secret not defined in .env file")
+	}
+
+	return googleClientSecret
+}
+
+// Get Google contributor redirect uri from environment variable
+func GetGoogleContributorRedirectURI() (googleContributorRedirectURI string) {
+
+	googleContributorRedirectURI, exists := os.LookupEnv("GO_CONTRIBUTOR_REDIRECT_URI")
+	if !exists {
+		log.Fatal("Google Contributor Redirect URI not defined in .env file")
+	}
+
+	return googleContributorRedirectURI
+}
+
 // Get Github client id from environment variable
 func GetGithubClientID() (githubClientID string) {
 
@@ -98,7 +131,7 @@ func GetGithubClientSecret() (githubClientSecret string) {
 
 	githubClientSecret, exists := os.LookupEnv("GB_CLIENT_SECRET")
 	if !exists {
-		log.Fatal("Github Client ID not defined in .env file")
+		log.Fatal("Github Client Secret not defined in .env file")
 	}
 
 	return githubClientSecret
