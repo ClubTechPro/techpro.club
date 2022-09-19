@@ -97,7 +97,7 @@ func main() {
 
 	// Func to receive data after login
 	goMux.HandleFunc("/github/loggedin", func(w http.ResponseWriter, r *http.Request) {
-		authentication.GithubLoggedinHandler(w, r, "", "", "")
+		authentication.GithubLoggedinHandler(w, r, "", "", "", "")
 	})
 
 	goMux.HandleFunc("/logout", pages.Logout)
