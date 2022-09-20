@@ -103,9 +103,7 @@ func PublicProfile(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 	}
 
-	userProfileIdFromQuery := r.URL.Query().Get("user")
-
-	fmt.Println(userProfileIdFromQuery)
+	userProfileIdFromQuery := mux.Vars(r)["username"]
 
 	if userProfileIdFromQuery == "" {
 		ErrorHandler(w, r, http.StatusNotFound)
@@ -118,9 +116,6 @@ func PublicProfile(w http.ResponseWriter, r *http.Request) {
 		ErrorHandler(w, r, http.StatusNotFound)
 		return
 	}
-
-	fmt.Println(primitive.ObjectID(userProfile.Id))
-	fmt.Println(userProfile)
 
 	var profileUserNameImage common.UsernameImageStruct
 
