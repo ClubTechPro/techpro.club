@@ -52,7 +52,7 @@ func main() {
 
 	// Users
 	goMux.HandleFunc("/users/editprofile", pages.UserEdit)
-	goMux.HandleFunc("/users/{username}", pages.PublicProfile)
+	goMux.HandleFunc("/users/profile/{username}", pages.PublicProfile)
 	goMux.HandleFunc("/users/profile", pages.Profile)
 	goMux.HandleFunc("/users/notifications", pages.Notifications)
 	goMux.HandleFunc("/users/settings", pages.UserSettings)
