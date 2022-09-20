@@ -22,9 +22,9 @@ Application and third party logos.
 
 This folder holds the main `Golang` code for the application.
 
-### authentication
+### libraries
 
-Authentication for all the project repository providers will be handled here. Currently, we have integrated only Github.
+External third-party apis (including Authentication) for all the project repository providers will be handled here. Currently, we have integrated only Github.
 
 ### common
 
