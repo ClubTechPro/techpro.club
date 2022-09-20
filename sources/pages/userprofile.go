@@ -95,14 +95,6 @@ func PublicProfile(w http.ResponseWriter, r *http.Request) {
 
 	// Session check
 	_, loggedInUserId := users.ValidateDbSession(w, r)
-	// if !sessionOk {
-
-	// 	// Delete cookies
-	// 	users.DeleteSessionCookie(w, r)
-	// 	users.DeleteUserCookie(w, r)
-
-	// 	http.Redirect(w, r, "/", http.StatusSeeOther)
-	// }
 
 	userProfileIdFromQuery := mux.Vars(r)["username"]
 
