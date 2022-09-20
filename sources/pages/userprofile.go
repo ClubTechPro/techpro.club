@@ -24,7 +24,7 @@ type ProfileStruct struct {
 	GithubRepos        []common.GithubRepoStruct       `json:"githubRepos"`
 	NotificaitonsCount int64                           `json:"notificationsCount"`
 	NotificationsList  []common.MainNotificationStruct `json:"nofiticationsList"`
-	PageTitle          common.PageTitle                `json:"pageTitle"`
+	PageDetails          common.PageDetails               `json:"pageDetails"`
 	IsPrivate          common.IsPrivate                `json:"isPrivate"`
 }
 
@@ -39,10 +39,10 @@ func Profile(w http.ResponseWriter, r *http.Request) {
 	// Display the user's profile
 	// Display the user's settings
 
-	if r.URL.Path != "/users/profile" {
-		ErrorHandler(w, r, http.StatusNotFound)
-		return
-	}
+	// if r.URL.Path != "/users/profile" {
+	// 	ErrorHandler(w, r, http.StatusNotFound)
+	// 	return
+	// }
 
 	// Session check
 	sessionOk, userID := users.ValidateDbSession(w, r)
@@ -72,14 +72,15 @@ func Profile(w http.ResponseWriter, r *http.Request) {
 	_, _, userprofile := fetchUserProfile(userID)
 	_, _, socials := fetchSocials(userID)
 
-	pageTitle := common.PageTitle{Title: userName + "'s profile"}
+	baseUrl := common.GetBaseurl() + common.CONST_APP_PORT
+	pageDetails := common.PageDetails{BaseUrl: baseUrl, Title: userName + "'s profile"}
 
 	// Test repository fetch
 	_, _, githubRepos := fetchGithubReposList(userprofile.Login)
 
 	isPrivate := common.IsPrivate{IsPrivate: true}
 
-	userSettingsStruct := ProfileStruct{userprofile, socials, userNameImage, githubRepos, notificationsCount, notificationsList, pageTitle, isPrivate}
+	userSettingsStruct := ProfileStruct{userprofile, socials, userNameImage, githubRepos, notificationsCount, notificationsList, pageDetails, isPrivate}
 
 	tmpl, err := template.New("").ParseFiles("templates/app/common/base.gohtml", "templates/app/common/contributormenu.gohtml", "templates/app/profile.gohtml")
 	if err != nil {
@@ -133,14 +134,15 @@ func PublicProfile(w http.ResponseWriter, r *http.Request) {
 
 	_, _, socials := fetchSocials(userProfile.Id)
 
-	pageTitle := common.PageTitle{Title: userProfile.Name + "'s profile"}
+	baseUrl := common.GetBaseurl() + common.CONST_APP_PORT
+	pageDetails := common.PageDetails{BaseUrl: baseUrl, Title: userProfile.Name + "'s profile"}
 
 	// Test repository fetch
 	_, _, githubRepos := fetchGithubReposList(userProfile.Login)
 
 	isPrivate := common.IsPrivate{IsPrivate: false}
 
-	userSettingsStruct := ProfileStruct{userProfile, socials, profileUserNameImage, githubRepos, notificationsCount, notificationsList, pageTitle, isPrivate}
+	userSettingsStruct := ProfileStruct{userProfile, socials, profileUserNameImage, githubRepos, notificationsCount, notificationsList, pageDetails, isPrivate}
 
 	tmpl, err := template.New("").ParseFiles("templates/app/common/base.gohtml", "templates/app/common/contributormenu.gohtml", "templates/app/profile.gohtml")
 	if err != nil {
@@ -223,11 +225,12 @@ func UserEdit(w http.ResponseWriter, r *http.Request) {
 	// Test repository fetch
 	_, _, githubRepos := fetchGithubReposList(userprofile.Login)
 
-	pageTitle := common.PageTitle{Title: "Edit profile"}
+	baseUrl := common.GetBaseurl() + common.CONST_APP_PORT
+	pageDetails := common.PageDetails{BaseUrl: baseUrl, Title: "Edit profile"}
 
 	isPrivate := common.IsPrivate{IsPrivate: true}
 
-	userSettingsStruct := ProfileStruct{userprofile, socials, userNameImage, githubRepos, notificationsCount, notificationsList, pageTitle, isPrivate}
+	userSettingsStruct := ProfileStruct{userprofile, socials, userNameImage, githubRepos, notificationsCount, notificationsList, pageDetails, isPrivate}
 
 	tmpl, err := template.New("").ParseFiles("templates/app/common/base.gohtml", "templates/app/common/contributormenu.gohtml", "templates/app/profileedit.gohtml")
 	if err != nil {

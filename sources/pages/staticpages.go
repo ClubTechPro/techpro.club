@@ -43,13 +43,14 @@ func ContactUs(w http.ResponseWriter, r *http.Request) {
         return
     }	
 
-	pageTitle := common.PageTitle{Title : "Contact Us"}
+	baseUrl := common.GetBaseurl() + common.CONST_APP_PORT
+	pageDetails := common.PageDetails{BaseUrl: baseUrl, Title : "Contact Us"}
 
 	tmpl, err := template.New("").ParseFiles("templates/home/contactus.gohtml", "templates/home/base.gohtml")
 	if err != nil {
 		fmt.Println(err.Error())
 	}else {
-		tmpl.ExecuteTemplate(w, "basehome", pageTitle) 
+		tmpl.ExecuteTemplate(w, "basehome", pageDetails) 
 	}
 	
 }
@@ -61,13 +62,14 @@ func Careers(w http.ResponseWriter, r *http.Request) {
         return
     }	
 		
-	pageTitle := common.PageTitle{Title : "Careers"}
+	baseUrl := common.GetBaseurl() + common.CONST_APP_PORT
+	pageDetails := common.PageDetails{BaseUrl: baseUrl, Title : "Careers"}
 
 	tmpl, err := template.New("").ParseFiles("templates/home/careers.gohtml", "templates/home/base.gohtml")
 	if err != nil {
 		fmt.Println(err.Error())
 	}else {
-		tmpl.ExecuteTemplate(w, "basehome", pageTitle) 
+		tmpl.ExecuteTemplate(w, "basehome", pageDetails) 
 	}
 }
 
@@ -78,13 +80,14 @@ func Company(w http.ResponseWriter, r *http.Request) {
         return
     }	
 		
-	pageTitle := common.PageTitle{Title : "About us"}
+	baseUrl := common.GetBaseurl() + common.CONST_APP_PORT
+	pageDetails := common.PageDetails{BaseUrl: baseUrl, Title : "About us"}
 
 	tmpl, err := template.New("").ParseFiles("templates/home/company.gohtml", "templates/home/base.gohtml")
 	if err != nil {
 		fmt.Println(err.Error())
 	}else {
-		tmpl.ExecuteTemplate(w, "basehome", pageTitle) 
+		tmpl.ExecuteTemplate(w, "basehome", pageDetails) 
 	}
 }
 
@@ -95,13 +98,14 @@ func Brand(w http.ResponseWriter, r *http.Request) {
         return
     }	
 		
-	pageTitle := common.PageTitle{Title : "The Brand"}
+	baseUrl := common.GetBaseurl() + common.CONST_APP_PORT
+	pageDetails := common.PageDetails{BaseUrl: baseUrl, Title : "The Brand"}
 
 	tmpl, err := template.New("").ParseFiles("templates/home/brand.gohtml", "templates/home/base.gohtml")
 	if err != nil {
 		fmt.Println(err.Error())
 	}else {
-		tmpl.ExecuteTemplate(w, "basehome", pageTitle) 
+		tmpl.ExecuteTemplate(w, "basehome", pageDetails) 
 	}
 }
 
@@ -112,13 +116,14 @@ func Videos(w http.ResponseWriter, r *http.Request) {
         return
     }	
 		
-	pageTitle := common.PageTitle{Title : "Training Videos"}
+	baseUrl := common.GetBaseurl() + common.CONST_APP_PORT
+	pageDetails := common.PageDetails{BaseUrl: baseUrl, Title : "Training Videos"}
 
 	tmpl, err := template.New("").ParseFiles("templates/home/videos.gohtml", "templates/home/base.gohtml")
 	if err != nil {
 		fmt.Println(err.Error())
 	}else {
-		tmpl.ExecuteTemplate(w, "basehome", pageTitle) 
+		tmpl.ExecuteTemplate(w, "basehome", pageDetails) 
 	}
 }
 
@@ -129,13 +134,14 @@ func PrivacyPolicy(w http.ResponseWriter, r *http.Request) {
         return
     }	
 		
-	pageTitle := common.PageTitle{Title : "Privacy Policy"}
+	baseUrl := common.GetBaseurl() + common.CONST_APP_PORT
+	pageDetails := common.PageDetails{BaseUrl: baseUrl, Title : "Privacy Policy"}
 
 	tmpl, err := template.New("").ParseFiles("templates/home/privacy.gohtml", "templates/home/base.gohtml")
 	if err != nil {
 		fmt.Println(err.Error())
 	}else {
-		tmpl.ExecuteTemplate(w, "basehome", pageTitle) 
+		tmpl.ExecuteTemplate(w, "basehome", pageDetails) 
 	}
 }
 
@@ -146,13 +152,14 @@ func CookiePolicy(w http.ResponseWriter, r *http.Request) {
         return
     }	
 		
-	pageTitle := common.PageTitle{Title : "Cookie Policy"}
+	baseUrl := common.GetBaseurl() + common.CONST_APP_PORT
+	pageDetails := common.PageDetails{BaseUrl: baseUrl, Title : "Cookie Policy"}
 
 	tmpl, err := template.New("").ParseFiles("templates/home/cookie.gohtml", "templates/home/base.gohtml")
 	if err != nil {
 		fmt.Println(err.Error())
 	}else {
-		tmpl.ExecuteTemplate(w, "basehome", pageTitle) 
+		tmpl.ExecuteTemplate(w, "basehome", pageDetails) 
 	}
 }
 
@@ -163,13 +170,14 @@ func TermsOfService(w http.ResponseWriter, r *http.Request) {
         return
     }	
 		
-	pageTitle := common.PageTitle{Title : "Terms and Conditions"}
+	baseUrl := common.GetBaseurl() + common.CONST_APP_PORT
+	pageDetails := common.PageDetails{BaseUrl: baseUrl, Title : "Terms and Conditions"}
 
 	tmpl, err := template.New("").ParseFiles("templates/home/terms.gohtml", "templates/home/base.gohtml")
 	if err != nil {
 		fmt.Println(err.Error())
 	}else {
-		tmpl.ExecuteTemplate(w, "basehome", pageTitle) 
+		tmpl.ExecuteTemplate(w, "basehome", pageDetails) 
 	}
 }
 
@@ -177,13 +185,14 @@ func TermsOfService(w http.ResponseWriter, r *http.Request) {
 func ErrorHandler(w http.ResponseWriter, r *http.Request, status int) {
 	w.WriteHeader(status)
 	if status == http.StatusNotFound {
-		pageTitle := common.PageTitle{Title : "Page not found"}
+		baseUrl := common.GetBaseurl() + common.CONST_APP_PORT
+	pageDetails := common.PageDetails{BaseUrl: baseUrl, Title : "Page not found"}
 
 		tmpl, err := template.New("").ParseFiles("templates/home/404.gohtml", "templates/home/base.gohtml")
 		if err != nil {
 			fmt.Println(err.Error())
 		}else {
-			tmpl.ExecuteTemplate(w, "basehome", pageTitle) 
+			tmpl.ExecuteTemplate(w, "basehome", pageDetails) 
 		}
 	}
 }

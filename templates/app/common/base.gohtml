@@ -8,9 +8,9 @@
             name="description"
             content="We help people build their career portfolios by encouraging them to contribute to open-source projects."
         />
-        <link rel="icon" type="image/x-icon" href="../assets/img/favicon.png" />
+        <link rel="icon" type="image/x-icon" href="{{.PageDetails.BaseUrl}}/assets/img/favicon.png" />
         <meta name="author" content="Techpro Club" />
-        <title>Techpro.club {{.PageTitle.Title}}</title>
+        <title>Techpro.club {{.PageDetails.Title}}</title>
         <meta
             content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
             name="viewport"
@@ -25,9 +25,9 @@
             href="https://fonts.googleapis.com/icon?family=Material+Icons"
             rel="stylesheet"
         />
-        <link href="../assets/app/assets/css/vendor.min.css" rel="stylesheet" />
+        <link href="{{.PageDetails.BaseUrl}}/assets/app/assets/css/vendor.min.css" rel="stylesheet" />
         <link
-            href="../assets/app/assets/css/google/app.min.css"
+            href="{{.PageDetails.BaseUrl}}/assets/app/assets/css/google/app.min.css"
             rel="stylesheet"
         />
         <!-- ================== END core-css ================== -->
@@ -61,7 +61,7 @@
                     </button>
                     <a href="/" class="navbar-brand">
                         <img
-                            src="../assets/img/logo_blue.png"
+                            src="{{.PageDetails.BaseUrl}}/assets/img/logo_blue.png"
                             alt="techpro.club logo blue"
                         />
                     </a>
@@ -214,8 +214,8 @@
         <!-- END #app -->
 
         <!-- ================== BEGIN core-js ================== -->
-        <script src="../assets/app/assets/js/vendor.min.js"></script>
-        <script src="../assets/app/assets/js/app.min.js"></script>
+        <script src="{{.PageDetails.BaseUrl}}/assets/app/assets/js/vendor.min.js"></script>
+        <script src="{{.PageDetails.BaseUrl}}/assets/app/assets/js/app.min.js"></script>
         <!-- ================== END core-js ================== -->
 
         <!-- ================== GOOGLE TAG ================== -->

@@ -15,13 +15,14 @@ func Campus(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	pageTitle := common.PageTitle{Title : "Campus"}
+	baseUrl := common.GetBaseurl() + common.CONST_APP_PORT
+	pageDetails := common.PageDetails{BaseUrl: baseUrl, Title : "Campus"}
 
 	tmpl, err := template.New("").ParseFiles("templates/home/campus.gohtml", "templates/home/base.gohtml")
 	if err != nil {
 		fmt.Println(err.Error())
 	}else {
-		tmpl.ExecuteTemplate(w, "basehome", pageTitle) 
+		tmpl.ExecuteTemplate(w, "basehome", pageDetails) 
 	}
 }
 
@@ -33,12 +34,13 @@ func CampusOnboard(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	pageTitle := common.PageTitle{Title : "Campus Onboarding"}
+	baseUrl := common.GetBaseurl() + common.CONST_APP_PORT
+	pageDetails := common.PageDetails{BaseUrl: baseUrl, Title : "Campus Onboarding"}
 
 	tmpl, err := template.New("").ParseFiles("templates/home/campusonboard.gohtml", "templates/home/base.gohtml")
 	if err != nil {
 		fmt.Println(err.Error())
 	}else {
-		tmpl.ExecuteTemplate(w, "basehome", pageTitle) 
+		tmpl.ExecuteTemplate(w, "basehome", pageDetails) 
 	}
 }

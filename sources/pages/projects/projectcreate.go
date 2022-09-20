@@ -24,7 +24,7 @@ type FinalOutStruct struct {
 	UserNameImage        common.UsernameImageStruct      `json:"userNameImage"`
 	NotificaitonsCount   int64                           `json:"notificationsCount"`
 	NotificationsList    []common.MainNotificationStruct `json:"nofiticationsList"`
-	PageTitle            common.PageTitle                `json:"pageTitle"`
+	PageDetails common.PageDetails `json:"pageDetails"`
 }
 
 func ProjectCreate(w http.ResponseWriter, r *http.Request) {
@@ -61,7 +61,8 @@ func ProjectCreate(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method == "GET" {
 
-		pageTitle := common.PageTitle{Title: "New Project"}
+		baseUrl := common.GetBaseurl() + common.CONST_APP_PORT
+	pageDetails := common.PageDetails{BaseUrl: baseUrl, Title: "New Project"}
 
 		output := FinalOutStruct{
 			common.ProgrammingLanguages,
@@ -71,7 +72,7 @@ func ProjectCreate(w http.ResponseWriter, r *http.Request) {
 			userNameImage,
 			notificationsCount,
 			notificationsList,
-			pageTitle,
+			pageDetails,
 		}
 
 		tmpl, err := template.New("").ParseFiles("templates/app/common/base.gohtml", "templates/app/common/projectmenu.gohtml", "templates/app/projects/projectcreate.gohtml")
