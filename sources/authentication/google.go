@@ -78,7 +78,7 @@ func GoogleContributorLoginHandler(w http.ResponseWriter, r *http.Request) {
 		RedirectURL:  common.GetGoogleContributorRedirectURI(),
 		ClientID:     common.GetGoogleClientID(),
 		ClientSecret: common.GetGoogleClientSecret(),
-		Scopes:       []string{"https://www.googleapis.com/auth/userinfo.email", "https://www.googleapis.com/auth/userinfo.profile"},
+		Scopes:       []string{"https://www.googleapis.com/auth/userinfo.email", "https://www.googleapis.com/auth/userinfo.profile", "https://www.googleapis.com/auth/youtube.readonly"},
 		Endpoint:     google.Endpoint,
 	}
 
@@ -115,7 +115,7 @@ func GoogleContributorCallbackHandler(w http.ResponseWriter, r *http.Request) {
 	// GetOrCreate User in your db.
 	// Redirect or response with a token.
 	// More code .....
-	// fmt.Fprintf(w, "UserInfo: %s\n", data)
+	fmt.Fprintf(w, "UserInfo: %s\n", data)
 
 
 	// Set session cookie
@@ -147,7 +147,7 @@ func getUserDataFromGoogle(code string) (googleData []byte, accessToken string, 
 		RedirectURL:  common.GetGoogleContributorRedirectURI(),
 		ClientID:     common.GetGoogleClientID(),
 		ClientSecret: common.GetGoogleClientSecret(),
-		Scopes:       []string{"https://www.googleapis.com/auth/userinfo.email", "https://www.googleapis.com/auth/userinfo.profile"},
+		Scopes:       []string{"https://www.googleapis.com/auth/userinfo.email", "https://www.googleapis.com/auth/userinfo.profile", "https://www.googleapis.com/auth/youtube.readonly"},
 		Endpoint:     google.Endpoint,
 	}
 
