@@ -31,6 +31,10 @@ const(
 	CONST_MO_BOOKMARKS = "bookmarks"
 	CONST_MO_USER_PROJECT_REACTIONS = "user_project_reactions"
 	CONST_MO_USER_REPO_LIST = "user_repo_list"
+
+	// Sessions file
+	CONST_SESSION_PATH = "tmp/sessions/"
+
 )
 
 // Contributor count

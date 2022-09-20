@@ -4,8 +4,8 @@ import (
 	"log"
 	"net/http"
 
-	"techpro.club/sources/authentication"
 	"techpro.club/sources/common"
+	"techpro.club/sources/libraries"
 	"techpro.club/sources/pages"
 	"techpro.club/sources/pages/contributors"
 	"techpro.club/sources/pages/projects"
@@ -28,8 +28,6 @@ func main() {
 
 	goMux := mux.NewRouter()
 
-	// fs := http.FileServer(http.Dir("assets"))
-	// http.Handle("/assets/", http.StripPrefix("/assets", fs))
 	goMux.PathPrefix("/assets/").Handler(http.StripPrefix("/assets", http.FileServer(http.Dir("assets"))))
 
 	// APIs
@@ -83,21 +81,21 @@ func main() {
 
 
 
-	// Authentication
+	// Libraries
 	// Github
-	goMux.HandleFunc("/contributors/github/login", authentication.GithubContributorLoginHandler)
-	goMux.HandleFunc("/contributors/github/callback", authentication.GithubContributorCallbackHandler)
+	goMux.HandleFunc("/contributors/github/login", libraries.GithubContributorLoginHandler)
+	goMux.HandleFunc("/contributors/github/callback", libraries.GithubContributorCallbackHandler)
 
-	goMux.HandleFunc("/projects/github/login", authentication.GithubProjectLoginHandler)
-	goMux.HandleFunc("/projects/github/callback", authentication.GithubProjectCallbackHandler)
+	goMux.HandleFunc("/projects/github/login", libraries.GithubProjectLoginHandler)
+	goMux.HandleFunc("/projects/github/callback", libraries.GithubProjectCallbackHandler)
 
 	// Google
-	goMux.HandleFunc("/contributors/google/login", authentication.GoogleContributorLoginHandler)
-	goMux.HandleFunc("/contributors/google/callback", authentication.GoogleContributorCallbackHandler)
+	goMux.HandleFunc("/contributors/google/login", libraries.GoogleContributorLoginHandler)
+	goMux.HandleFunc("/contributors/google/callback", libraries.GoogleContributorCallbackHandler)
 
 	// Func to receive data after login
 	goMux.HandleFunc("/github/loggedin", func(w http.ResponseWriter, r *http.Request) {
-		authentication.GithubLoggedinHandler(w, r, "", "", "", "")
+		libraries.GithubLoggedinHandler(w, r, "", "", "", "")
 	})
 
 	goMux.HandleFunc("/logout", pages.Logout)
