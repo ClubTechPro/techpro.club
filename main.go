@@ -28,8 +28,6 @@ func main() {
 
 	goMux := mux.NewRouter()
 
-	// fs := http.FileServer(http.Dir("assets"))
-	// http.Handle("/assets/", http.StripPrefix("/assets", fs))
 	goMux.PathPrefix("/assets/").Handler(http.StripPrefix("/assets", http.FileServer(http.Dir("assets"))))
 
 	// APIs

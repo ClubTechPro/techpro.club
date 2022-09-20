@@ -6,14 +6,12 @@ import (
 	"crypto/rand"
 	"encoding/base64"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
-	"net/url"
 	"os"
-	"os/user"
-	"path/filepath"
 	"time"
 
 	"golang.org/x/oauth2"
@@ -57,7 +55,9 @@ func GoogleLoggedinHandler(w http.ResponseWriter, r *http.Request, googleData []
 	imageLink := fmt.Sprintf("%s", jsonMap["picture"])
 	repoUrl := ""
 
-	saveToken(login, token)
+	// Save token in a file to access later
+	sessionFileName := common.CONST_SESSION_PATH + login + ".json"
+	saveToken(sessionFileName, token)
 
 	ok, _ := users.CheckUserExists(email)
 
@@ -121,7 +121,7 @@ func GoogleContributorCallbackHandler(w http.ResponseWriter, r *http.Request) {
 	// GetOrCreate User in your db.
 	// Redirect or response with a token.
 	// More code .....
-	fmt.Fprintf(w, "UserInfo: %s\n", data)
+	// fmt.Fprintf(w, "UserInfo: %s\n", data)
 
 
 	// Set session cookie
@@ -176,35 +176,16 @@ func getUserDataFromGoogle(code string) (googleData []byte, token *oauth2.Token,
 }
 
 
-// tokenCacheFile generates credential file path/filename.
-// It returns the generated credential path/filename.
-func TokenCacheFile() (string, error) {
-	usr, err := user.Current()
-	if err != nil {
-			return "", err
-	}
-	tokenCacheDir := filepath.Join(usr.HomeDir, ".credentials")
-	os.MkdirAll(tokenCacheDir, 0700)
-	return filepath.Join(tokenCacheDir,
-			url.QueryEscape("youtube-go.json")), err
-}
-
-// tokenFromFile retrieves a Token from a given file path.
-// It returns the retrieved Token and any read error encountered.
-func TokenFromFile(file string) (*oauth2.Token, error) {
-	f, err := os.Open(file)
-	if err != nil {
-			return nil, err
-	}
-	t := &oauth2.Token{}
-	err = json.NewDecoder(f).Decode(t)
-	defer f.Close()
-	return t, err
-}
-
 // saveToken uses a file path to create a file and store the
 // token in it.
 func saveToken(file string, token *oauth2.Token) {
+	if _, err := os.Stat(common.CONST_SESSION_PATH); errors.Is(err, os.ErrNotExist) {
+		err := os.MkdirAll(common.CONST_SESSION_PATH, os.ModePerm)
+		if err != nil {
+			log.Println(err)
+		}
+	}
+
 	fmt.Println("trying to save token")
 	fmt.Printf("Saving credential file to: %s\n", file)
 	f, err := os.OpenFile(file, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0600)
