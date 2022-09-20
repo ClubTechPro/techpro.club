@@ -5,6 +5,17 @@ import (
 	"os"
 )
 
+// Get base url from environment variable
+func GetBaseurl() (baseUrl string) {
+
+	baseUrl, exists := os.LookupEnv("BASE_URL")
+	if !exists {
+		log.Fatal("BASE_URL not defined in .env file")
+	}
+
+	return baseUrl
+}
+
 // Get mongodb host from environment variable
 func GetMoHost() (moHost string) {
 

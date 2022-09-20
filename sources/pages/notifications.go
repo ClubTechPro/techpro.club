@@ -20,7 +20,7 @@ type NotificationStruct struct {
 	UserNameImage      common.UsernameImageStruct       `json:"usernameImage"`
 	NotificaitonsCount int64                            `json:"notificationsCount"`
 	NotificationsList  []common.MainNotificationStruct  `json:"nofiticationsList"`
-	PageTitle          common.PageTitle                 `json:"pageTitle"`
+	PageDetails        common.PageDetails               `json:"pageDetails"`
 }
 
 func Notifications(w http.ResponseWriter, r *http.Request) {
@@ -56,9 +56,10 @@ func Notifications(w http.ResponseWriter, r *http.Request) {
 
 	_, _, Notifications := fetchNotificationList(w, r, userID)
 
-	pageTitle := common.PageTitle{Title: "Notifications"}
+	baseUrl := common.GetBaseurl() + common.CONST_APP_PORT
+	pageDetails := common.PageDetails{BaseUrl: baseUrl, Title: "Notifications"}
 
-	output := NotificationStruct{Notifications, userNameImage, notificationsCount, notificationsList, pageTitle}
+	output := NotificationStruct{Notifications, userNameImage, notificationsCount, notificationsList, pageDetails}
 
 	tmpl, err := template.New("").ParseFiles("templates/app/common/base.gohtml", "templates/app/common/contributormenu.gohtml", "templates/app/notifications.gohtml")
 

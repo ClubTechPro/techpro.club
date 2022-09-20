@@ -20,7 +20,7 @@ type FinalProjectPreviewOutStruct struct {
 	MyReactions        []primitive.ObjectID            `json:"myReactions"`
 	NotificaitonsCount int64                           `json:"notificationsCount"`
 	NotificationsList  []common.MainNotificationStruct `json:"nofiticationsList"`
-	PageTitle          common.PageTitle                `json:"pageTitle"`
+	PageDetails          common.PageDetails                `json:"pageDetails"`
 }
 
 func ProjectPreview(w http.ResponseWriter, r *http.Request) {
@@ -69,7 +69,8 @@ func ProjectPreview(w http.ResponseWriter, r *http.Request) {
 
 	projectOwner := false
 
-	pageTitle := common.PageTitle{Title: result.ProjectName}
+	baseUrl := common.GetBaseurl() + common.CONST_APP_PORT
+	pageDetails := common.PageDetails{BaseUrl: baseUrl, Title: result.ProjectName}
 
 	if projectStatus {
 
@@ -77,7 +78,7 @@ func ProjectPreview(w http.ResponseWriter, r *http.Request) {
 			projectOwner = true
 		}
 
-		finalOutStruct = FinalProjectPreviewOutStruct{result, userNameImage, projectOwner, bookmarks, reactions, notificationsCount, notificationsList, pageTitle}
+		finalOutStruct = FinalProjectPreviewOutStruct{result, userNameImage, projectOwner, bookmarks, reactions, notificationsCount, notificationsList, pageDetails}
 	} else {
 		fmt.Println(projectError)
 		pages.ErrorHandler(w, r, http.StatusNotFound)

@@ -20,7 +20,7 @@ type UserSettingsStruct struct {
 	UserNameImage      common.UsernameImageStruct      `json:"usernameImage"`
 	NotificaitonsCount int64                           `json:"notificationsCount"`
 	NotificationsList  []common.MainNotificationStruct `json:"nofiticationsList"`
-	PageTitle          common.PageTitle                `json:"pageTitle"`
+	PageDetails          common.PageDetails                `json:"pageDetails"`
 }
 
 // Display user settings
@@ -66,9 +66,10 @@ func UserSettings(w http.ResponseWriter, r *http.Request) {
 
 	_, _, userprofile := fetchUserProfile(userID)
 
-	pageTitle := common.PageTitle{Title: "Settings"}
+	baseUrl := common.GetBaseurl() + common.CONST_APP_PORT
+	pageDetails := common.PageDetails{BaseUrl: baseUrl, Title: "Settings"}
 
-	userSettingData := UserSettingsStruct{userprofile, userNameImage, notificationsCount, notificationsList, pageTitle}
+	userSettingData := UserSettingsStruct{userprofile, userNameImage, notificationsCount, notificationsList, pageDetails}
 
 	tmpl, err := template.New("").ParseFiles("templates/app/common/base.gohtml", "templates/app/common/projectmenu.gohtml", "templates/app/contributors/settings.gohtml")
 	if err != nil {

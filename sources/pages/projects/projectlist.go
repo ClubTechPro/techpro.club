@@ -19,7 +19,7 @@ type FinalProjectListOutStruct struct {
 	UserNameImage      common.UsernameImageStruct      `json:"userNameImage"`
 	NotificaitonsCount int64                           `json:"notificationsCount"`
 	NotificationsList  []common.MainNotificationStruct `json:"nofiticationsList"`
-	PageTitle          common.PageTitle                `json:"pageTitle"`
+	PageDetails          common.PageDetails                `json:"pageDetails"`
 }
 
 func ProjectList(w http.ResponseWriter, r *http.Request) {
@@ -59,10 +59,11 @@ func ProjectList(w http.ResponseWriter, r *http.Request) {
 		userNameImage = common.UsernameImageStruct{Username: userName, Image: image}
 	}
 
-	pageTitle := common.PageTitle{Title: "Projects List"}
+	baseUrl := common.GetBaseurl() + common.CONST_APP_PORT
+	pageDetails := common.PageDetails{BaseUrl: baseUrl, Title: "Projects List"}
 
 	_, _, results := listProjects(w, r, userID)
-	finalOutStruct = FinalProjectListOutStruct{results, userNameImage, notificationsCount, notificationsList, pageTitle}
+	finalOutStruct = FinalProjectListOutStruct{results, userNameImage, notificationsCount, notificationsList, pageDetails}
 
 	tmpl, err := template.New("").Funcs(functions).ParseFiles("templates/app/common/base.gohtml", "templates/app/common/projectmenu.gohtml", "templates/app/projects/projectlist.gohtml")
 	if err != nil {

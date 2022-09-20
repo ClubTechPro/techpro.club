@@ -20,7 +20,7 @@ type FinalFeedsOutputStruct struct{
 	MyReactions []primitive.ObjectID `json:"myReactions"`
 	NotificaitonsCount int64 `json:"notificationsCount"`
 	NotificationsList []common.MainNotificationStruct `json:"nofiticationsList"`
-	PageTitle common.PageTitle `json:"pageTitle"`
+	PageDetails common.PageDetails `json:"pageDetails"`
 }
 
 func Feeds(w http.ResponseWriter, r *http.Request){
@@ -39,7 +39,6 @@ func Feeds(w http.ResponseWriter, r *http.Request){
 
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 	}
-
 
 	var userNameImage common.UsernameImageStruct
 
@@ -70,9 +69,11 @@ func Feeds(w http.ResponseWriter, r *http.Request){
 	_, _, results := filterActiveProjects(pageid, tags, keyword)
 	_, _, bookmarks, reactions := pages.FetchMyBookmarksAndReactions(userID)
 
-	pageTitle := common.PageTitle{Title : "Feeds"}
+	
+	baseUrl := common.GetBaseurl() + common.CONST_APP_PORT
+	pageDetails := common.PageDetails{BaseUrl: baseUrl, Title : "Feeds"}
 
-	output := FinalFeedsOutputStruct{results, userNameImage, bookmarks, reactions, notificationsCount, notificationsList, pageTitle}
+	output := FinalFeedsOutputStruct{results, userNameImage, bookmarks, reactions, notificationsCount, notificationsList, pageDetails}
 
 	tmpl, err := template.New("").Funcs(functions).ParseFiles("templates/app/common/base.gohtml", "templates/app/common/contributormenu.gohtml", "templates/app/contributors/feeds.gohtml")
 

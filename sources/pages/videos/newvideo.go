@@ -15,7 +15,7 @@ type FinalVideoListOutStruct struct{
 	UserNameImage common.UsernameImageStruct `json:"userNameImage"`
 	NotificaitonsCount int64 `json:"notificationsCount"`
 	NotificationsList []common.MainNotificationStruct `json:"nofiticationsList"`
-	PageTitle common.PageTitle `json:"pageTitle"`
+	PageDetails common.PageDetails `json:"pageDetails"`
 }
 
 func NewVideo(w http.ResponseWriter, r *http.Request) {
@@ -52,13 +52,14 @@ func NewVideo(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method == "GET"{
 
-		pageTitle := common.PageTitle{Title : "New Video"}
+		baseUrl := common.GetBaseurl() + common.CONST_APP_PORT
+	pageDetails := common.PageDetails{BaseUrl: baseUrl, Title : "New Video"}
 
 		output := FinalVideoListOutStruct{
 			userNameImage,
 			notificationsCount,
 			notificationsList,
-			pageTitle,
+			pageDetails,
 		}
 
 		tmpl, err := template.New("").ParseFiles("templates/app/common/base.gohtml", "templates/app/common/videomenu.gohtml",  "templates/app/videos/newvideo.gohtml")

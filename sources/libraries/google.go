@@ -186,8 +186,6 @@ func saveToken(file string, token *oauth2.Token) {
 		}
 	}
 
-	fmt.Println("trying to save token")
-	fmt.Printf("Saving credential file to: %s\n", file)
 	f, err := os.OpenFile(file, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0600)
 	if err != nil {
 			log.Fatalf("Unable to cache oauth token: %v", err)

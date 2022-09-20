@@ -45,13 +45,14 @@ func EditVideo(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method == "GET"{
 
-		pageTitle := common.PageTitle{Title : "Videos"}
+		baseUrl := common.GetBaseurl() + common.CONST_APP_PORT
+	pageDetails := common.PageDetails{BaseUrl: baseUrl, Title : "Videos"}
 
 		output := FinalVideoListOutStruct{
 			userNameImage,
 			notificationsCount,
 			notificationsList,
-			pageTitle,
+			pageDetails,
 		}
 
 		tmpl, err := template.New("").ParseFiles("templates/app/common/base.gohtml", "templates/app/common/videomenu.gohtml",  "templates/app/videos/editvideo.gohtml")

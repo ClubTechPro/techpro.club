@@ -28,7 +28,7 @@ func main() {
 
 	goMux := mux.NewRouter()
 
-	goMux.PathPrefix("/assets/").Handler(http.StripPrefix("/assets", http.FileServer(http.Dir("assets"))))
+	goMux.PathPrefix("/assets/").Handler(http.StripPrefix("/assets/", http.FileServer(http.Dir("assets"))))
 
 	// APIs
 	goMux.HandleFunc("/api/managereaction", pages.ManageReactions)

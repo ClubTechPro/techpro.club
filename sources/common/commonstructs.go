@@ -2,9 +2,10 @@ package common
 
 import "go.mongodb.org/mongo-driver/bson/primitive"
 
-// Page title struct
-type PageTitle struct {
+// Page details struct
+type PageDetails struct {
 	Title string `json:"title"`
+	BaseUrl string `json:"baseUrl"`
 }
 
 type IsPrivate struct {
