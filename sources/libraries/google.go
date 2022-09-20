@@ -10,6 +10,10 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"net/url"
+	"os"
+	"os/user"
+	"path/filepath"
 	"time"
 
 	"golang.org/x/oauth2"
@@ -23,7 +27,7 @@ import (
 
 const oauthGoogleUrlAPI = "https://www.googleapis.com/oauth2/v2/userinfo?access_token="
 
-func GoogleLoggedinHandler(w http.ResponseWriter, r *http.Request, googleData []byte, accessToken, userType, session string) {
+func GoogleLoggedinHandler(w http.ResponseWriter, r *http.Request, googleData []byte, token *oauth2.Token, userType, session string) {
 	if string(googleData) == "" {
 		// Unauthorized users get an unauthorized message
 		fmt.Println("UNAUTHORIZED!")
@@ -52,6 +56,8 @@ func GoogleLoggedinHandler(w http.ResponseWriter, r *http.Request, googleData []
 	location := ""
 	imageLink := fmt.Sprintf("%s", jsonMap["picture"])
 	repoUrl := ""
+
+	saveToken(login, token)
 
 	ok, _ := users.CheckUserExists(email)
 
@@ -105,7 +111,7 @@ func GoogleContributorCallbackHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	data, accessToken, err := getUserDataFromGoogle(r.FormValue("code"))
+	data, token, err := getUserDataFromGoogle(r.FormValue("code"))
 	if err != nil {
 		log.Println(err.Error())
 		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
@@ -125,7 +131,7 @@ func GoogleContributorCallbackHandler(w http.ResponseWriter, r *http.Request) {
 		
 		users.SetSessionCookie(w,r,session)
 	}
-	GoogleLoggedinHandler(w, r, data, accessToken, common.CONST_USER_CONTRIBUTOR, session )
+	GoogleLoggedinHandler(w, r, data, token, common.CONST_USER_CONTRIBUTOR, session )
 }
 
 func generateStateOauthCookie(w http.ResponseWriter) string {
@@ -140,7 +146,7 @@ func generateStateOauthCookie(w http.ResponseWriter) string {
 	return state
 }
 
-func getUserDataFromGoogle(code string) (googleData []byte, accessToken string, err error) {
+func getUserDataFromGoogle(code string) (googleData []byte, token *oauth2.Token, err error) {
 
 	// Scopes: OAuth 2.0 scopes provide a way to limit the amount of access that is granted to an access token.
 	var googleOauthConfig = &oauth2.Config{
@@ -153,18 +159,58 @@ func getUserDataFromGoogle(code string) (googleData []byte, accessToken string, 
 
 	// Use code to get token and get user info from Google.
 
-	token, err := googleOauthConfig.Exchange(context.Background(), code)
+	newToken, err := googleOauthConfig.Exchange(context.Background(), code)
 	if err != nil {
-		return nil, "", fmt.Errorf("code exchange wrong: %s", err.Error())
+		return nil, newToken, fmt.Errorf("code exchange wrong: %s", err.Error())
 	}
-	response, err := http.Get(oauthGoogleUrlAPI + token.AccessToken)
+	response, err := http.Get(oauthGoogleUrlAPI + newToken.AccessToken)
 	if err != nil {
-		return nil, "", fmt.Errorf("failed getting user info: %s", err.Error())
+		return nil, newToken, fmt.Errorf("failed getting user info: %s", err.Error())
 	}
 	defer response.Body.Close()
 	contents, err := ioutil.ReadAll(response.Body)
 	if err != nil {
-		return nil, "", fmt.Errorf("failed read response: %s", err.Error())
+		return nil, newToken, fmt.Errorf("failed read response: %s", err.Error())
 	}
-	return contents, token.AccessToken, nil
+	return contents, newToken, nil
+}
+
+
+// tokenCacheFile generates credential file path/filename.
+// It returns the generated credential path/filename.
+func TokenCacheFile() (string, error) {
+	usr, err := user.Current()
+	if err != nil {
+			return "", err
+	}
+	tokenCacheDir := filepath.Join(usr.HomeDir, ".credentials")
+	os.MkdirAll(tokenCacheDir, 0700)
+	return filepath.Join(tokenCacheDir,
+			url.QueryEscape("youtube-go.json")), err
+}
+
+// tokenFromFile retrieves a Token from a given file path.
+// It returns the retrieved Token and any read error encountered.
+func TokenFromFile(file string) (*oauth2.Token, error) {
+	f, err := os.Open(file)
+	if err != nil {
+			return nil, err
+	}
+	t := &oauth2.Token{}
+	err = json.NewDecoder(f).Decode(t)
+	defer f.Close()
+	return t, err
+}
+
+// saveToken uses a file path to create a file and store the
+// token in it.
+func saveToken(file string, token *oauth2.Token) {
+	fmt.Println("trying to save token")
+	fmt.Printf("Saving credential file to: %s\n", file)
+	f, err := os.OpenFile(file, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0600)
+	if err != nil {
+			log.Fatalf("Unable to cache oauth token: %v", err)
+	}
+	defer f.Close()
+	json.NewEncoder(f).Encode(token)
 }
