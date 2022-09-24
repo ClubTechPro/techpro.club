@@ -49,7 +49,11 @@ func Register(w http.ResponseWriter, r *http.Request) {
 	} else {
 		userNameImage = common.UsernameImageStruct{Username: userName, Image: image}
 	}
-	
+
+	_, _, instituteData := GetUnregisteredInstitute(userID)
+
+	fmt.Println(instituteData)
+
 	if r.Method == "POST" {
 		// Update user profile
 
@@ -75,8 +79,15 @@ func Register(w http.ResponseWriter, r *http.Request) {
 			institute.Facebook = r.Form.Get("facebook")
 			institute.LinkedIn = r.Form.Get("linkedin")
 			institute.UserId = userID
+			institute.VerifiedBy = instituteData.VerifiedBy
+			institute.IsVerified = instituteData.IsVerified
 
-			instituteStatus, instituteMsg := SaveInstitute(institute)
+			instituteStatus, instituteMsg := false, ""
+			if instituteData.Name != "" {
+				instituteStatus, instituteMsg = UpdateInstitute(institute, instituteData.Id)
+			} else {
+				instituteStatus, instituteMsg = SaveInstitute(institute)
+			}
 
 			if instituteStatus {
 				fmt.Println("ok", instituteMsg)
@@ -86,10 +97,10 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
+	_, _, instituteData = GetUnregisteredInstitute(userID)
+
 	baseUrl := common.GetBaseurl() + common.CONST_APP_PORT
 	pageDetails := common.PageDetails{BaseUrl: baseUrl, Title: "Register your institute"}
-
-	_, _, instituteData := GetInstitute(userID)
 
 	output := InstitutePageStruct{
 		UserNameImage:      userNameImage,
