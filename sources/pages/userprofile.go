@@ -24,7 +24,7 @@ type ProfileStruct struct {
 	GithubRepos        []common.GithubRepoStruct       `json:"githubRepos"`
 	NotificaitonsCount int64                           `json:"notificationsCount"`
 	NotificationsList  []common.MainNotificationStruct `json:"nofiticationsList"`
-	PageDetails          common.PageDetails               `json:"pageDetails"`
+	PageDetails        common.PageDetails              `json:"pageDetails"`
 	IsPrivate          common.IsPrivate                `json:"isPrivate"`
 }
 
@@ -94,15 +94,7 @@ func Profile(w http.ResponseWriter, r *http.Request) {
 func PublicProfile(w http.ResponseWriter, r *http.Request) {
 
 	// Session check
-	sessionOk, loggedInUserId := users.ValidateDbSession(w, r)
-	if !sessionOk {
-
-		// Delete cookies
-		users.DeleteSessionCookie(w, r)
-		users.DeleteUserCookie(w, r)
-
-		http.Redirect(w, r, "/", http.StatusSeeOther)
-	}
+	_, loggedInUserId := users.ValidateDbSession(w, r)
 
 	userProfileIdFromQuery := mux.Vars(r)["username"]
 
@@ -449,6 +441,6 @@ func fetchGithubReposList(login string) (status bool, msg string, reposList []co
 
 }
 
-func ProfileTest(w http.ResponseWriter, r *http.Request){
+func ProfileTest(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Got request", mux.Vars(r)["username"])
 }

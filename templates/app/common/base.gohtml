@@ -78,6 +78,7 @@
                 <!-- END navbar-header -->
                 <!-- BEGIN header-nav -->
                 <div class="navbar-nav">
+                    {{if .UserNameImage.Username}}
                     <div class="navbar-item navbar-form">
                         {{/* <form action="" method="POST" name="search">
                             <div class="form-group">
@@ -122,6 +123,7 @@
                             
                         </div>
                     </div>
+                 
                     <div class="navbar-item navbar-user dropdown">
                         <a
                             href="#"
@@ -156,6 +158,7 @@
                             <a href="/logout" class="dropdown-item">Log Out</a>
                         </div>
                     </div>
+                    {{ end }}
                 </div>
                 <!-- END header-nav -->
             </div>
