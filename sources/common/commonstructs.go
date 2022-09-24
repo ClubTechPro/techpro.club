@@ -279,3 +279,44 @@ type GithubRepoStruct struct {
 	GithubProjectId float64 `json:"github_project_id"`
 	NodeId string `json:"node_id"`
 }
+
+type FetchInstitutetruct struct {
+	Id         primitive.ObjectID `json:"id" bson:"_id,omitempty"`
+	UserId     primitive.ObjectID `json:"userId"`
+	VerifiedBy primitive.ObjectID `json:"verifiedBy"`
+	ImageLink  string             `json:"imageLink"`
+	Name       string             `json:"name"`
+	Vision     string             `json:"vision"`
+	Mission    string             `json:"mission"`
+	Founded    string             `json:"founded"`
+	About      string             `json:"about"`
+	Email      string             `json:"email"`
+	Website    string             `json:"website"`
+	Landline   string             `json:"landline"`
+	Mobile     string             `json:"mobile"`
+	Facebook   string             `json:"facebook"`
+	Twitter    string             `json:"twitter"`
+	LinkedIn   string             `json:"linkdeIn"`
+	IsVerified bool               `json:"verified"`
+	IsActive   int                `json:"isActive"`
+}
+
+type SaveInstitutetruct struct {
+	UserId     primitive.ObjectID `json:"userId"`
+	VerifiedBy primitive.ObjectID `json:"verifiedBy"`
+	ImageLink  string             `json:"imageLink"`
+	Name       string             `json:"name"`
+	Vision     string             `json:"vision"`
+	Mission    string             `json:"mission"`
+	Founded    string             `json:"founded"`
+	About      string             `json:"about"`
+	Email      string             `json:"email"`
+	Website    string             `json:"website"`
+	Landline   string             `json:"landline"`
+	Mobile     string             `json:"mobile"`
+	Facebook   string             `json:"facebook"`
+	Twitter    string             `json:"twitter"`
+	LinkedIn   string             `json:"linkdeIn"`
+	IsVerified bool               `json:"verified"`
+	IsActive   int                `json:"isActive"`
+}

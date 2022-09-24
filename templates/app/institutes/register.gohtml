@@ -1,0 +1,222 @@
+{{define "content"}}
+<!-- BEGIN page-header -->
+<div class="row">
+  <div class="col col-md-12">
+    {{if .InstituteData.ImageLink}}
+    <h1 class="page-header">Your institute is submitted for approval.</h1>
+    {{else}}
+    <h1 class="page-header">Enter details about your institute to register.</h1>
+    {{ end }}
+  </div>
+</div>
+<!-- END page-header -->
+
+<div class="panel shadow bg-body rounded">
+  <div class="panel-body">
+    <form method="post" content-type="x-www-form-urlencoded" id="profileform">
+      <div class="row">
+        {{if .InstituteData.ImageLink}}"
+        <div class="col col-md-10">
+          <img
+            src="{{.InstituteData.ImageLink}}"
+            height="100"
+            alt="profile image"
+          />
+        </div>
+        <div class="col col-md-2 text-end">
+          <a href="/users/profile" role="button" class="btn btn-default btn-sm"
+            ><i class="fa-regular fa-eye me-1"></i>Preview</a
+          >
+        </div>
+        {{ end }}
+      </div>
+
+      <div class="col-md-6 mt-3">
+        <label class="mb-2">Institute Name</label>
+        <input
+          type="text"
+          class="form-control form-control-sm"
+          id="name"
+          name="name"
+          required
+          placeholder="Enter institute name"
+          value="{{.InstituteData.Name}}"
+        />
+      </div>
+
+      <div class="col-md-6 mt-3">
+        <label class="mb-2">Image Url</label>
+        <input
+          required
+          type="url"
+          class="form-control form-control-sm"
+          id="imageLink"
+          name="imageLink"
+          placeholder="Enter image of the institute"
+          value="{{.InstituteData.ImageLink}}"
+        />
+      </div>
+
+      <div class="col col-6 mt-2">
+        <label>Vision</label>
+        <input
+          type="text"
+          class="form-control form-control-sm"
+          id="vision"
+          name="vision"
+          placeholder="Vision"
+          value="{{.InstituteData.Vision}}"
+        />
+      </div>
+
+      <div class="col col-6 mt-2">
+        <label>Mission</label>
+        <input
+          type="text"
+          class="form-control form-control-sm"
+          id="mission"
+          name="mission"
+          placeholder="Mission"
+          value="{{.InstituteData.Mission}}"
+        />
+      </div>
+
+      <div class="col col-6 mt-2">
+        <label>Founded In Year</label>
+        <input
+          type="number"
+          maxlength="4"
+          minlength="4"
+          required
+          class="form-control form-control-sm"
+          id="founded"
+          name="founded"
+          placeholder="YEAR"
+          value="{{.InstituteData.Founded}}"
+        />
+      </div>
+
+      <div class="col-md-6 mt-2">
+        <label>About</label>
+        <input
+          type="text"
+          class="form-control form-control-sm"
+          id="about"
+          name="about"
+          placeholder="Email"
+          value="{{.InstituteData.About}}"
+        />
+      </div>
+
+      <div class="col-md-6 mt-2">
+        <label>Institute Email</label>
+        <input
+          type="text"
+          class="form-control form-control-sm"
+          id="email"
+          name="email"
+          placeholder="Email"
+          required
+          value="{{.InstituteData.Email}}"
+        />
+      </div>
+
+      <div class="col col-md-6 mt-2">
+        <label>Website</label>
+        <input
+          type="text"
+          class="form-control form-control-sm"
+          id="website"
+          name="website"
+          placeholder="Linkedin"
+          required
+          value="{{.InstituteData.Website}}"
+        />
+      </div>
+
+      <div class="col col-md-6 mt-2">
+        <label>Landline</label>
+        <input
+          type="tel"
+          class="form-control form-control-sm"
+          id="landline"
+          name="landline"
+          placeholder="Landline number"
+          value="{{.InstituteData.Landline}}"
+        />
+      </div>
+
+      <div class="col col-md-6 mt-2">
+        <label>Mobile</label>
+        <input
+          type="text"
+          class="form-control form-control-sm"
+          id="mobile"
+          name="mobile"
+          placeholder="Mobile Number"
+          required
+          value="{{.InstituteData.Mobile}}"
+        />
+      </div>
+
+      <div class="col col-md-6 mt-2">
+        <label>Facebook</label>
+        <input
+          type="text"
+          class="form-control form-control-sm"
+          id="facebook"
+          name="facebook"
+          placeholder="Facebook"
+          value="{{.InstituteData.Facebook}}"
+        />
+      </div>
+
+      <div class="col col-md-6 mt-2">
+        <label>Twitter</label>
+        <input
+          type="text"
+          class="form-control form-control-sm"
+          id="twitter"
+          name="twitter"
+          placeholder="Twitter"
+          value="{{.InstituteData.Twitter}}"
+        />
+      </div>
+
+      <div class="col col-md-6 mt-2">
+        <label>LinkedIn</label>
+        <input
+          type="text"
+          class="form-control form-control-sm"
+          id="linkedin"
+          name="linkedin"
+          placeholder="Linkedin"
+          value="{{.InstituteData.LinkedIn}}"
+        />
+      </div>
+
+      <br />
+      {{if .InstituteData.ImageLink}}
+      <h1 class="page-header">
+        <input
+          type="submit"
+          id="saveSettingsBtn"
+          value="Update"
+          class="btn btn-primary"
+        />
+      </h1>
+      {{else}}
+      <h1 class="page-header">
+        <input
+          type="submit"
+          id="saveSettingsBtn"
+          value="Save"
+          class="btn btn-primary"
+        />
+      </h1>
+      {{ end }}
+    </form>
+  </div>
+</div>
+
+{{ end }}

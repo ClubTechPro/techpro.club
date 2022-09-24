@@ -8,6 +8,7 @@ import (
 	"techpro.club/sources/libraries"
 	"techpro.club/sources/pages"
 	"techpro.club/sources/pages/contributors"
+	"techpro.club/sources/pages/institutes"
 	"techpro.club/sources/pages/projects"
 	"techpro.club/sources/pages/videos"
 
@@ -65,6 +66,9 @@ func main() {
 	goMux.HandleFunc("/contributors/thankyou", contributors.PreferencesSaved)
 	goMux.HandleFunc("/contributors/reactions", contributors.FetchReactions)
 	goMux.HandleFunc("/contributors/bookmarks", contributors.FetchBookmarks)
+
+	//Template/Institute
+	goMux.HandleFunc("/institute/register", institutes.Register)
 	
 
 	// Templates/Projects
