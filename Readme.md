@@ -173,14 +173,7 @@ Links -
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-<!-- ACKNOWLEDGMENTS -->
 
-## Acknowledgments
-
--   [Best Readme Template](https://github.com/othneildrew/Best-README-Template)
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-## Founders
+## Project Founders
 -   [Chilarai](https://github.com/chilarai)
 -   [Rohit Verma](https://github.com/RohitV5)
