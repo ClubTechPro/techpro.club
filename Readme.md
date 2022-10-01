@@ -126,44 +126,9 @@ GB_PROJECT_REDIRECT_URI=http://localhost:8080/projects/github/callback
 GO_CONTRIBUTOR_REDIRECT_URI=http://localhost:8080/contributors/google/callback
 
 Edit
-However, we donot use GB_PROJECT_REDIRECT_URI anymore. You can safely use the other two
+However, we do not use GB_PROJECT_REDIRECT_URI anymore. You can safely use the other two
 
 <!-- USAGE EXAMPLES -->
-
-<!-- ROADMAP -->
-
-## Roadmap
-
--   [x] **v 0.1**
-    -   [x] User Authentication
-    -   [x] Contributor preferences
-    -   [x] Projects Create, Read, Update
-    -   [x] Registration welcome email
-    -   [x] Master templates
--   [x] **v 0.2**
-    -   [x] Profile management - avatar, delete account, etc.
-    -   [x] Project feeds
-    -   [x] Notification for contributors
-    -   [x] Notification for projects
-    -   [x] Fetch Github profile
-    -   [x] Bookmarks and Reactions
--   [ ] **v 0.3**
-    -   [ ] Project invite members
-    -   [ ] Project manage members
-    -   [ ] Share on social media
-    -   [ ] Feed filters
--   [ ] **v 0.4**
-    -   [ ] Project analytics
--   [ ] **v 0.5**
-    -   [ ] Badges
--   [ ] **v 0.6**
-    -   [ ] Integration with Gitlab
--   [ ] **v 0.7**
-    -   [ ] Integration with Bitbucket
--   [ ] **v 0.8**
-    -   [ ] Integration with Azure
-
-More to follow. Perhaps, once these are done, we will move it to some other section for better tracking.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
