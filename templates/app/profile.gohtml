@@ -113,15 +113,22 @@
 <div class="row">
   {{ range.GithubRepos }}
   <div class="col col-md-6 mt-3">
-    <div class="panel shadow bg-body rounded">
+    <div class="panel shadow bg-body rounded"  style="height: 100%;">
       <div class="panel-body">
         <h6 class="card-subtitle mb-2 mt-2">
-          <a href="{{.HtmlUrl}}" target="_blank">{{.FullName}}</a>
+          <a href="{{.HtmlUrl}}" target="_blank" style="word-wrap: break-word;">{{.FullName}}</a>
         </h6>
 
+        {{if .Description }}
         <p class="card-text">
           {{.Description}}
         </p>
+        {{else}}
+        <p class="card-text">
+          No description found for this repository.
+        </p>
+
+        {{end}}
 
         <div class="row">
           <div class="col-md-6">
