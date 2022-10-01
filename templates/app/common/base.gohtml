@@ -134,17 +134,12 @@
                                 src="{{.UserNameImage.Image}}"
                                 alt="user avatar"
                             />
-                            {{if .UserProfile.Name}}
-                                <span
-                                    class="d-none d-md-inline"
-                                >{{.UserProfile.Name}}</span
-                            >
-                            {{else if eq .UserNameImage.Username "%!s(<nil>)" }}
+                            {{if eq .UserNameImage.Username "%!s(<nil>)" }}
                                 <span
                                     class="d-none d-md-inline"
                                     >User</span
                                 >
-                            {{ else }}
+                            {{else}}
                                 <span
                                     class="d-none d-md-inline"
                                     >{{.UserNameImage.Username}}</span
