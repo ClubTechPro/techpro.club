@@ -134,11 +134,24 @@
                                 src="{{.UserNameImage.Image}}"
                                 alt="user avatar"
                             />
-                            <span
-                                class="d-none d-md-inline"
-                                >{{.UserNameImage.Username}}</span
+                            {{if .UserProfile.Name}}
+                                <span
+                                    class="d-none d-md-inline"
+                                >{{.UserProfile.Name}}</span
                             >
+                            {{else if eq .UserNameImage.Username "%!s(<nil>)" }}
+                                <span
+                                    class="d-none d-md-inline"
+                                    >User</span
+                                >
+                            {{ else }}
+                                <span
+                                    class="d-none d-md-inline"
+                                    >{{.UserNameImage.Username}}</span
+                                >
+                            {{end}}
                             <b class="caret ms-lg-2"></b>
+
                         </a>
                         <div class="dropdown-menu dropdown-menu-end me-1">
                          <a href="/projects/list" class="dropdown-item"

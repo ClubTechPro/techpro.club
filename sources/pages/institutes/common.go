@@ -32,7 +32,7 @@ func SaveInstitute(newInstituteStruct common.SaveInstitutetruct) (status bool, m
 	return status, msg
 }
 
-func GetInstitute(userID primitive.ObjectID) (status bool, msg string, fetchInstituteStruct common.FetchInstitutetruct) {
+func GetUnregisteredInstitute(userID primitive.ObjectID) (status bool, msg string, fetchInstituteStruct common.FetchInstitutetruct) {
 	status = false
 	msg = ""
 
@@ -55,4 +55,27 @@ func GetInstitute(userID primitive.ObjectID) (status bool, msg string, fetchInst
 	}
 
 	return status, msg, fetchInstituteStruct
+}
+
+func UpdateInstitute(newInstituteStruct common.SaveInstitutetruct, instituteID primitive.ObjectID) (status bool, msg string) {
+	status = false
+	msg = ""
+
+	_, _, client := common.Mongoconnect()
+	defer client.Disconnect(context.TODO())
+
+	dbName := common.GetMoDb()
+	saveInstitute := client.Database(dbName).Collection(common.CONST_MO_INSTITUTE)
+
+	err := saveInstitute.FindOneAndUpdate(context.TODO(), bson.M{"_id": instituteID}, newInstituteStruct)
+
+	if err != nil {
+		msg = "Error"
+
+	} else {
+		status = true
+		msg = "Success"
+	}
+
+	return status, msg
 }
