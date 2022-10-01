@@ -116,6 +116,18 @@ The above steps are before you unlock the sending limits in SES. Read https://do
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
+You will need to create OAuth projects in Github and Google and place these values in Callback URL
+
+**Github Callback URL**
+GB_CONTRIBUTOR_REDIRECT_URI=http://localhost:8080/contributors/github/callback
+GB_PROJECT_REDIRECT_URI=http://localhost:8080/projects/github/callback
+
+**Google Callback URL**
+GO_CONTRIBUTOR_REDIRECT_URI=http://localhost:8080/contributors/google/callback
+
+Edit
+However, we donot use GB_PROJECT_REDIRECT_URI anymore. You can safely use the other two
+
 <!-- USAGE EXAMPLES -->
 
 <!-- ROADMAP -->
