@@ -188,7 +188,7 @@ func createProjectNotifications(projectID primitive.ObjectID, projectParams comm
 		for fetchPreferences.Next(context.TODO()) {
 			fetchPreferences.Decode(&preferenceStruct)
 
-			newNotification.Link = "/projects/view/" + projectID.Hex()
+			newNotification.Link = "/projects/view?projectid=" + projectID.Hex()
 			newNotification.NotificationType = common.NOTIFICATION_TYPES[0]
 			newNotification.Subject = projectParams.ProjectName
 			newNotification.Message = projectParams.ProjectDescription
