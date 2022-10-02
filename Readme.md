@@ -49,7 +49,7 @@
 
 As a new programmer, you have a tremendous opportunity to learn and create fantastic softwares.
 
-<a href="https://techpro.club">Techpro club</a>  is a platform to help you hone your programming skills and learn to collaborate with people early on in your career.
+<a href="https://techpro.club">Techpro club</a> is a platform to help you hone your programming skills and learn to collaborate with people early on in your career.
 
 While you contribute to projects, ask questions, and share your knowledge, we track them down in one place and help you build a better portfolio.
 
@@ -62,7 +62,6 @@ Our core services to the open source projects will be free forever. Feel free to
 -   [Golang](https://go.dev/)
 -   [Mongodb](https://www.mongodb.com/)
 -   [Bootstrap](https://getbootstrap.com)
--   [AWS SES](https://aws.amazon.com/ses/)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -82,18 +81,6 @@ Github project is needed to authenticate users. You may do so by visiting [https
 
 **Note** - Create a `Github App` and not `OAuth App` because the later doesn't permit multiple callback URLs.
 
-#### AWS SES (Optional for emails)
-
-You may create a free AWS account for a year with their terms and conditions.
-
-For emails, we are using Amazon SES. Please go through the documentation https://docs.aws.amazon.com/ses/latest/dg/smtp-credentials.html.
-
-Apart from that, generated SMTP Credentials will not work in place of `SES_ACCESS_ID` & `SES_ACCESS_SECRET`. You will need to go to **IAM > Users > Security Credentials > Create Access Key**. Note the credentials and replace the values in .env variables.
-
-Also, remember to apply `AmazonSesSendingAccess` from **IAM > Users > Permissions > Add Permissions**
-
-The above steps are before you unlock the sending limits in SES. Read https://docs.aws.amazon.com/ses/latest/dg/manage-sending-quotas.html
-
 ### Installation
 
 1. Clone the repo
@@ -112,7 +99,7 @@ The above steps are before you unlock the sending limits in SES. Read https://do
     ```sh
     go run main.go
     ```
-    Open a browser and hit `http://localhost:8080`. If you want to host the application on your own server, <a href="hosting.md">read this</a>
+    Open a browser and hit `http://localhost:8080`. If you want to host the application on your own server, <a href="https://github.com/ClubTechPro/techpro.club/blob/master/documentation/hosting.md">read this</a>
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -173,7 +160,7 @@ Links -
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-
 ## Project Founders
+
 -   [Chilarai](https://github.com/chilarai)
 -   [Rohit Verma](https://github.com/RohitV5)
