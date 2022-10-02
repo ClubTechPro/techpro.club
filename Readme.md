@@ -71,7 +71,7 @@ Our core services to the open source projects will be free forever. Feel free to
 
 Get a copy of Golang and Mongodb on your system and follow the **Installation instructions**.
 
-Optional - For emails, you will need an account with AWS described in **Prerequisites** or you may skip this step and comment out the sections in the code.
+Optional - For sending emails, read  [this document](https://github.com/ClubTechPro/techpro.club/blob/master/documentation/ses_email.md)
 
 ### Prerequisites
 
