@@ -14,14 +14,14 @@ import (
 
 func VideoFeeds(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/contributors/videofeeds" {
-        pages.ErrorHandler(w, r, http.StatusNotFound)
-        return
-    }
+		pages.ErrorHandler(w, r, http.StatusNotFound)
+		return
+	}
 
 	// Session check
 	sessionOk, userID := users.ValidateDbSession(w, r)
-	if(!sessionOk){
-		
+	if !sessionOk {
+
 		// Delete cookies
 		users.DeleteSessionCookie(w, r)
 		users.DeleteUserCookie(w, r)
@@ -37,30 +37,29 @@ func VideoFeeds(w http.ResponseWriter, r *http.Request) {
 	// Fetch notificaitons
 	_, _, notificationsCount, notificationsList := pages.NotificationsCountAndTopFive(userID)
 
-	if(!status){
+	if !status {
 		log.Println(msg)
 	} else {
-		userNameImage  = common.UsernameImageStruct{userName,image}
+		userNameImage = common.UsernameImageStruct{Username: userName, Image: image}
 	}
-		
 
-	if r.Method == "GET"{
+	if r.Method == "GET" {
 
 		baseUrl := common.GetBaseurl() + common.CONST_APP_PORT
-	pageDetails := common.PageDetails{BaseUrl: baseUrl, Title : "Video Feeds"}
+		pageDetails := common.PageDetails{BaseUrl: baseUrl, Title: "Video Feeds"}
 
 		output := videos.FinalVideoListOutStruct{
-			userNameImage,
-			notificationsCount,
-			notificationsList,
-			pageDetails,
+			UserNameImage:      userNameImage,
+			NotificaitonsCount: notificationsCount,
+			NotificationsList:  notificationsList,
+			PageDetails:        pageDetails,
 		}
 
-		tmpl, err := template.New("").ParseFiles("templates/app/common/base.gohtml", "templates/app/common/contributormenu.gohtml",  "templates/app/contributors/videofeeds.gohtml")
+		tmpl, err := template.New("").ParseFiles("templates/app/common/base.gohtml", "templates/app/common/contributormenu.gohtml", "templates/app/contributors/videofeeds.gohtml")
 		if err != nil {
 			fmt.Println(err.Error())
-		}else {
-			tmpl.ExecuteTemplate(w, "base", output) 
+		} else {
+			tmpl.ExecuteTemplate(w, "base", output)
 		}
 
 	}

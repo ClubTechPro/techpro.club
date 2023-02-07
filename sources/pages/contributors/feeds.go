@@ -13,26 +13,27 @@ import (
 	"techpro.club/sources/pages"
 	"techpro.club/sources/users"
 )
-type FinalFeedsOutputStruct struct{
-	Projects []common.FeedStruct `json:"projects"`
-	UserNameImage common.UsernameImageStruct `json:"usernameImage"`
-	MyBookmarks []primitive.ObjectID `json:"myBookmarks"`
-	MyReactions []primitive.ObjectID `json:"myReactions"`
-	NotificaitonsCount int64 `json:"notificationsCount"`
-	NotificationsList []common.MainNotificationStruct `json:"nofiticationsList"`
-	PageDetails common.PageDetails `json:"pageDetails"`
+
+type FinalFeedsOutputStruct struct {
+	Projects           []common.FeedStruct             `json:"projects"`
+	UserNameImage      common.UsernameImageStruct      `json:"usernameImage"`
+	MyBookmarks        []primitive.ObjectID            `json:"myBookmarks"`
+	MyReactions        []primitive.ObjectID            `json:"myReactions"`
+	NotificaitonsCount int64                           `json:"notificationsCount"`
+	NotificationsList  []common.MainNotificationStruct `json:"nofiticationsList"`
+	PageDetails        common.PageDetails              `json:"pageDetails"`
 }
 
-func Feeds(w http.ResponseWriter, r *http.Request){
+func Feeds(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/contributors/feeds" {
-        pages.ErrorHandler(w, r, http.StatusNotFound)
-        return
-    }
+		pages.ErrorHandler(w, r, http.StatusNotFound)
+		return
+	}
 
 	// Session check
 	sessionOk, userID := users.ValidateDbSession(w, r)
-	if(!sessionOk){
-		
+	if !sessionOk {
+
 		// Delete cookies
 		users.DeleteSessionCookie(w, r)
 		users.DeleteUserCookie(w, r)
@@ -48,18 +49,18 @@ func Feeds(w http.ResponseWriter, r *http.Request){
 	// Fetch notificaitons
 	_, _, notificationsCount, notificationsList := pages.NotificationsCountAndTopFive(userID)
 
-	if(!status){
+	if !status {
 		log.Println(msg)
 	} else {
-		userNameImage  = common.UsernameImageStruct{userName,image}
+		userNameImage = common.UsernameImageStruct{Username: userName, Image: image}
 	}
 
 	var functions = template.FuncMap{
-		"objectIdToString" : pages.ObjectIDToString,
-		"containsObjectId" : pages.ContainsObjectID,
-		"timeElapsed" : pages.TimeElapsed,
+		"objectIdToString": pages.ObjectIDToString,
+		"containsObjectId": pages.ContainsObjectID,
+		"timeElapsed":      pages.TimeElapsed,
 	}
-	
+
 	// TEST CONDITIONS
 	// This has to come from the actual frontend
 	pageid := int64(0)
@@ -69,9 +70,8 @@ func Feeds(w http.ResponseWriter, r *http.Request){
 	_, _, results := filterActiveProjects(pageid, tags, keyword)
 	_, _, bookmarks, reactions := pages.FetchMyBookmarksAndReactions(userID)
 
-	
 	baseUrl := common.GetBaseurl() + common.CONST_APP_PORT
-	pageDetails := common.PageDetails{BaseUrl: baseUrl, Title : "Feeds"}
+	pageDetails := common.PageDetails{BaseUrl: baseUrl, Title: "Feeds"}
 
 	output := FinalFeedsOutputStruct{results, userNameImage, bookmarks, reactions, notificationsCount, notificationsList, pageDetails}
 
@@ -79,16 +79,14 @@ func Feeds(w http.ResponseWriter, r *http.Request){
 
 	if err != nil {
 		fmt.Println(err.Error())
-	}else {
-		tmpl.ExecuteTemplate(w, "base", output) 
+	} else {
+		tmpl.ExecuteTemplate(w, "base", output)
 	}
 
 }
 
-
 // Filter all active projects from the database according to filters
-func filterActiveProjects(pageid int64, tags []string, keyword string)(status bool, msg string, results []common.FeedStruct){
-
+func filterActiveProjects(pageid int64, tags []string, keyword string) (status bool, msg string, results []common.FeedStruct) {
 
 	status = false
 	msg = ""
@@ -97,7 +95,7 @@ func filterActiveProjects(pageid int64, tags []string, keyword string)(status bo
 	var finalConditions []bson.M
 	resultsPerPage := int64(20)
 
-	status, msg,  client := common.Mongoconnect()
+	status, msg, client := common.Mongoconnect()
 	defer client.Disconnect(context.TODO())
 
 	dbName := common.GetMoDb()
@@ -106,7 +104,7 @@ func filterActiveProjects(pageid int64, tags []string, keyword string)(status bo
 	finalConditions = append(finalConditions, bson.M{"isactive": bson.M{"$eq": common.CONST_ACTIVE}})
 
 	if len(keyword) > 0 {
-		finalConditions = append(finalConditions, bson.M{"projectname" : bson.M{"$regex": keyword}})
+		finalConditions = append(finalConditions, bson.M{"projectname": bson.M{"$regex": keyword}})
 	}
 
 	// Filter where conditions
@@ -115,46 +113,44 @@ func filterActiveProjects(pageid int64, tags []string, keyword string)(status bo
 		orConditions = append(orConditions, bson.M{"otherlanguages": bson.M{"$in": tags}})
 		orConditions = append(orConditions, bson.M{"allied": bson.M{"$in": tags}})
 
-		finalConditions = append(finalConditions, bson.M{"$or" : orConditions})
+		finalConditions = append(finalConditions, bson.M{"$or": orConditions})
 	}
-	
 
-	aggCondition := bson.M{"$match": bson.M{"$and" : finalConditions}}
-
+	aggCondition := bson.M{"$match": bson.M{"$and": finalConditions}}
 
 	// Filter joins
 	aggLookup := bson.M{"$lookup": bson.M{
-		"from":         common.CONST_MO_USERS,    // the collection name
-		"localField":   "userid", 	      		  // the field on the child struct
-		"foreignField": "_id",       		  	  // the field on the parent struct
-		"as":           "userdetails",    		  // the field to populate into
+		"from":         common.CONST_MO_USERS, // the collection name
+		"localField":   "userid",              // the field on the child struct
+		"foreignField": "_id",                 // the field on the parent struct
+		"as":           "userdetails",         // the field to populate into
 	}}
 
 	// Set projections
-	aggProjections := bson.M{"$project": bson.M{ 
-		"_id": 1, "projectname" : 1, 
-		"projectdescription" : 1, 
-		"repolink": 1, 
-		"languages": 1, 
-		"otherlanguages": 1, 
-		"allied": 1, 
-		"company" : 1, 
-		"companyname": 1, 
-		"createddate": 1,
-		"reactionscount": 1,
-		"public" : 1,
-		"userdetails" : bson.M{ "_id" : 1, "name": 1, "imagelink" :1},
+	aggProjections := bson.M{"$project": bson.M{
+		"_id": 1, "projectname": 1,
+		"projectdescription": 1,
+		"repolink":           1,
+		"languages":          1,
+		"otherlanguages":     1,
+		"allied":             1,
+		"company":            1,
+		"companyname":        1,
+		"createddate":        1,
+		"reactionscount":     1,
+		"public":             1,
+		"userdetails":        bson.M{"_id": 1, "name": 1, "imagelink": 1},
 	}}
 
 	aggSkip := bson.M{"$skip": (pageid * resultsPerPage)}
-    aggLimit := bson.M{"$limit": resultsPerPage}
+	aggLimit := bson.M{"$limit": resultsPerPage}
 
 	projectsList, err := fetchProjects.Aggregate(context.TODO(), []bson.M{aggCondition, aggLookup, aggProjections, aggSkip, aggLimit})
 
 	if err != nil {
 		msg = err.Error()
 	} else {
-		for projectsList.Next(context.TODO()){
+		for projectsList.Next(context.TODO()) {
 			var elem common.FeedStruct
 			errDecode := projectsList.Decode(&elem)
 

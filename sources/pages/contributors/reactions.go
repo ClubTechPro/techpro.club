@@ -14,13 +14,13 @@ import (
 	"techpro.club/sources/users"
 )
 
-type FinalReactionsOutputStruct struct{
-	Projects []common.FeedStruct `json:"projects"`
-	UserNameImage common.UsernameImageStruct `json:"usernameImage"`
-	MyBookmarks []primitive.ObjectID `json:"myBookmarks"`
-	NotificaitonsCount int64 `json:"notificationsCount"`
-	NotificationsList []common.MainNotificationStruct `json:"nofiticationsList"`
-	PageDetails common.PageDetails `json:"pageDetails"`
+type FinalReactionsOutputStruct struct {
+	Projects           []common.FeedStruct             `json:"projects"`
+	UserNameImage      common.UsernameImageStruct      `json:"usernameImage"`
+	MyBookmarks        []primitive.ObjectID            `json:"myBookmarks"`
+	NotificaitonsCount int64                           `json:"notificationsCount"`
+	NotificationsList  []common.MainNotificationStruct `json:"nofiticationsList"`
+	PageDetails        common.PageDetails              `json:"pageDetails"`
 }
 
 // Fetched reacted projects
@@ -32,14 +32,14 @@ func FetchReactions(w http.ResponseWriter, r *http.Request) {
 
 	// Session check
 	sessionOk, userID := users.ValidateDbSession(w, r)
-	if(!sessionOk){
-		
+	if !sessionOk {
+
 		// Delete cookies
 		users.DeleteSessionCookie(w, r)
 		users.DeleteUserCookie(w, r)
 
 		http.Redirect(w, r, "/", http.StatusSeeOther)
-	} 
+	}
 
 	var userNameImage common.UsernameImageStruct
 
@@ -49,16 +49,16 @@ func FetchReactions(w http.ResponseWriter, r *http.Request) {
 	// Fetch notificaitons
 	_, _, notificationsCount, notificationsList := pages.NotificationsCountAndTopFive(userID)
 
-	if(!status){
+	if !status {
 		log.Println(msg)
 	} else {
-		userNameImage  = common.UsernameImageStruct{userName,image}
+		userNameImage = common.UsernameImageStruct{Username: userName, Image: image}
 	}
 
 	var functions = template.FuncMap{
-		"objectIdToString" : pages.ObjectIDToString,
-		"containsObjectId" : pages.ContainsObjectID,
-		"timeElapsed" : pages.TimeElapsed,
+		"objectIdToString": pages.ObjectIDToString,
+		"containsObjectId": pages.ContainsObjectID,
+		"timeElapsed":      pages.TimeElapsed,
 	}
 
 	// constants for check
@@ -68,41 +68,40 @@ func FetchReactions(w http.ResponseWriter, r *http.Request) {
 	// Also fetch project details where the user reacted
 	_, _, results := fetchReactedProjectsList(int64(pageid), userID)
 	_, _, bookmarks, _ := pages.FetchMyBookmarksAndReactions(userID)
-	
+
 	baseUrl := common.GetBaseurl() + common.CONST_APP_PORT
-	pageDetails := common.PageDetails{BaseUrl: baseUrl, Title : "Reactions"}
+	pageDetails := common.PageDetails{BaseUrl: baseUrl, Title: "Reactions"}
 
 	output := FinalReactionsOutputStruct{results, userNameImage, bookmarks, notificationsCount, notificationsList, pageDetails}
 
 	tmpl, err := template.New("").Funcs(functions).ParseFiles("templates/app/common/base.gohtml", "templates/app/common/contributormenu.gohtml", "templates/app/contributors/reactions.gohtml")
 	if err != nil {
 		fmt.Println(err.Error())
-	}else {
-		tmpl.ExecuteTemplate(w, "base", output) 
+	} else {
+		tmpl.ExecuteTemplate(w, "base", output)
 	}
 }
 
 // Fetch all reacted projects
-func filterReactedProjects(pageid int64, userID primitive.ObjectID)(status bool, msg string, results []primitive.ObjectID){
-
+func filterReactedProjects(pageid int64, userID primitive.ObjectID) (status bool, msg string, results []primitive.ObjectID) {
 
 	status = false
 	msg = ""
 	var out common.FetchUserProjectReactionStruct
 
-	status, msg,  client := common.Mongoconnect()
+	status, msg, client := common.Mongoconnect()
 	defer client.Disconnect(context.TODO())
 
 	dbName := common.GetMoDb()
 	fetchReactedProjects := client.Database(dbName).Collection(common.CONST_MO_USER_PROJECT_REACTIONS)
 
 	// Fetch all reacted projects against a user
-	reactedProjectsResults, err:= fetchReactedProjects.Find(context.TODO(), bson.M{"userid": userID})
+	reactedProjectsResults, err := fetchReactedProjects.Find(context.TODO(), bson.M{"userid": userID})
 
-	if err != nil{
+	if err != nil {
 		msg = err.Error()
 	} else {
-		for reactedProjectsResults.Next(context.TODO()){
+		for reactedProjectsResults.Next(context.TODO()) {
 			errDecode := reactedProjectsResults.Decode(&out)
 
 			if errDecode != nil {
@@ -116,10 +115,8 @@ func filterReactedProjects(pageid int64, userID primitive.ObjectID)(status bool,
 	return status, msg, results
 }
 
-
 // Filter all active projects from the database according to users reactions
-func fetchReactedProjectsList(pageid int64, userID primitive.ObjectID)(status bool, msg string, results []common.FeedStruct){
-
+func fetchReactedProjectsList(pageid int64, userID primitive.ObjectID) (status bool, msg string, results []common.FeedStruct) {
 
 	status = false
 	msg = ""
@@ -127,7 +124,7 @@ func fetchReactedProjectsList(pageid int64, userID primitive.ObjectID)(status bo
 	var finalConditions []bson.M
 	resultsPerPage := int64(20)
 
-	status, msg,  client := common.Mongoconnect()
+	status, msg, client := common.Mongoconnect()
 	defer client.Disconnect(context.TODO())
 
 	dbName := common.GetMoDb()
@@ -137,54 +134,53 @@ func fetchReactedProjectsList(pageid int64, userID primitive.ObjectID)(status bo
 
 	status, errMsg, projectIds := filterReactedProjects(pageid, userID)
 
-	if !status{
+	if !status {
 		msg = errMsg
 	} else {
-		if len(projectIds) <= 0{
+		if len(projectIds) <= 0 {
 			msg = "No projects found"
-			results = []common.FeedStruct{}			
+			results = []common.FeedStruct{}
 		} else {
-			finalConditions = append(finalConditions, bson.M{"_id" : bson.M{"$in": projectIds}})
-			
-			aggCondition := bson.M{"$match": bson.M{"$and" : finalConditions}}
-		
-		
+			finalConditions = append(finalConditions, bson.M{"_id": bson.M{"$in": projectIds}})
+
+			aggCondition := bson.M{"$match": bson.M{"$and": finalConditions}}
+
 			// Filter joins
 			aggLookup := bson.M{"$lookup": bson.M{
-				"from":         common.CONST_MO_USERS,    // the collection name
-				"localField":   "userid", 	      		  // the field on the child struct
-				"foreignField": "_id",       		  	  // the field on the parent struct
-				"as":           "userdetails",    		  // the field to populate into
+				"from":         common.CONST_MO_USERS, // the collection name
+				"localField":   "userid",              // the field on the child struct
+				"foreignField": "_id",                 // the field on the parent struct
+				"as":           "userdetails",         // the field to populate into
 			}}
-		
+
 			// Set projections
-			aggProjections := bson.M{"$project": bson.M{ 
-				"_id": 1, "projectname" : 1, 
-				"projectdescription" : 1, 
-				"repolink": 1, 
-				"languages": 1, 
-				"otherlanguages": 1, 
-				"allied": 1, 
-				"company" : 1, 
-				"companyname": 1, 
-				"createddate": 1,
-				"public" : 1,
-				"reactionscount": 1,
-				"userdetails" : bson.M{ "_id" : 1, "name": 1, "imagelink" :1},
+			aggProjections := bson.M{"$project": bson.M{
+				"_id": 1, "projectname": 1,
+				"projectdescription": 1,
+				"repolink":           1,
+				"languages":          1,
+				"otherlanguages":     1,
+				"allied":             1,
+				"company":            1,
+				"companyname":        1,
+				"createddate":        1,
+				"public":             1,
+				"reactionscount":     1,
+				"userdetails":        bson.M{"_id": 1, "name": 1, "imagelink": 1},
 			}}
-		
+
 			aggSkip := bson.M{"$skip": (pageid * resultsPerPage)}
 			aggLimit := bson.M{"$limit": resultsPerPage}
-		
+
 			projectsList, err := fetchProjects.Aggregate(context.TODO(), []bson.M{aggCondition, aggLookup, aggProjections, aggSkip, aggLimit})
-		
+
 			if err != nil {
 				msg = err.Error()
 			} else {
-				for projectsList.Next(context.TODO()){
+				for projectsList.Next(context.TODO()) {
 					var elem common.FeedStruct
 					errDecode := projectsList.Decode(&elem)
-		
+
 					if errDecode != nil {
 						msg = errDecode.Error()
 					} else {
@@ -199,4 +195,3 @@ func fetchReactedProjectsList(pageid int64, userID primitive.ObjectID)(status bo
 
 	return status, msg, results
 }
-

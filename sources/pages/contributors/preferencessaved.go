@@ -11,24 +11,24 @@ import (
 	"techpro.club/sources/users"
 )
 
-type FinalPreferenceSavedOutputStruct struct{
-	UserNameImage common.UsernameImageStruct `json:"usernameImage"`
-	NotificaitonsCount int64 `json:"notificationsCount"`
-	NotificationsList []common.MainNotificationStruct `json:"nofiticationsList"`
-	PageDetails common.PageDetails `json:"pageDetails"`
+type FinalPreferenceSavedOutputStruct struct {
+	UserNameImage      common.UsernameImageStruct      `json:"usernameImage"`
+	NotificaitonsCount int64                           `json:"notificationsCount"`
+	NotificationsList  []common.MainNotificationStruct `json:"nofiticationsList"`
+	PageDetails        common.PageDetails              `json:"pageDetails"`
 }
 
-func PreferencesSaved(w http.ResponseWriter, r *http.Request){
-	
+func PreferencesSaved(w http.ResponseWriter, r *http.Request) {
+
 	if r.URL.Path != "/contributors/thankyou" {
-        pages.ErrorHandler(w, r, http.StatusNotFound)
-        return
-    }
+		pages.ErrorHandler(w, r, http.StatusNotFound)
+		return
+	}
 
 	// Session check
 	sessionOk, userID := users.ValidateDbSession(w, r)
-	if(!sessionOk){
-		
+	if !sessionOk {
+
 		// Delete cookies
 		users.DeleteSessionCookie(w, r)
 		users.DeleteUserCookie(w, r)
@@ -44,22 +44,22 @@ func PreferencesSaved(w http.ResponseWriter, r *http.Request){
 	// Fetch notificaitons
 	_, _, notificationsCount, notificationsList := pages.NotificationsCountAndTopFive(userID)
 
-	if(!status){
+	if !status {
 		log.Println(msg)
 	} else {
-		userNameImage  = common.UsernameImageStruct{userName,image}
+		userNameImage = common.UsernameImageStruct{Username: userName, Image: image}
 	}
 
 	baseUrl := common.GetBaseurl() + common.CONST_APP_PORT
-	pageDetails := common.PageDetails{BaseUrl: baseUrl, Title : "Thank you"}
+	pageDetails := common.PageDetails{BaseUrl: baseUrl, Title: "Thank you"}
 
 	output := FinalPreferenceSavedOutputStruct{userNameImage, notificationsCount, notificationsList, pageDetails}
 
 	tmpl, err := template.New("").ParseFiles("templates/app/common/base.gohtml", "templates/app/common/contributormenu.gohtml", "templates/app/contributors/preferencessaved.gohtml")
 	if err != nil {
 		fmt.Println(err.Error())
-	}else {
-		tmpl.ExecuteTemplate(w, "base", output) 
+	} else {
+		tmpl.ExecuteTemplate(w, "base", output)
 	}
-	
+
 }
